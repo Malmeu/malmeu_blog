@@ -1,0 +1,184 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+}
+
+const { slug, title } = Astro.props;
+---
+
+<!-- Comments Section -->
+<section class="mt-16 pt-8 border-t border-[var(--color-bg-secondary)]">
+  <div class="max-w-4xl mx-auto">
+    <h3 class="text-2xl font-bold text-[var(--color-text)] mb-6">
+      💬 Commentaires
+    </h3>
+    
+    <!-- Comment Form -->
+    <div class="bg-[var(--color-bg-secondary)] rounded-xl p-6 mb-6">
+      <form id="comment-form" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="name" class="block text-sm font-medium text-[var(--color-text)] mb-2">
+              Nom *
+            </label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              required
+              class="w-full px-4 py-2 bg-[var(--color-bg)] border border-[var(--color-bg)] rounded-lg text-[var(--color-text)] placeholder-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent"
+              placeholder="Votre nom"
+            />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-[var(--color-text)] mb-2">
+              Email *
+            </label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required
+              class="w-full px-4 py-2 bg-[var(--color-bg)] border border-[var(--color-bg)] rounded-lg text-[var(--color-text)] placeholder-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent"
+              placeholder="votre@email.com"
+            />
+          </div>
+        </div>
+        
+        <div>
+          <label for="comment" class="block text-sm font-medium text-[var(--color-text)] mb-2">
+            Commentaire *
+          </label>
+          <textarea 
+            id="comment" 
+            name="comment" 
+            rows="4" 
+            required
+            class="w-full px-4 py-2 bg-[var(--color-bg)] border border-[var(--color-bg)] rounded-lg text-[var(--color-text)] placeholder-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent resize-vertical"
+            placeholder="Partagez vos pensées..."
+          ></textarea>
+        </div>
+        
+        <div class="flex items-center justify-between">
+          <p class="text-sm text-[var(--color-text-muted)]">
+            Votre email ne sera pas publié. Les champs obligatoires sont marqués *
+          </p>
+          <button 
+            type="submit"
+            class="px-6 py-2 bg-[var(--color-accent)] text-[var(--color-bg)] rounded-lg font-medium hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg-secondary)]"
+          >
+            Publier le commentaire
+          </button>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Comments List -->
+    <div id="comments-list" class="space-y-6">
+      <!-- Sample Comment -->
+      <div class="bg-[var(--color-bg-secondary)] rounded-xl p-6">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-orange)] rounded-full flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">JD</span>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <h4 class="font-semibold text-[var(--color-text)]">Jean Dupont</h4>
+              <span class="text-sm text-[var(--color-text-muted)]">• Il y a 2 heures</span>
+            </div>
+            <p class="text-[var(--color-text)] leading-relaxed">
+              Excellent article ! Vos retours d'expérience sur l'IA en Algérie sont très pertinents. 
+              J'apprécie particulièrement l'honnêteté sur les défis rencontrés. Continuez comme ça !
+            </p>
+            <button class="mt-3 text-sm text-[var(--color-accent)] hover:text-[var(--color-accent-orange)] transition-colors">
+              Répondre
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Placeholder for new comments -->
+      <div id="new-comments" class="space-y-6"></div>
+    </div>
+    
+    <!-- Success Message -->
+    <div id="success-message" class="hidden bg-green-500/10 border border-green-500/20 rounded-lg p-4 text-green-400 text-center">
+      ✅ Merci pour votre commentaire ! Il sera visible après modération.
+    </div>
+  </div>
+</section>
+
+<script>
+  // Handle comment form submission
+  const commentForm = document.getElementById('comment-form');
+  if (commentForm) {
+    commentForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const target = e.target as HTMLFormElement;
+      if (!target) return;
+      
+      // Get form data
+      const formData = new FormData(target);
+      const nameValue = formData.get('name');
+      const emailValue = formData.get('email');
+      const commentValue = formData.get('comment');
+      
+      // Type guards
+      if (!nameValue || !emailValue || !commentValue || 
+          typeof nameValue !== 'string' || 
+          typeof emailValue !== 'string' || 
+          typeof commentValue !== 'string') {
+        return;
+      }
+      
+      // Create new comment element
+      const newComment = document.createElement('div');
+      newComment.className = 'bg-[var(--color-bg-secondary)] rounded-xl p-6 opacity-75';
+      newComment.innerHTML = `
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-orange)] rounded-full flex items-center justify-center flex-shrink-0">
+            <span class="text-white font-bold">${nameValue.substring(0, 2).toUpperCase()}</span>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <h4 class="font-semibold text-[var(--color-text)]">${nameValue}</h4>
+              <span class="text-sm text-[var(--color-text-muted)]">• À l'instant</span>
+              <span class="text-xs px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded-md">En attente de modération</span>
+            </div>
+            <p class="text-[var(--color-text)] leading-relaxed">${commentValue}</p>
+            <button class="mt-3 text-sm text-[var(--color-accent)] hover:text-[var(--color-accent-orange)] transition-colors">
+              Répondre
+            </button>
+          </div>
+        </div>
+      `;
+      
+      // Add comment to the list
+      const newCommentsContainer = document.getElementById('new-comments');
+      if (newCommentsContainer) {
+        newCommentsContainer.appendChild(newComment);
+      }
+      
+      // Show success message
+      const successMessage = document.getElementById('success-message');
+      if (successMessage) {
+        successMessage.classList.remove('hidden');
+      }
+      
+      // Reset form
+      target.reset();
+      
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        if (successMessage) {
+          successMessage.classList.add('hidden');
+        }
+      }, 5000);
+      
+      // In a real application, you would send this data to your backend
+      console.log('New comment:', { name: nameValue, email: emailValue, comment: commentValue, slug: '{slug}' });
+    });
+  }
+</script>

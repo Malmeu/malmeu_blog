@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import TableOfContents from '../components/TableOfContents.astro';
+import Comments from '../components/Comments.astro';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -148,4 +149,7 @@ const readingTime = Math.ceil(wordCount / wordsPerMinute);
       </div>
     </nav>
   </article>
+  
+  <!-- Comments Section -->
+  <Comments slug={post.slug} title={post.data.title} />
 </BaseLayout>

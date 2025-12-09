@@ -98,12 +98,16 @@ const ogImageURL = new URL(image, Astro.site);
       const theme = localStorage.getItem('theme') || 'dark';
       document.documentElement.setAttribute('data-theme', theme);
       
-      window.toggleTheme = () => {
+      // Declare toggleTheme globally
+      function toggleTheme() {
         const current = document.documentElement.getAttribute('data-theme');
         const next = current === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', next);
         localStorage.setItem('theme', next);
-      };
+      }
+      
+      // Make it available globally
+      (window as any).toggleTheme = toggleTheme;
     </script>
   </body>
 </html>
