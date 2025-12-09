@@ -72,26 +72,14 @@ import { ADMIN_CONFIG } from '../../lib/admin';
   const loginCard = document.querySelector('[data-admin-password]');
   const ADMIN_PASSWORD = loginCard?.dataset.adminPassword || 'admin123';
   
-  console.log('Login page loaded');
-  
   const loginForm = document.getElementById('login-form');
   const errorMessage = document.getElementById('error-message');
   const loginButton = document.getElementById('login-button');
   
-  console.log('Form elements found:', { 
-    form: !!loginForm, 
-    errorDiv: !!errorMessage, 
-    button: !!loginButton 
-  });
-  
   if (loginForm) {
     loginForm.addEventListener('submit', async function(e) {
       e.preventDefault();
-      console.log('Form submitted');
-      
       const password = document.getElementById('password').value;
-      console.log('Password entered:', password ? 'yes' : 'no');
-      console.log('Password comparison:', password === ADMIN_PASSWORD ? 'match' : 'no match');
       
       // Show loading state
       const originalText = loginButton.textContent;
@@ -99,20 +87,15 @@ import { ADMIN_CONFIG } from '../../lib/admin';
       loginButton.disabled = true;
       
       try {
-        console.log('Validating password...');
         // Validate password
         if (password === ADMIN_PASSWORD) {
-          console.log('Password correct, setting session...');
           // Use localStorage for session (works on client-side)
           localStorage.setItem('admin_session', 'authenticated');
           localStorage.setItem('admin_session_expiry', String(Date.now() + 24 * 60 * 60 * 1000)); // 24 hours
           
-          console.log('Session set in localStorage');
-          
           // Redirect to admin page
           window.location.href = '/admin/comments';
         } else {
-          console.log('Password incorrect');
           // Show error
           errorMessage.classList.remove('hidden');
           document.getElementById('password').value = '';

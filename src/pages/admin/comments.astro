@@ -177,23 +177,15 @@ const rejectedCount = comments.filter(c => c.status === 'rejected').length;
   
   const supabase = createClient(supabaseUrl, supabaseAnonKey);
   
-  console.log('Admin authenticated and Supabase initialized');
-  
   // Approve comment
   window.approveComment = async (commentId) => {
     try {
-      console.log('Approving comment:', commentId);
       const { error } = await supabase
         .from('comments')
         .update({ status: 'approved' })
         .eq('id', commentId);
       
-      if (error) {
-        console.error('Supabase error:', error);
-        throw error;
-      }
-      
-      console.log('Comment approved successfully');
+      if (error) throw error;
       // Reload page to show updated status
       window.location.reload();
     } catch (error) {
@@ -205,18 +197,12 @@ const rejectedCount = comments.filter(c => c.status === 'rejected').length;
   // Reject comment
   window.rejectComment = async (commentId) => {
     try {
-      console.log('Rejecting comment:', commentId);
       const { error } = await supabase
         .from('comments')
         .update({ status: 'rejected' })
         .eq('id', commentId);
       
-      if (error) {
-        console.error('Supabase error:', error);
-        throw error;
-      }
-      
-      console.log('Comment rejected successfully');
+      if (error) throw error;
       // Reload page to show updated status
       window.location.reload();
     } catch (error) {
