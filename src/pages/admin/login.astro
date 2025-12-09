@@ -1,14 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ADMIN_CONFIG } from '../../lib/admin';
-
-// Check if already logged in
-const cookies = Astro.cookies;
-const isLoggedIn = cookies.get('admin_session')?.value === 'authenticated';
-
-if (isLoggedIn) {
-  return Astro.redirect('/admin/comments');
-}
 ---
 
 <BaseLayout 
@@ -67,11 +59,20 @@ if (isLoggedIn) {
 </BaseLayout>
 
 <script type="module">
+  // Check if already logged in
+  const session = localStorage.getItem('admin_session');
+  const expiry = localStorage.getItem('admin_session_expiry');
+  
+  if (session === 'authenticated' && expiry && Date.now() < parseInt(expiry)) {
+    // Already logged in, redirect to admin
+    window.location.href = '/admin/comments';
+  }
+  
   // Get admin password from data attribute
   const loginCard = document.querySelector('[data-admin-password]');
   const ADMIN_PASSWORD = loginCard?.dataset.adminPassword || 'admin123';
   
-  console.log('Admin password loaded:', ADMIN_PASSWORD);
+  console.log('Login page loaded');
   
   const loginForm = document.getElementById('login-form');
   const errorMessage = document.getElementById('error-message');
@@ -101,23 +102,15 @@ if (isLoggedIn) {
         console.log('Validating password...');
         // Validate password
         if (password === ADMIN_PASSWORD) {
-          console.log('Password correct, setting cookie...');
-          // Set session cookie (24 hours) - simple version
-          document.cookie = 'admin_session=authenticated; path=/; max-age=86400';
+          console.log('Password correct, setting session...');
+          // Use localStorage for session (works on client-side)
+          localStorage.setItem('admin_session', 'authenticated');
+          localStorage.setItem('admin_session_expiry', String(Date.now() + 24 * 60 * 60 * 1000)); // 24 hours
           
-          // Verify cookie was set
-          const allCookies = document.cookie;
-          const hasSession = allCookies.includes('admin_session');
+          console.log('Session set in localStorage');
           
-          console.log('Cookie set, hasSession:', hasSession);
-          console.log('All cookies:', allCookies);
-          
-          if (hasSession) {
-            // Redirect to admin page
-            window.location.href = '/admin/comments';
-          } else {
-            alert('Erreur: Le cookie n\'a pas pu être créé. Vérifiez les paramètres de votre navigateur.');
-          }
+          // Redirect to admin page
+          window.location.href = '/admin/comments';
         } else {
           console.log('Password incorrect');
           // Show error

@@ -2,17 +2,6 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { supabase, type Comment } from '../../lib/supabase';
 
-// Check authentication
-const cookies = Astro.cookies;
-const isLoggedIn = cookies.get('admin_session')?.value === 'authenticated';
-
-console.log('Admin page accessed - isLoggedIn:', isLoggedIn);
-
-if (!isLoggedIn) {
-  console.log('Not authenticated, redirecting to login');
-  return Astro.redirect('/admin/login');
-}
-
 // Fetch all comments (pending and approved)
 let comments: Comment[] = [];
 if (supabase) {
@@ -169,6 +158,17 @@ const rejectedCount = comments.filter(c => c.status === 'rejected').length;
 </BaseLayout>
 
 <script type="module">
+  // Check authentication from localStorage
+  const session = localStorage.getItem('admin_session');
+  const expiry = localStorage.getItem('admin_session_expiry');
+  
+  // Redirect to login if not authenticated or session expired
+  if (session !== 'authenticated' || !expiry || Date.now() > parseInt(expiry)) {
+    localStorage.removeItem('admin_session');
+    localStorage.removeItem('admin_session_expiry');
+    window.location.href = '/admin/login';
+  }
+  
   import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
   
   // Supabase configuration
@@ -177,7 +177,7 @@ const rejectedCount = comments.filter(c => c.status === 'rejected').length;
   
   const supabase = createClient(supabaseUrl, supabaseAnonKey);
   
-  console.log('Supabase admin initialized');
+  console.log('Admin authenticated and Supabase initialized');
   
   // Approve comment
   window.approveComment = async (commentId) => {
@@ -229,8 +229,9 @@ const rejectedCount = comments.filter(c => c.status === 'rejected').length;
   const logoutBtn = document.getElementById('logout-btn');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', function() {
-      // Clear the session cookie
-      document.cookie = 'admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC';
+      // Clear the session from localStorage
+      localStorage.removeItem('admin_session');
+      localStorage.removeItem('admin_session_expiry');
       
       // Redirect to login page
       window.location.href = '/admin/login';
