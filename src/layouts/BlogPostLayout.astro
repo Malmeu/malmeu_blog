@@ -12,7 +12,7 @@ interface Props {
 }
 
 const { post, headings, prevPost, nextPost } = Astro.props;
-const { title, description, publishDate, category, tags, image } = post.data;
+const { title, description, publishDate, category, tags, image, sponsored, sponsorName, sponsorUrl, sponsorLogo } = post.data;
 
 // Calculate reading time
 const content = post.body || '';
@@ -55,7 +55,12 @@ const readingTime = Math.ceil(wordCount / wordsPerMinute);
 
     <!-- Header -->
     <header class="mb-12">
-      <div class="flex items-center gap-4 mb-4">
+      <div class="flex items-center gap-4 mb-4 flex-wrap">
+        {sponsored && (
+          <span class="px-3 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full text-sm font-medium">
+            💰 Sponsorisé
+          </span>
+        )}
         <a 
           href={`/blog/category/${category.toLowerCase()}`}
           class="px-3 py-1 bg-[var(--color-accent)] text-[var(--color-bg)] rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
@@ -95,6 +100,29 @@ const readingTime = Math.ceil(wordCount / wordsPerMinute);
         </div>
       )}
     </header>
+
+    <!-- Sponsor Banner -->
+    {sponsored && sponsorName && (
+      <div class="mb-8 p-4 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-xl">
+        <div class="flex items-center gap-4">
+          {sponsorLogo && (
+            <img src={sponsorLogo} alt={sponsorName} class="h-10 w-auto" />
+          )}
+          <div class="flex-1">
+            <p class="text-sm text-[var(--color-text-muted)]">
+              Cet article est sponsorisé par 
+              {sponsorUrl ? (
+                <a href={sponsorUrl} target="_blank" rel="noopener sponsored" class="font-semibold text-amber-500 hover:text-amber-400 transition-colors">
+                  {sponsorName}
+                </a>
+              ) : (
+                <span class="font-semibold text-amber-500">{sponsorName}</span>
+              )}
+            </p>
+          </div>
+        </div>
+      </div>
+    )}
 
     <!-- Cover Image -->
     {image && (

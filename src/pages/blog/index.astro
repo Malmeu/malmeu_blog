@@ -61,6 +61,8 @@ const categoryCount = posts.reduce((acc, post) => {
             image={post.data.image}
             slug={post.slug}
             tags={post.data.tags}
+            sponsored={post.data.sponsored}
+            sponsorName={post.data.sponsorName}
           />
         ))}
       </div>

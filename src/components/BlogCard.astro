@@ -7,9 +7,11 @@ interface Props {
   image: string;
   slug: string;
   tags?: string[];
+  sponsored?: boolean;
+  sponsorName?: string;
 }
 
-const { title, description, publishDate, category, image, slug, tags } = Astro.props;
+const { title, description, publishDate, category, image, slug, tags, sponsored, sponsorName } = Astro.props;
 
 // Calculate reading time (approximate)
 const readingTime = Math.ceil(description.length / 100) + 3;
@@ -25,7 +27,12 @@ const readingTime = Math.ceil(description.length / 100) + 3;
         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         loading="lazy"
       />
-      <div class="absolute top-4 left-4">
+      <div class="absolute top-4 left-4 flex gap-2">
+        {sponsored && (
+          <span class="px-3 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full text-xs font-medium">
+            💰 Sponsorisé
+          </span>
+        )}
         <span class="px-3 py-1 bg-[var(--color-accent)] text-[var(--color-bg)] rounded-full text-xs font-medium">
           {category}
         </span>

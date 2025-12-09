@@ -11,6 +11,11 @@ const blogCollection = defineCollection({
     image: z.string(),
     draft: z.boolean().default(false),
     featured: z.boolean().default(false),
+    // Sponsoring
+    sponsored: z.boolean().default(false),
+    sponsorName: z.string().optional(),
+    sponsorUrl: z.string().url().optional(),
+    sponsorLogo: z.string().optional(),
   }),
 });
 
