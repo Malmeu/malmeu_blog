@@ -71,17 +71,26 @@ if (isLoggedIn) {
   const loginCard = document.querySelector('[data-admin-password]');
   const ADMIN_PASSWORD = loginCard?.dataset.adminPassword || 'admin123';
   
-  console.log('Admin password loaded');
+  console.log('Admin password loaded:', ADMIN_PASSWORD);
   
   const loginForm = document.getElementById('login-form');
   const errorMessage = document.getElementById('error-message');
   const loginButton = document.getElementById('login-button');
   
+  console.log('Form elements found:', { 
+    form: !!loginForm, 
+    errorDiv: !!errorMessage, 
+    button: !!loginButton 
+  });
+  
   if (loginForm) {
     loginForm.addEventListener('submit', async function(e) {
       e.preventDefault();
+      console.log('Form submitted');
       
       const password = document.getElementById('password').value;
+      console.log('Password entered:', password ? 'yes' : 'no');
+      console.log('Password comparison:', password === ADMIN_PASSWORD ? 'match' : 'no match');
       
       // Show loading state
       const originalText = loginButton.textContent;
@@ -89,14 +98,18 @@ if (isLoggedIn) {
       loginButton.disabled = true;
       
       try {
+        console.log('Validating password...');
         // Validate password
         if (password === ADMIN_PASSWORD) {
+          console.log('Password correct, setting cookie...');
           // Set session cookie (24 hours)
           document.cookie = 'admin_session=authenticated; path=/; max-age=86400; secure; samesite=strict';
+          console.log('Cookie set, redirecting...');
           
           // Redirect to admin page
           window.location.href = '/admin/comments';
         } else {
+          console.log('Password incorrect');
           // Show error
           errorMessage.classList.remove('hidden');
           document.getElementById('password').value = '';
