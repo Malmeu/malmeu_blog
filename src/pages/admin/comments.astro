@@ -160,39 +160,41 @@ const rejectedCount = comments.filter(c => c.status === 'rejected').length;
     import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
   
-  // Approve comment
-  window.approveComment = async (commentId) => {
-    try {
-      const { error } = await supabase
-        .from('comments')
-        .update({ status: 'approved' })
-        .eq('id', commentId);
-      
-      if (error) throw error;
-      
-      // Reload page to show updated status
-      window.location.reload();
-    } catch (error) {
-      console.error('Error approving comment:', error);
-      alert('Erreur lors de l\'approbation du commentaire.');
-    }
-  };
-  
-  // Reject comment
-  window.rejectComment = async (commentId) => {
-    try {
-      const { error } = await supabase
-        .from('comments')
-        .update({ status: 'rejected' })
-        .eq('id', commentId);
-      
-      if (error) throw error;
-      
-      // Reload page to show updated status
-      window.location.reload();
-    } catch (error) {
-      console.error('Error rejecting comment:', error);
-      alert('Erreur lors du rejet du commentaire.');
-    }
-  };
+    // Approve comment
+    window.approveComment = async (commentId) => {
+      try {
+        const { error } = await supabase
+          .from('comments')
+          .update({ status: 'approved' })
+          .eq('id', commentId);
+        
+        if (error) throw error;
+        
+        // Reload page to show updated status
+        window.location.reload();
+      } catch (error) {
+        console.error('Error approving comment:', error);
+        alert('Erreur lors de l\'approbation du commentaire.');
+      }
+    };
+    
+    // Reject comment
+    window.rejectComment = async (commentId) => {
+      try {
+        const { error } = await supabase
+          .from('comments')
+          .update({ status: 'rejected' })
+          .eq('id', commentId);
+        
+        if (error) throw error;
+        
+        // Reload page to show updated status
+        window.location.reload();
+      } catch (error) {
+        console.error('Error rejecting comment:', error);
+        alert('Erreur lors du rejet du commentaire.');
+      }
+    };
+  }
+}
 </script>
