@@ -22,7 +22,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <!-- Contact Form -->
       <div class="bg-[var(--color-bg-secondary)] p-8 rounded-xl">
         <h2 class="text-xl font-bold text-[var(--color-text)] mb-6">Envoyez-moi un message</h2>
-        <form id="contact-form" class="space-y-6">
+        <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="space-y-6">
+          <!-- Web3Forms Access Key -->
+          <input type="hidden" name="access_key" value="7d147599-531d-4388-8556-25a1f306999d">
+          <!-- Honeypot anti-spam -->
+          <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+          <!-- Redirect après soumission -->
+          <input type="hidden" name="redirect" value="https://malmeu.info/contact?success=true">
+          <!-- Sujet de l'email -->
+          <input type="hidden" name="subject" value="Nouveau message depuis malmeu.info">
           <div>
             <label for="name" class="block text-sm font-medium text-[var(--color-text)] mb-2">
               Nom
@@ -84,7 +92,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <h2 class="text-xl font-bold text-[var(--color-text)] mb-6">Autres moyens de contact</h2>
           <div class="space-y-4">
             <a 
-              href="mailto:contact@votredomaine.com"
+              href="mailto:malmeusofiane@gmail.com"
               class="flex items-center gap-4 p-4 bg-[var(--color-bg-secondary)] rounded-xl hover:bg-[var(--color-accent)]/10 transition-colors group"
             >
               <div class="w-12 h-12 bg-[var(--color-accent)]/20 rounded-lg flex items-center justify-center">
@@ -94,12 +102,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               </div>
               <div>
                 <p class="font-medium text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors">Email</p>
-                <p class="text-sm text-[var(--color-text-muted)]">contact@votredomaine.com</p>
+                <p class="text-sm text-[var(--color-text-muted)]">malmeusofiane@gmail.com</p>
               </div>
             </a>
             
             <a 
-              href="https://twitter.com/votre-username"
+              href="https://twitter.com/malmaboricua"
               target="_blank"
               rel="noopener noreferrer"
               class="flex items-center gap-4 p-4 bg-[var(--color-bg-secondary)] rounded-xl hover:bg-[var(--color-accent)]/10 transition-colors group"
@@ -111,12 +119,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               </div>
               <div>
                 <p class="font-medium text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors">Twitter/X</p>
-                <p class="text-sm text-[var(--color-text-muted)]">@votre-username</p>
+                <p class="text-sm text-[var(--color-text-muted)]">@malmaboricua</p>
               </div>
             </a>
             
             <a 
-              href="https://linkedin.com/in/votre-username"
+              href="https://linkedin.com/in/malmeu"
               target="_blank"
               rel="noopener noreferrer"
               class="flex items-center gap-4 p-4 bg-[var(--color-bg-secondary)] rounded-xl hover:bg-[var(--color-accent)]/10 transition-colors group"
@@ -128,7 +136,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               </div>
               <div>
                 <p class="font-medium text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors">LinkedIn</p>
-                <p class="text-sm text-[var(--color-text-muted)]">votre-username</p>
+                <p class="text-sm text-[var(--color-text-muted)]">malmeu</p>
               </div>
             </a>
           </div>
@@ -154,34 +162,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script>
-  const form = document.getElementById('contact-form') as HTMLFormElement;
-  const statusDiv = document.getElementById('form-status');
-  const statusText = statusDiv?.querySelector('p');
-  
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const formData = new FormData(form);
-    const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      message: formData.get('message'),
-    };
-    
-    // For now, just show a success message
-    // In production, you would send this to Resend or another email service
+  // Check if redirected after successful submission
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('success') === 'true') {
+    const statusDiv = document.getElementById('form-status');
+    const statusText = statusDiv?.querySelector('p');
     if (statusDiv && statusText) {
       statusDiv.classList.remove('hidden');
-      statusText.textContent = 'Message envoyé avec succès ! Je vous répondrai bientôt.';
+      statusText.textContent = '✅ Message envoyé avec succès ! Je vous répondrai bientôt.';
       statusText.className = 'text-center py-3 rounded-lg bg-green-500/20 text-green-400';
-      form.reset();
     }
-    
-    // TODO: Implement actual email sending with Resend
-    // const response = await fetch('/api/contact', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(data),
-    // });
+    // Clean URL
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
+  // Form submission with loading state
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const submitBtn = form?.querySelector('button[type="submit"]');
+  
+  form?.addEventListener('submit', () => {
+    if (submitBtn) {
+      submitBtn.textContent = 'Envoi en cours...';
+      submitBtn.setAttribute('disabled', 'true');
+    }
   });
 </script>
