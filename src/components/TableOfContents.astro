@@ -1,0 +1,30 @@
+---
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { headings } = Astro.props;
+
+// Filter to only h2 and h3
+const filteredHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
+---
+
+{filteredHeadings.length > 0 && (
+  <nav class="p-4 bg-[var(--color-bg-secondary)] rounded-xl" aria-label="Table des matières">
+    <h2 class="text-sm font-semibold text-[var(--color-text)] mb-4 uppercase tracking-wider">
+      Table des matières
+    </h2>
+    <ul class="space-y-2">
+      {filteredHeadings.map((heading) => (
+        <li class={heading.depth === 3 ? 'ml-4' : ''}>
+          <a 
+            href={`#${heading.slug}`}
+            class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1"
+          >
+            {heading.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}

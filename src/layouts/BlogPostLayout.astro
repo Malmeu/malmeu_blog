@@ -1,0 +1,151 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  headings: { depth: number; slug: string; text: string }[];
+  prevPost?: CollectionEntry<'blog'>;
+  nextPost?: CollectionEntry<'blog'>;
+}
+
+const { post, headings, prevPost, nextPost } = Astro.props;
+const { title, description, publishDate, category, tags, image } = post.data;
+
+// Calculate reading time
+const content = post.body || '';
+const wordsPerMinute = 200;
+const wordCount = content.split(/\s+/).length;
+const readingTime = Math.ceil(wordCount / wordsPerMinute);
+---
+
+<BaseLayout 
+  title={`${title} | Blog`}
+  description={description}
+  image={image}
+  type="article"
+  publishDate={publishDate}
+>
+  <article class="max-w-4xl mx-auto px-4 py-12">
+    <!-- Breadcrumbs -->
+    <nav class="mb-8 text-sm" aria-label="Breadcrumb">
+      <ol class="flex items-center gap-2 text-[var(--color-text-muted)]" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item" class="hover:text-[var(--color-accent)] transition-colors">
+            <span itemprop="name">Accueil</span>
+          </a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <li class="text-[var(--color-text-muted)]">/</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/blog" itemprop="item" class="hover:text-[var(--color-accent)] transition-colors">
+            <span itemprop="name">Blog</span>
+          </a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <li class="text-[var(--color-text-muted)]">/</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name" class="text-[var(--color-accent)]">{title}</span>
+          <meta itemprop="position" content="3" />
+        </li>
+      </ol>
+    </nav>
+
+    <!-- Header -->
+    <header class="mb-12">
+      <div class="flex items-center gap-4 mb-4">
+        <a 
+          href={`/blog/category/${category.toLowerCase()}`}
+          class="px-3 py-1 bg-[var(--color-accent)] text-[var(--color-bg)] rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
+        >
+          {category}
+        </a>
+        <span class="text-[var(--color-text-muted)] text-sm">
+          {readingTime} min de lecture
+        </span>
+      </div>
+      
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 text-[var(--color-text)]">
+        {title}
+      </h1>
+      
+      <p class="text-xl text-[var(--color-text-muted)] mb-6">
+        {description}
+      </p>
+      
+      <div class="flex items-center gap-4 text-sm text-[var(--color-text-muted)]">
+        <time datetime={publishDate.toISOString()}>
+          {publishDate.toLocaleDateString('fr-FR', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })}
+        </time>
+      </div>
+      
+      {tags && tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mt-4">
+          {tags.map((tag: string) => (
+            <span class="px-2 py-1 bg-[var(--color-bg-secondary)] text-[var(--color-text-muted)] rounded text-xs">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <!-- Cover Image -->
+    {image && (
+      <img 
+        src={image} 
+        alt={title}
+        class="w-full h-64 md:h-96 object-cover rounded-xl mb-12"
+      />
+    )}
+
+    <!-- Content with TOC -->
+    <div class="lg:grid lg:grid-cols-[1fr_250px] lg:gap-12">
+      <div class="prose prose-lg max-w-none">
+        <slot />
+      </div>
+      
+      {headings.length > 0 && (
+        <aside class="hidden lg:block">
+          <div class="sticky top-24">
+            <TableOfContents headings={headings} />
+          </div>
+        </aside>
+      )}
+    </div>
+
+    <!-- Navigation -->
+    <nav class="mt-16 pt-8 border-t border-[var(--color-bg-secondary)]">
+      <div class="flex justify-between items-center">
+        {prevPost ? (
+          <a 
+            href={`/blog/${prevPost.slug}`}
+            class="group flex flex-col items-start max-w-[45%]"
+          >
+            <span class="text-sm text-[var(--color-text-muted)] mb-1">← Article précédent</span>
+            <span class="text-[var(--color-accent)] group-hover:text-[var(--color-accent-orange)] transition-colors font-medium truncate w-full">
+              {prevPost.data.title}
+            </span>
+          </a>
+        ) : <div />}
+        
+        {nextPost ? (
+          <a 
+            href={`/blog/${nextPost.slug}`}
+            class="group flex flex-col items-end max-w-[45%]"
+          >
+            <span class="text-sm text-[var(--color-text-muted)] mb-1">Article suivant →</span>
+            <span class="text-[var(--color-accent)] group-hover:text-[var(--color-accent-orange)] transition-colors font-medium truncate w-full text-right">
+              {nextPost.data.title}
+            </span>
+          </a>
+        ) : <div />}
+      </div>
+    </nav>
+  </article>
+</BaseLayout>

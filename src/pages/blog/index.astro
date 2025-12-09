@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = allPosts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+// Get unique categories with count
+const categoryCount = posts.reduce((acc, post) => {
+  const cat = post.data.category;
+  acc[cat] = (acc[cat] || 0) + 1;
+  return acc;
+}, {} as Record<string, number>);
+---
+
+<BaseLayout 
+  title="Blog - Tous les articles"
+  description="Découvrez tous mes articles sur le développement web, l'IA, les SaaS et l'entrepreneuriat tech."
+>
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <!-- Header -->
+    <header class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-[var(--color-text)] mb-4">
+        Blog
+      </h1>
+      <p class="text-xl text-[var(--color-text-muted)]">
+        {posts.length} article{posts.length > 1 ? 's' : ''} sur le développement, l'IA et l'entrepreneuriat tech.
+      </p>
+    </header>
+
+    <!-- Categories Filter -->
+    {Object.keys(categoryCount).length > 0 && (
+      <div class="mb-8 flex flex-wrap gap-2">
+        <a 
+          href="/blog"
+          class="px-4 py-2 bg-[var(--color-accent)] text-[var(--color-bg)] rounded-full text-sm font-medium"
+        >
+          Tous ({posts.length})
+        </a>
+        {Object.entries(categoryCount).map(([category, count]) => (
+          <a 
+            href={`/blog/category/${category.toLowerCase().replace(/\s+/g, '-')}`}
+            class="px-4 py-2 bg-[var(--color-bg-secondary)] text-[var(--color-text-muted)] rounded-full text-sm font-medium hover:bg-[var(--color-accent)]/20 hover:text-[var(--color-accent)] transition-colors"
+          >
+            {category} ({count})
+          </a>
+        ))}
+      </div>
+    )}
+
+    <!-- Posts Grid -->
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post) => (
+          <BlogCard 
+            title={post.data.title}
+            description={post.data.description}
+            publishDate={post.data.publishDate}
+            category={post.data.category}
+            image={post.data.image}
+            slug={post.slug}
+            tags={post.data.tags}
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-20 bg-[var(--color-bg-secondary)] rounded-xl">
+        <h2 class="text-2xl font-bold text-[var(--color-text)] mb-4">Aucun article pour le moment</h2>
+        <p class="text-[var(--color-text-muted)]">Revenez bientôt pour découvrir de nouveaux contenus !</p>
+      </div>
+    )}
+  </div>
+</BaseLayout>
