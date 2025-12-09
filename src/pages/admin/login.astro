@@ -107,13 +107,20 @@ if (isLoggedIn) {
           const cookieString = `admin_session=authenticated; path=/; max-age=86400; ${isSecure ? 'secure;' : ''} samesite=strict`;
           document.cookie = cookieString;
           console.log('Cookie set:', cookieString);
-          console.log('Redirecting...');
           
-          // Small delay then redirect
-          setTimeout(() => {
-            console.log('Executing redirect...');
-            window.location.href = '/admin/comments';
-          }, 500);
+          // Verify cookie was set
+          const allCookies = document.cookie;
+          console.log('All cookies after setting:', allCookies);
+          
+          // Check if our cookie exists
+          const hasSession = allCookies.includes('admin_session=authenticated');
+          console.log('Session cookie exists:', hasSession);
+          
+          // Show debug info before redirect
+          alert(`Cookie défini: ${hasSession}\nCookies: ${allCookies}\n\nCliquez OK pour continuer vers admin.`);
+          
+          // Redirect to admin page
+          window.location.href = '/admin/comments';
         } else {
           console.log('Password incorrect');
           // Show error
