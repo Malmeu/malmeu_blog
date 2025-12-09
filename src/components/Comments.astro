@@ -23,7 +23,7 @@ if (supabase) {
 ---
 
 <!-- Comments Section -->
-<section class="mt-16 pt-8 border-t border-[var(--color-bg-secondary)]">
+<section class="mt-16 pt-8 border-t border-[var(--color-bg-secondary)]" data-slug="{slug}" data-title="{title}">
   <div class="max-w-4xl mx-auto">
     <h3 class="text-2xl font-bold text-[var(--color-text)] mb-6">
       💬 Commentaires
@@ -139,10 +139,11 @@ if (supabase) {
   </div>
 </section>
 
-<script type="module" define:vars={{ slug: slug, title: title }}>
-  // Article data passed from Astro
-  const articleSlug = slug;
-  const articleTitle = title;
+<script type="module">
+  // Get article data from data attributes
+  const commentsSection = document.querySelector('section[data-slug]');
+  const articleSlug = commentsSection?.dataset.slug || '';
+  const articleTitle = commentsSection?.dataset.title || '';
   
   // Check if Supabase is configured
   const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
