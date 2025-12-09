@@ -18,7 +18,7 @@ if (isLoggedIn) {
 >
   <div class="min-h-screen flex items-center justify-center px-4">
     <div class="max-w-md w-full">
-      <div class="bg-[var(--color-bg-secondary)] rounded-xl p-8 shadow-xl">
+      <div class="bg-[var(--color-bg-secondary)] rounded-xl p-8 shadow-xl" data-admin-password={ADMIN_CONFIG.PASSWORD}>
         <div class="text-center mb-8">
           <h1 class="text-3xl font-bold text-[var(--color-text)] mb-2">
             🔐 Admin
@@ -66,9 +66,12 @@ if (isLoggedIn) {
   </div>
 </BaseLayout>
 
-<script type="module" define:vars={{ adminPassword: ADMIN_CONFIG.PASSWORD }}>
-  // Password validation (change ADMIN_CONFIG.PASSWORD in src/lib/admin.ts for production)
-  const ADMIN_PASSWORD = adminPassword;
+<script type="module">
+  // Get admin password from data attribute
+  const loginCard = document.querySelector('[data-admin-password]');
+  const ADMIN_PASSWORD = loginCard?.dataset.adminPassword || 'admin123';
+  
+  console.log('Admin password loaded');
   
   const loginForm = document.getElementById('login-form');
   const errorMessage = document.getElementById('error-message');

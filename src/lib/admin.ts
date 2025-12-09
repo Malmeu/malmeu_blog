@@ -2,7 +2,7 @@
 export const ADMIN_CONFIG = {
   // Change this password in production!
   // Use a strong password with at least 12 characters, numbers, and symbols
-  PASSWORD: 'admin123',
+  PASSWORD: 'Maczizi96@',
   
   // Session settings
   SESSION_DURATION: 24 * 60 * 60, // 24 hours in seconds
