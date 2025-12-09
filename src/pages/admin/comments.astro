@@ -6,7 +6,10 @@ import { supabase, type Comment } from '../../lib/supabase';
 const cookies = Astro.cookies;
 const isLoggedIn = cookies.get('admin_session')?.value === 'authenticated';
 
+console.log('Admin page accessed - isLoggedIn:', isLoggedIn);
+
 if (!isLoggedIn) {
+  console.log('Not authenticated, redirecting to login');
   return Astro.redirect('/admin/login');
 }
 

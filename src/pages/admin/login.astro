@@ -109,8 +109,11 @@ if (isLoggedIn) {
           console.log('Cookie set:', cookieString);
           console.log('Redirecting...');
           
-          // Redirect to admin page
-          window.location.href = '/admin/comments';
+          // Small delay then redirect
+          setTimeout(() => {
+            console.log('Executing redirect...');
+            window.location.href = '/admin/comments';
+          }, 500);
         } else {
           console.log('Password incorrect');
           // Show error
