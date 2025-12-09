@@ -102,25 +102,22 @@ if (isLoggedIn) {
         // Validate password
         if (password === ADMIN_PASSWORD) {
           console.log('Password correct, setting cookie...');
-          // Set session cookie (24 hours) - secure only for HTTPS
-          const isSecure = window.location.protocol === 'https:';
-          const cookieString = `admin_session=authenticated; path=/; max-age=86400; ${isSecure ? 'secure;' : ''} samesite=strict`;
-          document.cookie = cookieString;
-          console.log('Cookie set:', cookieString);
+          // Set session cookie (24 hours) - simple version
+          document.cookie = 'admin_session=authenticated; path=/; max-age=86400';
           
           // Verify cookie was set
           const allCookies = document.cookie;
-          console.log('All cookies after setting:', allCookies);
+          const hasSession = allCookies.includes('admin_session');
           
-          // Check if our cookie exists
-          const hasSession = allCookies.includes('admin_session=authenticated');
-          console.log('Session cookie exists:', hasSession);
+          console.log('Cookie set, hasSession:', hasSession);
+          console.log('All cookies:', allCookies);
           
-          // Show debug info before redirect
-          alert(`Cookie défini: ${hasSession}\nCookies: ${allCookies}\n\nCliquez OK pour continuer vers admin.`);
-          
-          // Redirect to admin page
-          window.location.href = '/admin/comments';
+          if (hasSession) {
+            // Redirect to admin page
+            window.location.href = '/admin/comments';
+          } else {
+            alert('Erreur: Le cookie n\'a pas pu être créé. Vérifiez les paramètres de votre navigateur.');
+          }
         } else {
           console.log('Password incorrect');
           // Show error
