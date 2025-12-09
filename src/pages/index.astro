@@ -43,10 +43,18 @@ const categories = [
   <section class="relative py-20 px-4 overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-[var(--color-accent)]/10 to-[var(--color-accent-orange)]/10"></div>
     <div class="max-w-4xl mx-auto text-center relative z-10">
-      <h1 class="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
+      <!-- Mascotte -->
+      <div class="w-28 h-28 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-orange)] p-1 animate-fade-in">
+        <img 
+          src="/malme.webp" 
+          alt="Malmeu - Développeur" 
+          class="w-full h-full rounded-full object-cover"
+        />
+      </div>
+      <h1 class="text-4xl md:text-6xl font-bold mb-6 animate-fade-in" style="animation-delay: 0.1s;">
         <span class="text-[var(--color-text)]">Salut, je suis </span>
         <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-orange)]">
-          Développeur
+          Malmeu
         </span>
       </h1>
       <p class="text-xl text-[var(--color-text-muted)] mb-8 max-w-2xl mx-auto animate-fade-in" style="animation-delay: 0.1s;">
