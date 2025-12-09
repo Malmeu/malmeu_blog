@@ -174,6 +174,42 @@ export default defineConfig({
 });
 ```
 
+## 🔐 Administration et Authentification
+
+### Accès admin
+
+1. **URL d'accès** : `https://votre-domaine.com/admin/login`
+2. **Mot de passe par défaut** : `admin123`
+3. **Durée de session** : 24 heures
+
+### Sécuriser l'accès
+
+⚠️ **Important** : Changez le mot de passe par défaut en production !
+
+Modifiez le mot de passe dans `src/lib/admin.ts` :
+
+```typescript
+export const ADMIN_CONFIG = {
+  PASSWORD: 'votre-mot-de-passe-sécurisé-ici', // Changez ceci !
+  SESSION_DURATION: 24 * 60 * 60, // 24 heures
+  COOKIE_NAME: 'admin_session'
+};
+```
+
+### Fonctionnalités admin
+
+- **Modération des commentaires** : Approuver/rejeter les commentaires
+- **Statistiques en temps réel** : Nombre de commentaires en attente/approuvés/rejetés
+- **Déconnexion sécurisée** : Bouton de déconnexion qui efface la session
+- **Protection automatique** : Redirection vers login si non authentifié
+
+### Recommandations de sécurité
+
+- Utilisez un mot de passe complexe (12+ caractères, chiffres, symboles)
+- Changez régulièrement le mot de passe
+- L'accès admin est protégé par `noIndex` pour ne pas être indexé par les moteurs de recherche
+- Les cookies sont configurés avec `secure` et `samesite=strict`
+
 ## Personnalisation
 
 - **Couleurs** : Modifier les variables CSS dans `src/styles/global.css`

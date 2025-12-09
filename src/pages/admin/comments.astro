@@ -2,6 +2,14 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { supabase, type Comment } from '../../lib/supabase';
 
+// Check authentication
+const cookies = Astro.cookies;
+const isLoggedIn = cookies.get('admin_session')?.value === 'authenticated';
+
+if (!isLoggedIn) {
+  return Astro.redirect('/admin/login');
+}
+
 // Fetch all comments (pending and approved)
 let comments: Comment[] = [];
 if (supabase) {
@@ -29,9 +37,17 @@ const rejectedCount = comments.filter(c => c.status === 'rejected').length;
   <div class="max-w-6xl mx-auto px-4 py-12">
     <!-- Header -->
     <header class="mb-8">
-      <h1 class="text-4xl font-bold text-[var(--color-text)] mb-4">
-        🛡️ Administration des commentaires
-      </h1>
+      <div class="flex items-center justify-between mb-4">
+        <h1 class="text-4xl font-bold text-[var(--color-text)]">
+          🛡️ Administration des commentaires
+        </h1>
+        <button 
+          id="logout-btn"
+          class="px-4 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
+        >
+          🚪 Déconnexion
+        </button>
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div class="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
           <h3 class="text-yellow-400 font-semibold mb-2">⏳ En attente</h3>
@@ -205,4 +221,16 @@ const rejectedCount = comments.filter(c => c.status === 'rejected').length;
       alert('Erreur lors du rejet du commentaire.');
     }
   };
+
+  // Logout functionality
+  const logoutBtn = document.getElementById('logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', function() {
+      // Clear the session cookie
+      document.cookie = 'admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; secure; samesite=strict';
+      
+      // Redirect to login page
+      window.location.href = '/admin/login';
+    });
+  }
 </script>
