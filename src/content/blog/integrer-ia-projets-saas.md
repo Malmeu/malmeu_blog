@@ -2,7 +2,7 @@
 title: "Intégrer l'IA dans vos projets SaaS : retour d'expérience"
 description: "Comment j'ai intégré l'intelligence artificielle dans mes projets SaaS, les défis rencontrés et les leçons apprises en cours de route."
 publishDate: 2024-11-15
-category: "IA/ML"
+category: "IA-ML"
 tags: ["ia", "saas", "openai", "langchain", "api"]
 image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop"
 draft: false
