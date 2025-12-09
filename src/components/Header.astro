@@ -14,9 +14,11 @@ const currentPath = Astro.url.pathname;
     <div class="flex items-center justify-between">
       <!-- Logo -->
       <a href="/" class="flex items-center gap-2 group">
-        <div class="w-10 h-10 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-orange)] rounded-lg flex items-center justify-center">
-          <span class="text-white font-bold text-xl">&lt;/&gt;</span>
-        </div>
+        <img 
+          src="/logo_malm.webp" 
+          alt="Malmeu Logo" 
+          class="w-10 h-10 rounded-lg object-cover"
+        />
         <span class="text-xl font-bold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors">
           Malmeu
         </span>
