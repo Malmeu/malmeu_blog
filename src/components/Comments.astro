@@ -148,6 +148,11 @@ if (supabase) {
   const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
   
+  console.log('Supabase URL:', supabaseUrl ? 'configured' : 'missing');
+  console.log('Supabase Key:', supabaseAnonKey ? 'configured' : 'missing');
+  console.log('Article slug:', articleSlug);
+  console.log('Article title:', articleTitle);
+  
   if (!supabaseUrl || !supabaseAnonKey) {
     console.log('Supabase not configured - comments disabled');
   } else {
@@ -159,6 +164,7 @@ if (supabase) {
     if (commentForm) {
       commentForm.addEventListener('submit', async function(e) {
         e.preventDefault();
+        console.log('Form submitted');
         
         const target = e.target;
         if (!target) return;
@@ -177,6 +183,8 @@ if (supabase) {
           return;
         }
         
+        console.log('Form data:', { nameValue, emailValue, commentValue, articleSlug, articleTitle });
+        
         // Show loading state
         const submitButton = target.querySelector('button[type="submit"]');
         const originalText = submitButton?.textContent;
@@ -186,6 +194,7 @@ if (supabase) {
         }
         
         try {
+          console.log('Inserting comment into Supabase...');
           // Insert comment into Supabase
           const { data, error } = await supabase
             .from('comments')
@@ -199,9 +208,14 @@ if (supabase) {
             })
             .select();
           
+          console.log('Supabase response:', { data, error });
+          
           if (error) {
+            console.error('Supabase error:', error);
             throw error;
           }
+          
+          console.log('Comment inserted successfully!');
           
           // Show success message
           const successMessage = document.getElementById('success-message');
