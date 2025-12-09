@@ -139,10 +139,10 @@ if (supabase) {
   </div>
 </section>
 
-<script type="module">
+<script type="module" define:vars={{ slug, title }}>
   // Article data passed from Astro
-  const articleSlug = '{slug}';
-  const articleTitle = '{title}';
+  const articleSlug = slug;
+  const articleTitle = title;
   
   // Check if Supabase is configured
   const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
