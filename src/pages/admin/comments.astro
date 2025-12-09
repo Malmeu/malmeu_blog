@@ -227,7 +227,9 @@ const rejectedCount = comments.filter(c => c.status === 'rejected').length;
   if (logoutBtn) {
     logoutBtn.addEventListener('click', function() {
       // Clear the session cookie
-      document.cookie = 'admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; secure; samesite=strict';
+      const isSecure = window.location.protocol === 'https:';
+      const cookieString = `admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; ${isSecure ? 'secure;' : ''} samesite=strict`;
+      document.cookie = cookieString;
       
       // Redirect to login page
       window.location.href = '/admin/login';
