@@ -23,7 +23,7 @@ if (supabase) {
 ---
 
 <!-- Comments Section -->
-<section class="mt-16 pt-8 border-t border-[var(--color-bg-secondary)]" data-slug="{slug}" data-title="{title}">
+<section class="mt-16 pt-8 border-t border-[var(--color-bg-secondary)]" data-slug={slug} data-title={title}>
   <div class="max-w-4xl mx-auto">
     <h3 class="text-2xl font-bold text-[var(--color-text)] mb-6">
       💬 Commentaires
@@ -140,112 +140,107 @@ if (supabase) {
 </section>
 
 <script type="module">
+  import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
+  
   // Get article data from data attributes
   const commentsSection = document.querySelector('section[data-slug]');
   const articleSlug = commentsSection?.dataset.slug || '';
   const articleTitle = commentsSection?.dataset.title || '';
   
-  // Check if Supabase is configured
-  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+  // Supabase configuration
+  const supabaseUrl = 'https://pzyyjsljzcnmbovbftmh.supabase.co';
+  const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXlqc2xqemNubWJvdmJmdG1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMjU4NjMsImV4cCI6MjA4MDgwMTg2M30.xq5pjLruOTEGBQ7Pr12C5X4iyHkCYCwH6HNwfYUCswk';
   
-  console.log('Supabase URL:', supabaseUrl ? 'configured' : 'missing');
-  console.log('Supabase Key:', supabaseAnonKey ? 'configured' : 'missing');
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  
+  console.log('Supabase initialized');
   console.log('Article slug:', articleSlug);
   console.log('Article title:', articleTitle);
   
-  if (!supabaseUrl || !supabaseAnonKey) {
-    console.log('Supabase not configured - comments disabled');
-  } else {
-    import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
-  
-    // Handle comment form submission
-    const commentForm = document.getElementById('comment-form');
-    if (commentForm) {
-      commentForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        console.log('Form submitted');
+  // Handle comment form submission
+  const commentForm = document.getElementById('comment-form');
+  if (commentForm) {
+    commentForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      console.log('Form submitted');
+      
+      const target = e.target;
+      if (!target) return;
+      
+      // Get form data
+      const formData = new FormData(target);
+      const nameValue = formData.get('name');
+      const emailValue = formData.get('email');
+      const commentValue = formData.get('comment');
+      
+      // Type guards
+      if (!nameValue || !emailValue || !commentValue || 
+          typeof nameValue !== 'string' || 
+          typeof emailValue !== 'string' || 
+          typeof commentValue !== 'string') {
+        return;
+      }
+      
+      console.log('Form data:', { nameValue, emailValue, commentValue, articleSlug, articleTitle });
+      
+      // Show loading state
+      const submitButton = target.querySelector('button[type="submit"]');
+      const originalText = submitButton?.textContent;
+      if (submitButton) {
+        submitButton.textContent = 'Envoi en cours...';
+        submitButton.disabled = true;
+      }
+      
+      try {
+        console.log('Inserting comment into Supabase...');
+        // Insert comment into Supabase
+        const { data, error } = await supabase
+          .from('comments')
+          .insert({
+            name: nameValue,
+            email: emailValue,
+            content: commentValue,
+            article_slug: articleSlug,
+            article_title: articleTitle,
+            status: 'pending'
+          })
+          .select();
         
-        const target = e.target;
-        if (!target) return;
+        console.log('Supabase response:', { data, error });
         
-        // Get form data
-        const formData = new FormData(target);
-        const nameValue = formData.get('name');
-        const emailValue = formData.get('email');
-        const commentValue = formData.get('comment');
-        
-        // Type guards
-        if (!nameValue || !emailValue || !commentValue || 
-            typeof nameValue !== 'string' || 
-            typeof emailValue !== 'string' || 
-            typeof commentValue !== 'string') {
-          return;
+        if (error) {
+          console.error('Supabase error:', error);
+          throw error;
         }
         
-        console.log('Form data:', { nameValue, emailValue, commentValue, articleSlug, articleTitle });
+        console.log('Comment inserted successfully!');
         
-        // Show loading state
-        const submitButton = target.querySelector('button[type="submit"]');
-        const originalText = submitButton?.textContent;
-        if (submitButton) {
-          submitButton.textContent = 'Envoi en cours...';
-          submitButton.disabled = true;
+        // Show success message
+        const successMessage = document.getElementById('success-message');
+        if (successMessage) {
+          successMessage.classList.remove('hidden');
         }
         
-        try {
-          console.log('Inserting comment into Supabase...');
-          // Insert comment into Supabase
-          const { data, error } = await supabase
-            .from('comments')
-            .insert({
-              name: nameValue,
-              email: emailValue,
-              content: commentValue,
-              article_slug: articleSlug,
-              article_title: articleTitle,
-              status: 'pending'
-            })
-            .select();
-          
-          console.log('Supabase response:', { data, error });
-          
-          if (error) {
-            console.error('Supabase error:', error);
-            throw error;
-          }
-          
-          console.log('Comment inserted successfully!');
-          
-          // Show success message
-          const successMessage = document.getElementById('success-message');
+        // Reset form
+        target.reset();
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
           if (successMessage) {
-            successMessage.classList.remove('hidden');
+            successMessage.classList.add('hidden');
           }
-          
-          // Reset form
-          target.reset();
-          
-          // Hide success message after 5 seconds
-          setTimeout(() => {
-            if (successMessage) {
-              successMessage.classList.add('hidden');
-            }
-          }, 5000);
-          
-        } catch (error) {
-          console.error('Error submitting comment:', error);
-          alert('Une erreur est survenue. Veuillez réessayer plus tard.');
-        } finally {
-          // Reset button state
-          if (submitButton) {
-            submitButton.textContent = originalText;
-            submitButton.disabled = false;
-          }
+        }, 5000);
+        
+      } catch (error) {
+        console.error('Error submitting comment:', error);
+        alert('Une erreur est survenue. Veuillez réessayer plus tard.');
+      } finally {
+        // Reset button state
+        if (submitButton) {
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
         }
-      });
-    }
+      }
+    });
   }
-}
 </script>
