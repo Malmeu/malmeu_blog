@@ -3,12 +3,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { supabase, type Comment } from '../../lib/supabase';
 
 // Fetch all comments (pending and approved)
-const { data: allComments, error } = await supabase
-  .from('comments')
-  .select('*')
-  .order('created_at', { ascending: false });
-
-const comments: Comment[] = allComments || [];
+let comments: Comment[] = [];
+if (supabase) {
+  const { data: allComments, error } = await supabase
+    .from('comments')
+    .select('*')
+    .order('created_at', { ascending: false });
+  
+  comments = allComments || [];
+} else {
+  console.log('Supabase not configured - admin disabled');
+}
 
 // Count by status
 const pendingCount = comments.filter(c => c.status === 'pending').length;
@@ -45,7 +50,8 @@ const rejectedCount = comments.filter(c => c.status === 'rejected').length;
 
     <!-- Comments List -->
     <div class="space-y-6">
-      {comments.length > 0 ? (
+      {supabase ? (
+        comments.length > 0 ? (
         comments.map((comment) => (
           <div class={`bg-[var(--color-bg-secondary)] rounded-xl p-6 border-l-4 ${
             comment.status === 'pending' ? 'border-l-yellow-500' :
@@ -128,9 +134,15 @@ const rejectedCount = comments.filter(c => c.status === 'rejected').length;
             </div>
           </div>
         ))
+        ) : (
+          <div class="text-center py-12 bg-[var(--color-bg-secondary)] rounded-xl">
+            <p class="text-[var(--color-text-muted)]">Aucun commentaire pour le moment.</p>
+          </div>
+        )
       ) : (
         <div class="text-center py-12 bg-[var(--color-bg-secondary)] rounded-xl">
-          <p class="text-[var(--color-text-muted)]">Aucun commentaire pour le moment.</p>
+          <p class="text-[var(--color-text-muted)]">🔧 Supabase n'est pas configuré.</p>
+          <p class="text-sm text-[var(--color-text-muted)] mt-2">Configurez les variables d'environnement pour activer la modération.</p>
         </div>
       )}
     </div>
@@ -138,11 +150,15 @@ const rejectedCount = comments.filter(c => c.status === 'rejected').length;
 </BaseLayout>
 
 <script type="module">
-  import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
-  
+  // Check if Supabase is configured
   const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.log('Supabase not configured - admin disabled');
+  } else {
+    import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
   
   // Approve comment
   window.approveComment = async (commentId) => {

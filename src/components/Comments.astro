@@ -9,14 +9,17 @@ interface Props {
 const { slug, title } = Astro.props;
 
 // Fetch approved comments for this article
-const { data: approvedComments, error } = await supabase
-  .from('comments')
-  .select('*')
-  .eq('article_slug', slug)
-  .eq('status', 'approved')
-  .order('created_at', { ascending: true });
-
-const comments: Comment[] = approvedComments || [];
+let comments: Comment[] = [];
+if (supabase) {
+  const { data: approvedComments, error } = await supabase
+    .from('comments')
+    .select('*')
+    .eq('article_slug', slug)
+    .eq('status', 'approved')
+    .order('created_at', { ascending: true });
+  
+  comments = approvedComments || [];
+}
 ---
 
 <!-- Comments Section -->
@@ -28,7 +31,8 @@ const comments: Comment[] = approvedComments || [];
     
     <!-- Comment Form -->
     <div class="bg-[var(--color-bg-secondary)] rounded-xl p-6 mb-6">
-      <form id="comment-form" class="space-y-4">
+      {supabase ? (
+        <form id="comment-form" class="space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label for="name" class="block text-sm font-medium text-[var(--color-text)] mb-2">
@@ -84,6 +88,16 @@ const comments: Comment[] = approvedComments || [];
           </button>
         </div>
       </form>
+      ) : (
+        <div class="text-center py-8">
+          <p class="text-[var(--color-text-muted)] mb-4">
+            💬 Les commentaires sont temporairement désactivés.
+          </p>
+          <p class="text-sm text-[var(--color-text-muted)]">
+            Configuration de la base de données requise.
+          </p>
+        </div>
+      )}
     </div>
     
     <!-- Comments List -->
@@ -126,11 +140,15 @@ const comments: Comment[] = approvedComments || [];
 </section>
 
 <script type="module">
-  import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
-  
+  // Check if Supabase is configured
   const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.log('Supabase not configured - comments disabled');
+  } else {
+    import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
   
   // Handle comment form submission
   const commentForm = document.getElementById('comment-form');
@@ -209,4 +227,6 @@ const comments: Comment[] = approvedComments || [];
       }
     });
   }
+  }
+}
 </script>
