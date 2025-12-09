@@ -95,6 +95,39 @@ Contenu de l'article...
 - Business
 - Algérie Tech
 
+## 💬 Système de Commentaires
+
+Le blog utilise Supabase pour gérer les commentaires avec modération.
+
+### Configuration Supabase
+
+1. **Créez un compte** sur [supabase.com](https://supabase.com)
+2. **Créez un nouveau projet**
+3. **Exécutez le script SQL** `supabase-setup.sql` dans l'éditeur SQL
+4. **Copiez vos clés** depuis Settings > API :
+   - Project URL
+   - anon public key
+
+5. **Créez le fichier `.env`** :
+
+   ```bash
+   cp .env.example .env
+   ```
+
+6. **Remplissez `.env`** avec vos clés Supabase :
+
+   ```env
+   PUBLIC_SUPABASE_URL=votre_url_supabase
+   PUBLIC_SUPABASE_ANON_KEY=votre_cle_anon
+   ```
+
+### Modération des commentaires
+
+- **Page d'administration** : `/admin/comments`
+- **Les nouveaux commentaires** apparaissent avec le statut "En attente"
+- **Actions possibles** : Approuver ou Rejeter
+- **Commentaires approuvés** : visibles publiquement sur les articles
+
 ## Déploiement sur Vercel
 
 1. Connecter le repo GitHub à Vercel
@@ -106,6 +139,28 @@ Ou via CLI :
 ```bash
 npm i -g vercel
 vercel
+```
+
+### Vercel (Recommandé)
+
+1. **Connectez votre repo GitHub** à [Vercel](https://vercel.com)
+2. **Ajoutez les variables d'environnement** dans les settings Vercel :
+   - `PUBLIC_SUPABASE_URL`
+   - `PUBLIC_SUPABASE_ANON_KEY`
+3. **Vercel détecte automatiquement** Astro et configure le build
+4. **Déployez en un clic**
+
+### Autres options
+
+- **Netlify** : Importez votre repo GitHub et ajoutez les env vars
+- **Cloudflare Pages** : Connectez votre repository avec les env vars
+- **GitHub Pages** : Utilisez GitHub Actions pour le déploiement automatique :
+
+```javascript
+export default defineConfig({
+  site: 'https://votre-domaine.com',
+  // ...
+});
 ```
 
 ## Configuration

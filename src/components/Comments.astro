@@ -1,10 +1,22 @@
 ---
+import { supabase, type Comment } from '../lib/supabase';
+
 interface Props {
   slug: string;
   title: string;
 }
 
 const { slug, title } = Astro.props;
+
+// Fetch approved comments for this article
+const { data: approvedComments, error } = await supabase
+  .from('comments')
+  .select('*')
+  .eq('article_slug', slug)
+  .eq('status', 'approved')
+  .order('created_at', { ascending: true });
+
+const comments: Comment[] = approvedComments || [];
 ---
 
 <!-- Comments Section -->
@@ -76,29 +88,33 @@ const { slug, title } = Astro.props;
     
     <!-- Comments List -->
     <div id="comments-list" class="space-y-6">
-      <!-- Sample Comment -->
-      <div class="bg-[var(--color-bg-secondary)] rounded-xl p-6">
-        <div class="flex items-start gap-4">
-          <div class="w-10 h-10 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-orange)] rounded-full flex items-center justify-center flex-shrink-0">
-            <span class="text-white font-bold">JD</span>
-          </div>
-          <div class="flex-1">
-            <div class="flex items-center gap-2 mb-2">
-              <h4 class="font-semibold text-[var(--color-text)]">Jean Dupont</h4>
-              <span class="text-sm text-[var(--color-text-muted)]">• Il y a 2 heures</span>
+      {comments.length > 0 ? (
+        comments.map((comment) => (
+          <div class="bg-[var(--color-bg-secondary)] rounded-xl p-6">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-orange)] rounded-full flex items-center justify-center flex-shrink-0">
+                <span class="text-white font-bold">{comment.name.substring(0, 2).toUpperCase()}</span>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center gap-2 mb-2">
+                  <h4 class="font-semibold text-[var(--color-text)]">{comment.name}</h4>
+                  <span class="text-sm text-[var(--color-text-muted)]">• {new Date(comment.created_at).toLocaleDateString('fr-DZ')}</span>
+                </div>
+                <p class="text-[var(--color-text)] leading-relaxed whitespace-pre-wrap">{comment.content}</p>
+                <button class="mt-3 text-sm text-[var(--color-accent)] hover:text-[var(--color-accent-orange)] transition-colors">
+                  Répondre
+                </button>
+              </div>
             </div>
-            <p class="text-[var(--color-text)] leading-relaxed">
-              Excellent article ! Vos retours d'expérience sur l'IA en Algérie sont très pertinents. 
-              J'apprécie particulièrement l'honnêteté sur les défis rencontrés. Continuez comme ça !
-            </p>
-            <button class="mt-3 text-sm text-[var(--color-accent)] hover:text-[var(--color-accent-orange)] transition-colors">
-              Répondre
-            </button>
           </div>
+        ))
+      ) : (
+        <div class="text-center py-8 text-[var(--color-text-muted)]">
+          <p>Soyez le premier à commenter cet article !</p>
         </div>
-      </div>
+      )}
       
-      <!-- Placeholder for new comments -->
+      <!-- Placeholder for new comments (pending) -->
       <div id="new-comments" class="space-y-6"></div>
     </div>
     
@@ -109,14 +125,20 @@ const { slug, title } = Astro.props;
   </div>
 </section>
 
-<script>
+<script type="module">
+  import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
+  
+  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  
   // Handle comment form submission
   const commentForm = document.getElementById('comment-form');
   if (commentForm) {
-    commentForm.addEventListener('submit', function(e) {
+    commentForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       
-      const target = e.target as HTMLFormElement;
+      const target = e.target;
       if (!target) return;
       
       // Get form data
@@ -133,52 +155,58 @@ const { slug, title } = Astro.props;
         return;
       }
       
-      // Create new comment element
-      const newComment = document.createElement('div');
-      newComment.className = 'bg-[var(--color-bg-secondary)] rounded-xl p-6 opacity-75';
-      newComment.innerHTML = `
-        <div class="flex items-start gap-4">
-          <div class="w-10 h-10 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-orange)] rounded-full flex items-center justify-center flex-shrink-0">
-            <span class="text-white font-bold">${nameValue.substring(0, 2).toUpperCase()}</span>
-          </div>
-          <div class="flex-1">
-            <div class="flex items-center gap-2 mb-2">
-              <h4 class="font-semibold text-[var(--color-text)]">${nameValue}</h4>
-              <span class="text-sm text-[var(--color-text-muted)]">• À l'instant</span>
-              <span class="text-xs px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded-md">En attente de modération</span>
-            </div>
-            <p class="text-[var(--color-text)] leading-relaxed">${commentValue}</p>
-            <button class="mt-3 text-sm text-[var(--color-accent)] hover:text-[var(--color-accent-orange)] transition-colors">
-              Répondre
-            </button>
-          </div>
-        </div>
-      `;
-      
-      // Add comment to the list
-      const newCommentsContainer = document.getElementById('new-comments');
-      if (newCommentsContainer) {
-        newCommentsContainer.appendChild(newComment);
+      // Show loading state
+      const submitButton = target.querySelector('button[type="submit"]');
+      const originalText = submitButton?.textContent;
+      if (submitButton) {
+        submitButton.textContent = 'Envoi en cours...';
+        submitButton.disabled = true;
       }
       
-      // Show success message
-      const successMessage = document.getElementById('success-message');
-      if (successMessage) {
-        successMessage.classList.remove('hidden');
-      }
-      
-      // Reset form
-      target.reset();
-      
-      // Hide success message after 5 seconds
-      setTimeout(() => {
-        if (successMessage) {
-          successMessage.classList.add('hidden');
+      try {
+        // Insert comment into Supabase
+        const { data, error } = await supabase
+          .from('comments')
+          .insert({
+            name: nameValue,
+            email: emailValue,
+            content: commentValue,
+            article_slug: '{slug}',
+            article_title: '{title}',
+            status: 'pending'
+          })
+          .select();
+        
+        if (error) {
+          throw error;
         }
-      }, 5000);
-      
-      // In a real application, you would send this data to your backend
-      console.log('New comment:', { name: nameValue, email: emailValue, comment: commentValue, slug: '{slug}' });
+        
+        // Show success message
+        const successMessage = document.getElementById('success-message');
+        if (successMessage) {
+          successMessage.classList.remove('hidden');
+        }
+        
+        // Reset form
+        target.reset();
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          if (successMessage) {
+            successMessage.classList.add('hidden');
+          }
+        }, 5000);
+        
+      } catch (error) {
+        console.error('Error submitting comment:', error);
+        alert('Une erreur est survenue. Veuillez réessayer plus tard.');
+      } finally {
+        // Reset button state
+        if (submitButton) {
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
+        }
+      }
     });
   }
 </script>

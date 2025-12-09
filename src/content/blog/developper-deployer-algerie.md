@@ -6,6 +6,7 @@ category: "Algérie Tech"
 tags: ["algerie", "freelance", "paiement", "remote"]
 image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop"
 draft: false
+featured: false
 ---
 
 ## Être développeur en Algérie

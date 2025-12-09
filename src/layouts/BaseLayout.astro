@@ -10,6 +10,7 @@ interface Props {
   type?: 'website' | 'article';
   publishDate?: Date;
   author?: string;
+  noIndex?: boolean;
 }
 
 const { 
@@ -18,7 +19,8 @@ const {
   image = '/og-default.png',
   type = 'website',
   publishDate,
-  author = 'Votre Nom'
+  author = 'Votre Nom',
+  noIndex = false
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -40,6 +42,9 @@ const ogImageURL = new URL(image, Astro.site);
     <meta name="description" content={description} />
     <meta name="author" content={author} />
     <link rel="canonical" href={canonicalURL} />
+    
+    <!-- SEO Meta Tags -->
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
