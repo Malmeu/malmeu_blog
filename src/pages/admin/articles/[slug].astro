@@ -105,16 +105,23 @@ const { slug } = Astro.params;
   </div>
 </BaseLayout>
 
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-  // Auth
-  const session = localStorage.getItem('admin_session');
-  const expiry = localStorage.getItem('admin_session_expiry');
-  if (!(session === 'authenticated' && expiry && Date.now() < parseInt(expiry))) {
-    window.location.href = '/admin/login';
-  }
+  // Load marked library
+  const markedScript = document.createElement('script');
+  markedScript.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+  markedScript.onload = initEditor;
+  document.head.appendChild(markedScript);
 
-  const slug = (document.getElementById('article-slug') as HTMLInputElement).value;
+  function initEditor() {
+    // Auth
+    const session = localStorage.getItem('admin_session');
+    const expiry = localStorage.getItem('admin_session_expiry');
+    if (!(session === 'authenticated' && expiry && Date.now() < parseInt(expiry))) {
+      window.location.href = '/admin/login';
+      return;
+    }
+
+    const slug = (document.getElementById('article-slug') as HTMLInputElement).value;
   const loadingEl = document.getElementById('loading') as HTMLElement;
   const editorEl = document.getElementById('editor-container') as HTMLElement;
   const titleEl = document.getElementById('title') as HTMLInputElement;
@@ -218,6 +225,7 @@ const { slug } = Astro.params;
   });
 
   loadArticle();
+  } // end initEditor
 </script>
 
 <style>

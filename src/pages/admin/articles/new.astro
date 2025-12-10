@@ -111,17 +111,24 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
   </div>
 </BaseLayout>
 
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
-  // Auth
-  const session = localStorage.getItem('admin_session');
-  const expiry = localStorage.getItem('admin_session_expiry');
-  if (!(session === 'authenticated' && expiry && Date.now() < parseInt(expiry))) {
-    window.location.href = '/admin/login';
-  }
+  // Load marked library
+  const markedScript = document.createElement('script');
+  markedScript.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+  markedScript.onload = initEditor;
+  document.head.appendChild(markedScript);
 
-  const titleEl = document.getElementById('title') as HTMLInputElement;
-  const descriptionEl = document.getElementById('description') as HTMLTextAreaElement;
+  function initEditor() {
+    // Auth
+    const session = localStorage.getItem('admin_session');
+    const expiry = localStorage.getItem('admin_session_expiry');
+    if (!(session === 'authenticated' && expiry && Date.now() < parseInt(expiry))) {
+      window.location.href = '/admin/login';
+      return;
+    }
+
+    const titleEl = document.getElementById('title') as HTMLInputElement;
+    const descriptionEl = document.getElementById('description') as HTMLTextAreaElement;
   const categoryEl = document.getElementById('category') as HTMLInputElement;
   const tagsEl = document.getElementById('tags') as HTMLInputElement;
   const imageEl = document.getElementById('image') as HTMLInputElement;
@@ -189,6 +196,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
   document.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveArticle(true); }
   });
+  } // end initEditor
 </script>
 
 <style>
