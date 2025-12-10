@@ -111,70 +111,63 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
   </div>
 </BaseLayout>
 
-<script>
-  // Load marked library
-  const markedScript = document.createElement('script');
-  markedScript.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
-  markedScript.onload = initEditor;
-  document.head.appendChild(markedScript);
-
-  function initEditor() {
-    // Auth
-    const session = localStorage.getItem('admin_session');
-    const expiry = localStorage.getItem('admin_session_expiry');
+<script is:inline src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script is:inline>
+  // Auth check
+  (function() {
+    var session = localStorage.getItem('admin_session');
+    var expiry = localStorage.getItem('admin_session_expiry');
     if (!(session === 'authenticated' && expiry && Date.now() < parseInt(expiry))) {
       window.location.href = '/admin/login';
       return;
     }
 
-    const titleEl = document.getElementById('title') as HTMLInputElement;
-    const descriptionEl = document.getElementById('description') as HTMLTextAreaElement;
-  const categoryEl = document.getElementById('category') as HTMLInputElement;
-  const tagsEl = document.getElementById('tags') as HTMLInputElement;
-  const imageEl = document.getElementById('image') as HTMLInputElement;
-  const featuredEl = document.getElementById('featured') as HTMLInputElement;
-  const sponsoredEl = document.getElementById('sponsored') as HTMLInputElement;
-  const sponsorFields = document.getElementById('sponsor-fields') as HTMLElement;
-  const sponsorNameEl = document.getElementById('sponsorName') as HTMLInputElement;
-  const sponsorUrlEl = document.getElementById('sponsorUrl') as HTMLInputElement;
-  const bodyEl = document.getElementById('body') as HTMLTextAreaElement;
-  const previewEl = document.getElementById('preview') as HTMLElement;
+    var titleEl = document.getElementById('title');
+    var descriptionEl = document.getElementById('description');
+    var categoryEl = document.getElementById('category');
+    var tagsEl = document.getElementById('tags');
+    var imageEl = document.getElementById('image');
+    var featuredEl = document.getElementById('featured');
+    var sponsoredEl = document.getElementById('sponsored');
+    var sponsorFields = document.getElementById('sponsor-fields');
+    var sponsorNameEl = document.getElementById('sponsorName');
+    var sponsorUrlEl = document.getElementById('sponsorUrl');
+    var bodyEl = document.getElementById('body');
+    var previewEl = document.getElementById('preview');
 
-  sponsoredEl.addEventListener('change', () => {
-    sponsorFields.classList.toggle('hidden', !sponsoredEl.checked);
-  });
+    sponsoredEl.addEventListener('change', function() {
+      sponsorFields.classList.toggle('hidden', !sponsoredEl.checked);
+    });
 
-  bodyEl.addEventListener('input', () => {
-    previewEl.innerHTML = bodyEl.value.trim() 
-      ? (window as any).marked.parse(bodyEl.value)
-      : '<p class="text-gray-500 italic">La prévisualisation apparaîtra ici...</p>';
-  });
+    bodyEl.addEventListener('input', function() {
+      previewEl.innerHTML = bodyEl.value.trim() 
+        ? window.marked.parse(bodyEl.value)
+        : '<p class="text-gray-500 italic">La prévisualisation apparaîtra ici...</p>';
+    });
 
-  function insertMd(before: string, after: string) {
-    const start = bodyEl.selectionStart, end = bodyEl.selectionEnd;
-    const text = bodyEl.value, selected = text.substring(start, end);
-    bodyEl.value = text.substring(0, start) + before + selected + after + text.substring(end);
-    bodyEl.focus();
-    bodyEl.setSelectionRange(start + before.length, start + before.length + selected.length);
-    bodyEl.dispatchEvent(new Event('input'));
-  }
-  (window as any).insertMd = insertMd;
+    window.insertMd = function(before, after) {
+      var start = bodyEl.selectionStart, end = bodyEl.selectionEnd;
+      var text = bodyEl.value, selected = text.substring(start, end);
+      bodyEl.value = text.substring(0, start) + before + selected + after + text.substring(end);
+      bodyEl.focus();
+      bodyEl.setSelectionRange(start + before.length, start + before.length + selected.length);
+      bodyEl.dispatchEvent(new Event('input'));
+    };
 
-  async function saveArticle(isDraft: boolean) {
-    if (!titleEl.value.trim()) { alert('Titre requis'); return; }
-    if (!descriptionEl.value.trim()) { alert('Description requise'); return; }
-    
-    const tags = tagsEl.value.split(',').map(t => t.trim()).filter(t => t);
-    
-    try {
-      const response = await fetch('/api/articles', {
+    function saveArticle(isDraft) {
+      if (!titleEl.value.trim()) { alert('Titre requis'); return; }
+      if (!descriptionEl.value.trim()) { alert('Description requise'); return; }
+      
+      var tags = tagsEl.value.split(',').map(function(t) { return t.trim(); }).filter(function(t) { return t; });
+      
+      fetch('/api/articles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: titleEl.value,
           description: descriptionEl.value,
           category: categoryEl.value || 'Général',
-          tags,
+          tags: tags,
           image: imageEl.value || 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop',
           draft: isDraft,
           featured: featuredEl.checked,
@@ -183,20 +176,19 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
           sponsorUrl: sponsoredEl.checked ? sponsorUrlEl.value : undefined,
           body: bodyEl.value,
         }),
-      });
-      
-      if (response.ok) window.location.href = '/admin/articles';
-      else alert('Erreur');
-    } catch { alert('Erreur'); }
-  }
+      }).then(function(response) {
+        if (response.ok) window.location.href = '/admin/articles';
+        else alert('Erreur');
+      }).catch(function() { alert('Erreur'); });
+    }
 
-  document.getElementById('save-draft-btn')?.addEventListener('click', () => saveArticle(true));
-  document.getElementById('publish-btn')?.addEventListener('click', () => saveArticle(false));
-  
-  document.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveArticle(true); }
-  });
-  } // end initEditor
+    document.getElementById('save-draft-btn').addEventListener('click', function() { saveArticle(true); });
+    document.getElementById('publish-btn').addEventListener('click', function() { saveArticle(false); });
+    
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveArticle(true); }
+    });
+  })();
 </script>
 
 <style>

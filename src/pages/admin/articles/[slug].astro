@@ -105,105 +105,97 @@ const { slug } = Astro.params;
   </div>
 </BaseLayout>
 
-<script>
-  // Load marked library
-  const markedScript = document.createElement('script');
-  markedScript.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
-  markedScript.onload = initEditor;
-  document.head.appendChild(markedScript);
-
-  function initEditor() {
-    // Auth
-    const session = localStorage.getItem('admin_session');
-    const expiry = localStorage.getItem('admin_session_expiry');
+<script is:inline src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script is:inline>
+  (function() {
+    var session = localStorage.getItem('admin_session');
+    var expiry = localStorage.getItem('admin_session_expiry');
     if (!(session === 'authenticated' && expiry && Date.now() < parseInt(expiry))) {
       window.location.href = '/admin/login';
       return;
     }
 
-    const slug = (document.getElementById('article-slug') as HTMLInputElement).value;
-  const loadingEl = document.getElementById('loading') as HTMLElement;
-  const editorEl = document.getElementById('editor-container') as HTMLElement;
-  const titleEl = document.getElementById('title') as HTMLInputElement;
-  const descriptionEl = document.getElementById('description') as HTMLTextAreaElement;
-  const categoryEl = document.getElementById('category') as HTMLInputElement;
-  const publishDateEl = document.getElementById('publishDate') as HTMLInputElement;
-  const tagsEl = document.getElementById('tags') as HTMLInputElement;
-  const imageEl = document.getElementById('image') as HTMLInputElement;
-  const draftEl = document.getElementById('draft') as HTMLInputElement;
-  const featuredEl = document.getElementById('featured') as HTMLInputElement;
-  const sponsoredEl = document.getElementById('sponsored') as HTMLInputElement;
-  const sponsorFields = document.getElementById('sponsor-fields') as HTMLElement;
-  const sponsorNameEl = document.getElementById('sponsorName') as HTMLInputElement;
-  const sponsorUrlEl = document.getElementById('sponsorUrl') as HTMLInputElement;
-  const bodyEl = document.getElementById('body') as HTMLTextAreaElement;
-  const previewEl = document.getElementById('preview') as HTMLElement;
+    var slug = document.getElementById('article-slug').value;
+    var loadingEl = document.getElementById('loading');
+    var editorEl = document.getElementById('editor-container');
+    var titleEl = document.getElementById('title');
+    var descriptionEl = document.getElementById('description');
+    var categoryEl = document.getElementById('category');
+    var publishDateEl = document.getElementById('publishDate');
+    var tagsEl = document.getElementById('tags');
+    var imageEl = document.getElementById('image');
+    var draftEl = document.getElementById('draft');
+    var featuredEl = document.getElementById('featured');
+    var sponsoredEl = document.getElementById('sponsored');
+    var sponsorFields = document.getElementById('sponsor-fields');
+    var sponsorNameEl = document.getElementById('sponsorName');
+    var sponsorUrlEl = document.getElementById('sponsorUrl');
+    var bodyEl = document.getElementById('body');
+    var previewEl = document.getElementById('preview');
 
-  sponsoredEl.addEventListener('change', () => {
-    sponsorFields.classList.toggle('hidden', !sponsoredEl.checked);
-  });
+    sponsoredEl.addEventListener('change', function() {
+      sponsorFields.classList.toggle('hidden', !sponsoredEl.checked);
+    });
 
-  bodyEl.addEventListener('input', () => {
-    previewEl.innerHTML = bodyEl.value.trim() 
-      ? (window as any).marked.parse(bodyEl.value)
-      : '<p class="text-gray-500 italic">Prévisualisation...</p>';
-  });
+    bodyEl.addEventListener('input', function() {
+      previewEl.innerHTML = bodyEl.value.trim() 
+        ? window.marked.parse(bodyEl.value)
+        : '<p class="text-gray-500 italic">Prévisualisation...</p>';
+    });
 
-  function insertMd(before: string, after: string) {
-    const start = bodyEl.selectionStart, end = bodyEl.selectionEnd;
-    const text = bodyEl.value, selected = text.substring(start, end);
-    bodyEl.value = text.substring(0, start) + before + selected + after + text.substring(end);
-    bodyEl.focus();
-    bodyEl.setSelectionRange(start + before.length, start + before.length + selected.length);
-    bodyEl.dispatchEvent(new Event('input'));
-  }
-  (window as any).insertMd = insertMd;
-
-  async function loadArticle() {
-    try {
-      const response = await fetch('/api/articles');
-      const articles = await response.json();
-      const article = articles.find((a: any) => a.slug === slug);
-      
-      if (!article) { loadingEl.textContent = 'Article non trouvé'; return; }
-      
-      titleEl.value = article.title || '';
-      descriptionEl.value = article.description || '';
-      categoryEl.value = article.category || '';
-      publishDateEl.value = article.publishDate || '';
-      tagsEl.value = Array.isArray(article.tags) ? article.tags.join(', ') : '';
-      imageEl.value = article.image || '';
-      draftEl.checked = article.draft === true;
-      featuredEl.checked = article.featured === true;
-      sponsoredEl.checked = article.sponsored === true;
-      sponsorNameEl.value = article.sponsorName || '';
-      sponsorUrlEl.value = article.sponsorUrl || '';
-      bodyEl.value = article.body || '';
-      
-      if (article.sponsored) sponsorFields.classList.remove('hidden');
-      
+    window.insertMd = function(before, after) {
+      var start = bodyEl.selectionStart, end = bodyEl.selectionEnd;
+      var text = bodyEl.value, selected = text.substring(start, end);
+      bodyEl.value = text.substring(0, start) + before + selected + after + text.substring(end);
+      bodyEl.focus();
+      bodyEl.setSelectionRange(start + before.length, start + before.length + selected.length);
       bodyEl.dispatchEvent(new Event('input'));
-      loadingEl.classList.add('hidden');
-      editorEl.classList.remove('hidden');
-    } catch { loadingEl.textContent = 'Erreur'; }
-  }
+    };
 
-  async function saveArticle() {
-    if (!titleEl.value.trim()) { alert('Titre requis'); return; }
-    
-    const tags = tagsEl.value.split(',').map(t => t.trim()).filter(t => t);
-    
-    try {
-      const response = await fetch('/api/articles', {
+    function loadArticle() {
+      fetch('/api/articles').then(function(response) {
+        return response.json();
+      }).then(function(articles) {
+        var article = articles.find(function(a) { return a.slug === slug; });
+        
+        if (!article) { loadingEl.textContent = 'Article non trouvé'; return; }
+        
+        titleEl.value = article.title || '';
+        descriptionEl.value = article.description || '';
+        categoryEl.value = article.category || '';
+        publishDateEl.value = article.publishDate || '';
+        tagsEl.value = Array.isArray(article.tags) ? article.tags.join(', ') : '';
+        imageEl.value = article.image || '';
+        draftEl.checked = article.draft === true;
+        featuredEl.checked = article.featured === true;
+        sponsoredEl.checked = article.sponsored === true;
+        sponsorNameEl.value = article.sponsorName || '';
+        sponsorUrlEl.value = article.sponsorUrl || '';
+        bodyEl.value = article.body || '';
+        
+        if (article.sponsored) sponsorFields.classList.remove('hidden');
+        
+        bodyEl.dispatchEvent(new Event('input'));
+        loadingEl.classList.add('hidden');
+        editorEl.classList.remove('hidden');
+      }).catch(function() { loadingEl.textContent = 'Erreur'; });
+    }
+
+    function saveArticle() {
+      if (!titleEl.value.trim()) { alert('Titre requis'); return; }
+      
+      var tags = tagsEl.value.split(',').map(function(t) { return t.trim(); }).filter(function(t) { return t; });
+      
+      fetch('/api/articles', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          slug,
+          slug: slug,
           title: titleEl.value,
           description: descriptionEl.value,
           publishDate: publishDateEl.value,
           category: categoryEl.value || 'Général',
-          tags,
+          tags: tags,
           image: imageEl.value,
           draft: draftEl.checked,
           featured: featuredEl.checked,
@@ -212,20 +204,19 @@ const { slug } = Astro.params;
           sponsorUrl: sponsoredEl.checked ? sponsorUrlEl.value : undefined,
           body: bodyEl.value,
         }),
-      });
-      
-      if (response.ok) alert('✅ Sauvegardé !');
-      else alert('Erreur');
-    } catch { alert('Erreur'); }
-  }
+      }).then(function(response) {
+        if (response.ok) alert('✅ Sauvegardé !');
+        else alert('Erreur');
+      }).catch(function() { alert('Erreur'); });
+    }
 
-  document.getElementById('save-btn')?.addEventListener('click', saveArticle);
-  document.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveArticle(); }
-  });
+    document.getElementById('save-btn').addEventListener('click', saveArticle);
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveArticle(); }
+    });
 
-  loadArticle();
-  } // end initEditor
+    loadArticle();
+  })();
 </script>
 
 <style>
