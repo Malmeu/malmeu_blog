@@ -1,290 +1,251 @@
 ---
-// Cette page est protégée côté client
+// Éditer article - Admin
 const { slug } = Astro.params;
 ---
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modifier l'Article - Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Marked.js for Markdown preview -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { 
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          colors: {
+            dark: { 900: '#0a0a0f', 800: '#12121a', 700: '#1a1a2e', 600: '#252538' },
+            accent: { DEFAULT: '#06b6d4', light: '#22d3ee', dark: '#0891b2' },
+            orange: { DEFAULT: '#f97316', light: '#fb923c' }
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    :root {
-      --color-bg: #0a0a0f;
-      --color-bg-secondary: #1a1a2e;
-      --color-text: #ffffff;
-      --color-text-muted: #a0a0a0;
-      --color-accent: #06b6d4;
-      --color-accent-orange: #f97316;
-    }
-    body {
-      background-color: var(--color-bg);
-      color: var(--color-text);
-    }
-    .prose {
-      color: var(--color-text);
-    }
-    .prose h1, .prose h2, .prose h3, .prose h4 {
-      color: var(--color-text);
-      margin-top: 1.5em;
-      margin-bottom: 0.5em;
-    }
-    .prose h1 { font-size: 2em; font-weight: bold; }
-    .prose h2 { font-size: 1.5em; font-weight: bold; }
-    .prose h3 { font-size: 1.25em; font-weight: bold; }
-    .prose p { margin-bottom: 1em; line-height: 1.7; }
-    .prose ul, .prose ol { margin-left: 1.5em; margin-bottom: 1em; }
-    .prose li { margin-bottom: 0.5em; }
-    .prose code {
-      background: var(--color-bg);
-      padding: 0.2em 0.4em;
-      border-radius: 4px;
-      font-size: 0.9em;
-    }
-    .prose pre {
-      background: var(--color-bg);
-      padding: 1em;
-      border-radius: 8px;
-      overflow-x: auto;
-      margin-bottom: 1em;
-    }
-    .prose blockquote {
-      border-left: 4px solid var(--color-accent);
-      padding-left: 1em;
-      margin-left: 0;
-      font-style: italic;
-      color: var(--color-text-muted);
-    }
-    .prose a {
-      color: var(--color-accent);
-      text-decoration: underline;
-    }
-    .prose img {
-      max-width: 100%;
-      border-radius: 8px;
-    }
+    body { font-family: 'Inter', sans-serif; }
+    .glass { background: rgba(26, 26, 46, 0.8); backdrop-filter: blur(12px); }
+    
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #12121a; }
+    ::-webkit-scrollbar-thumb { background: #252538; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #353548; }
+    
+    .prose { color: #e5e5e5; line-height: 1.8; }
+    .prose h1 { font-size: 2em; font-weight: 700; margin: 1.5em 0 0.5em; color: white; }
+    .prose h2 { font-size: 1.5em; font-weight: 600; margin: 1.5em 0 0.5em; color: white; border-bottom: 1px solid #252538; padding-bottom: 0.5em; }
+    .prose h3 { font-size: 1.25em; font-weight: 600; margin: 1.25em 0 0.5em; color: white; }
+    .prose p { margin: 1em 0; }
+    .prose ul, .prose ol { margin: 1em 0; padding-left: 1.5em; }
+    .prose li { margin: 0.5em 0; }
+    .prose code { background: #1a1a2e; padding: 0.2em 0.5em; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: #06b6d4; }
+    .prose pre { background: #1a1a2e; padding: 1.25em; border-radius: 12px; overflow-x: auto; margin: 1.5em 0; border: 1px solid #252538; }
+    .prose pre code { background: none; padding: 0; color: #e5e5e5; }
+    .prose blockquote { border-left: 3px solid #06b6d4; padding-left: 1em; margin: 1.5em 0; color: #a0a0a0; font-style: italic; }
+    .prose a { color: #06b6d4; text-decoration: underline; }
+    .prose img { max-width: 100%; border-radius: 12px; margin: 1.5em 0; }
+    .prose strong { color: white; }
+    
+    .editor-textarea { background: transparent; resize: none; outline: none; font-family: 'JetBrains Mono', monospace; line-height: 1.7; tab-size: 2; }
+    .toolbar-btn { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; color: #a0a0a0; transition: all 0.15s; }
+    .toolbar-btn:hover { background: rgba(6, 182, 212, 0.1); color: #06b6d4; }
+    .input-field { transition: all 0.2s; border: 1px solid transparent; }
+    .input-field:focus { border-color: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1); }
+    .toggle-switch { position: relative; width: 44px; height: 24px; background: #252538; border-radius: 12px; cursor: pointer; transition: background 0.2s; }
+    .toggle-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: white; border-radius: 10px; transition: transform 0.2s; }
+    .toggle-switch.active { background: #06b6d4; }
+    .toggle-switch.active::after { transform: translateX(20px); }
   </style>
 </head>
-<body class="min-h-screen">
-  <!-- Hidden slug -->
+<body class="bg-dark-900 text-white min-h-screen">
   <input type="hidden" id="article-slug" value={slug} />
 
+  <!-- Gradient Background -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-40 -right-40 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-orange/10 rounded-full blur-3xl"></div>
+  </div>
+
   <!-- Header -->
-  <header class="bg-[#1a1a2e] border-b border-[#2a2a3e] px-6 py-4 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-4">
-        <a href="/admin/articles" class="text-[#a0a0a0] hover:text-white transition-colors">
-          ← Retour aux articles
-        </a>
-        <h1 class="text-xl font-bold text-white">✏️ Modifier l'Article</h1>
-        <span class="text-[#a0a0a0] text-sm">({slug}.md)</span>
-      </div>
-      <div class="flex items-center gap-4">
-        <a 
-          href={`/blog/${slug}`}
-          target="_blank"
-          class="px-4 py-2 bg-[#2a2a3e] text-[#a0a0a0] rounded-lg hover:text-white transition-colors"
-        >
-          👁️ Voir l'article
-        </a>
-        <button 
-          id="save-btn"
-          class="px-4 py-2 bg-gradient-to-r from-[#06b6d4] to-[#f97316] text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
-        >
-          💾 Sauvegarder
-        </button>
+  <header class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5">
+    <div class="max-w-[1600px] mx-auto px-6 py-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <a href="/admin/articles" class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+          </a>
+          <div class="h-6 w-px bg-white/10"></div>
+          <h1 class="font-medium flex items-center gap-2">
+            <span class="text-xl">✏️</span>
+            <span>Modifier</span>
+            <span class="text-gray-500 text-sm font-normal">({slug}.md)</span>
+          </h1>
+        </div>
+        <div class="flex items-center gap-3">
+          <a 
+            href={`/blog/${slug}`}
+            target="_blank"
+            class="flex items-center gap-2 px-4 py-2 rounded-xl bg-dark-700 text-gray-300 hover:bg-dark-600 transition-all"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+            <span class="hidden sm:inline">Voir</span>
+          </a>
+          <button 
+            id="save-btn"
+            class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-accent to-orange rounded-xl font-medium text-white shadow-lg shadow-accent/25 hover:shadow-accent/40 transition-all hover:scale-105"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span>Sauvegarder</span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- Loading State -->
-  <div id="loading" class="max-w-7xl mx-auto px-6 py-20 text-center">
-    <p class="text-[#a0a0a0]">Chargement de l'article...</p>
+  <!-- Loading -->
+  <div id="loading" class="relative z-10 pt-32 text-center">
+    <div class="inline-flex items-center gap-3 text-gray-400">
+      <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      <span>Chargement de l'article...</span>
+    </div>
   </div>
 
-  <!-- Main Content (hidden until loaded) -->
-  <main id="editor-container" class="max-w-7xl mx-auto px-6 py-8 hidden">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <!-- Editor Panel -->
-      <div class="space-y-6">
-        <!-- Frontmatter -->
-        <div class="bg-[#1a1a2e] rounded-xl p-6 space-y-4">
-          <h2 class="text-lg font-semibold text-white mb-4">📋 Métadonnées</h2>
-          
-          <div>
-            <label class="block text-sm text-[#a0a0a0] mb-1">Titre *</label>
+  <!-- Main Content -->
+  <main id="editor-container" class="relative z-10 pt-20 pb-8 hidden">
+    <div class="max-w-[1600px] mx-auto px-6">
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <!-- Left Panel -->
+        <div class="space-y-5">
+          <!-- Title & Description -->
+          <div class="bg-dark-800/50 rounded-2xl border border-white/5 p-6">
             <input 
               type="text" 
               id="title"
-              class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-[#06b6d4] focus:outline-none"
-              placeholder="Mon super article"
+              class="input-field w-full px-0 py-2 bg-transparent text-2xl font-bold placeholder-gray-600 rounded-none border-0 border-b border-white/10 focus:border-accent"
+              placeholder="Titre de l'article..."
             />
-          </div>
-          
-          <div>
-            <label class="block text-sm text-[#a0a0a0] mb-1">Description *</label>
             <textarea 
               id="description"
               rows="2"
-              class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-[#06b6d4] focus:outline-none resize-none"
-              placeholder="Une courte description de l'article..."
+              class="input-field w-full px-0 py-3 bg-transparent text-gray-400 placeholder-gray-600 rounded-none border-0 resize-none mt-2"
+              placeholder="Description courte pour le SEO..."
             ></textarea>
           </div>
-          
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm text-[#a0a0a0] mb-1">Catégorie</label>
-              <input 
-                type="text" 
-                id="category"
-                class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-[#06b6d4] focus:outline-none"
-                placeholder="Tech"
-              />
+
+          <!-- Metadata -->
+          <div class="bg-dark-800/50 rounded-2xl border border-white/5 p-6">
+            <div class="flex items-center gap-2 mb-5">
+              <span class="text-lg">⚙️</span>
+              <h2 class="font-semibold">Paramètres</h2>
             </div>
-            <div>
-              <label class="block text-sm text-[#a0a0a0] mb-1">Date de publication</label>
-              <input 
-                type="date" 
-                id="publishDate"
-                class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-[#06b6d4] focus:outline-none"
-              />
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs text-gray-500 uppercase tracking-wider mb-2">Catégorie</label>
+                <input type="text" id="category" class="input-field w-full px-4 py-2.5 bg-dark-700 rounded-xl text-white placeholder-gray-500" placeholder="Tech..." />
+              </div>
+              <div>
+                <label class="block text-xs text-gray-500 uppercase tracking-wider mb-2">Date</label>
+                <input type="date" id="publishDate" class="input-field w-full px-4 py-2.5 bg-dark-700 rounded-xl text-white" />
+              </div>
+            </div>
+            
+            <div class="mt-4">
+              <label class="block text-xs text-gray-500 uppercase tracking-wider mb-2">Tags</label>
+              <input type="text" id="tags" class="input-field w-full px-4 py-2.5 bg-dark-700 rounded-xl text-white placeholder-gray-500" placeholder="react, javascript..." />
+            </div>
+            
+            <div class="mt-4">
+              <label class="block text-xs text-gray-500 uppercase tracking-wider mb-2">Image</label>
+              <input type="text" id="image" class="input-field w-full px-4 py-2.5 bg-dark-700 rounded-xl text-white placeholder-gray-500" placeholder="https://..." />
+            </div>
+            
+            <div class="flex items-center gap-6 mt-5 pt-5 border-t border-white/5">
+              <label class="flex items-center gap-3 cursor-pointer group">
+                <div id="draft-toggle" class="toggle-switch"></div>
+                <span class="text-sm text-gray-400 group-hover:text-white transition-colors">📝 Brouillon</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer group">
+                <div id="featured-toggle" class="toggle-switch"></div>
+                <span class="text-sm text-gray-400 group-hover:text-white transition-colors">⭐ Vedette</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer group">
+                <div id="sponsored-toggle" class="toggle-switch"></div>
+                <span class="text-sm text-gray-400 group-hover:text-white transition-colors">💰 Sponsorisé</span>
+              </label>
+            </div>
+            
+            <div id="sponsor-fields" class="hidden mt-4 pt-4 border-t border-white/5 grid grid-cols-2 gap-3">
+              <input type="text" id="sponsorName" class="input-field px-4 py-2.5 bg-dark-700 rounded-xl text-white placeholder-gray-500" placeholder="Nom sponsor" />
+              <input type="url" id="sponsorUrl" class="input-field px-4 py-2.5 bg-dark-700 rounded-xl text-white placeholder-gray-500" placeholder="URL sponsor" />
             </div>
           </div>
 
-          <div>
-            <label class="block text-sm text-[#a0a0a0] mb-1">Tags (séparés par ,)</label>
-            <input 
-              type="text" 
-              id="tags"
-              class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-[#06b6d4] focus:outline-none"
-              placeholder="javascript, react, tutorial"
-            />
-          </div>
-          
-          <div>
-            <label class="block text-sm text-[#a0a0a0] mb-1">Image de couverture (URL)</label>
-            <input 
-              type="text" 
-              id="image"
-              class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-[#06b6d4] focus:outline-none"
-              placeholder="https://images.unsplash.com/..."
-            />
-          </div>
-          
-          <div class="flex items-center gap-6">
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="draft" class="w-4 h-4 accent-yellow-500" />
-              <span class="text-sm text-yellow-400">📝 Brouillon</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="featured" class="w-4 h-4 accent-[#06b6d4]" />
-              <span class="text-sm text-[#a0a0a0]">⭐ Article en vedette</span>
-            </label>
+          <!-- Editor -->
+          <div class="bg-dark-800/50 rounded-2xl border border-white/5 overflow-hidden">
+            <div class="flex items-center gap-1 px-4 py-2 border-b border-white/5 bg-dark-800/50">
+              <button onclick="insertMarkdown('## ', '')" class="toolbar-btn" title="H2"><span class="font-bold text-sm">H2</span></button>
+              <button onclick="insertMarkdown('### ', '')" class="toolbar-btn" title="H3"><span class="font-bold text-xs">H3</span></button>
+              <div class="w-px h-5 bg-white/10 mx-1"></div>
+              <button onclick="insertMarkdown('**', '**')" class="toolbar-btn" title="Gras"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/></svg></button>
+              <button onclick="insertMarkdown('*', '*')" class="toolbar-btn" title="Italique"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4z"/></svg></button>
+              <div class="w-px h-5 bg-white/10 mx-1"></div>
+              <button onclick="insertMarkdown('[', '](url)')" class="toolbar-btn" title="Lien"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg></button>
+              <button onclick="insertMarkdown('![alt](', ')')" class="toolbar-btn" title="Image"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></button>
+              <div class="w-px h-5 bg-white/10 mx-1"></div>
+              <button onclick="insertMarkdown('`', '`')" class="toolbar-btn" title="Code"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg></button>
+              <button onclick="insertMarkdown('\n```\n', '\n```\n')" class="toolbar-btn" title="Code block"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></button>
+            </div>
+            <textarea id="body" class="editor-textarea w-full px-6 py-5 text-gray-300 min-h-[400px]" placeholder="Contenu Markdown..."></textarea>
           </div>
         </div>
 
-        <!-- Sponsoring -->
-        <div class="bg-[#1a1a2e] rounded-xl p-6 space-y-4">
-          <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-white">💰 Sponsoring</h2>
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="sponsored" class="w-4 h-4 accent-amber-500" />
-              <span class="text-sm text-amber-400">Article sponsorisé</span>
-            </label>
-          </div>
-          
-          <div id="sponsor-fields" class="space-y-4 hidden">
-            <div>
-              <label class="block text-sm text-[#a0a0a0] mb-1">Nom du sponsor</label>
-              <input 
-                type="text" 
-                id="sponsorName"
-                class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-amber-500 focus:outline-none"
-                placeholder="TechCompany"
-              />
-            </div>
-            <div>
-              <label class="block text-sm text-[#a0a0a0] mb-1">URL du sponsor</label>
-              <input 
-                type="url" 
-                id="sponsorUrl"
-                class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-amber-500 focus:outline-none"
-                placeholder="https://sponsor.com"
-              />
-            </div>
-            <div>
-              <label class="block text-sm text-[#a0a0a0] mb-1">Logo du sponsor (URL)</label>
-              <input 
-                type="text" 
-                id="sponsorLogo"
-                class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-amber-500 focus:outline-none"
-                placeholder="/sponsors/logo.png"
-              />
+        <!-- Right Panel -->
+        <div class="hidden xl:block">
+          <div class="sticky top-20">
+            <div class="bg-dark-800/50 rounded-2xl border border-white/5 overflow-hidden">
+              <div class="flex items-center gap-2 px-5 py-3 border-b border-white/5 bg-dark-800/50">
+                <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+                <span class="ml-3 text-sm text-gray-500">Prévisualisation</span>
+              </div>
+              <div id="preview" class="prose p-6 max-h-[calc(100vh-180px)] overflow-y-auto">
+                <p class="text-gray-500 italic">Chargement...</p>
+              </div>
             </div>
           </div>
-        </div>
-
-        <!-- Markdown Editor -->
-        <div class="bg-[#1a1a2e] rounded-xl p-6">
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-lg font-semibold text-white">✍️ Contenu (Markdown)</h2>
-            <!-- Toolbar -->
-            <div class="flex items-center gap-1">
-              <button onclick="insertMarkdown('**', '**')" class="p-2 hover:bg-[#2a2a3e] rounded" title="Gras">
-                <strong>B</strong>
-              </button>
-              <button onclick="insertMarkdown('*', '*')" class="p-2 hover:bg-[#2a2a3e] rounded" title="Italique">
-                <em>I</em>
-              </button>
-              <button onclick="insertMarkdown('## ', '')" class="p-2 hover:bg-[#2a2a3e] rounded" title="Titre">
-                H2
-              </button>
-              <button onclick="insertMarkdown('[', '](url)')" class="p-2 hover:bg-[#2a2a3e] rounded" title="Lien">
-                🔗
-              </button>
-              <button onclick="insertMarkdown('![alt](', ')')" class="p-2 hover:bg-[#2a2a3e] rounded" title="Image">
-                🖼️
-              </button>
-              <button onclick="insertMarkdown('`', '`')" class="p-2 hover:bg-[#2a2a3e] rounded" title="Code inline">
-                &lt;/&gt;
-              </button>
-              <button onclick="insertMarkdown('\n```\n', '\n```\n')" class="p-2 hover:bg-[#2a2a3e] rounded" title="Bloc de code">
-                📝
-              </button>
-            </div>
-          </div>
-          
-          <textarea 
-            id="body"
-            rows="20"
-            class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white font-mono text-sm focus:border-[#06b6d4] focus:outline-none resize-none"
-            placeholder="Contenu de l'article..."
-          ></textarea>
-        </div>
-      </div>
-
-      <!-- Preview Panel -->
-      <div class="bg-[#1a1a2e] rounded-xl p-6 sticky top-24 h-fit max-h-[calc(100vh-8rem)] overflow-y-auto">
-        <h2 class="text-lg font-semibold text-white mb-4">👁️ Prévisualisation</h2>
-        <div id="preview" class="prose">
-          <p class="text-[#a0a0a0] italic">La prévisualisation apparaîtra ici...</p>
         </div>
       </div>
     </div>
   </main>
 
   <script>
-    // Auth check
-    const isAuthenticated = localStorage.getItem('admin_authenticated') === 'true';
-    if (!isAuthenticated) {
+    // Auth
+    const session = localStorage.getItem('admin_session');
+    const expiry = localStorage.getItem('admin_session_expiry');
+    if (!(session === 'authenticated' && expiry && Date.now() < parseInt(expiry))) {
       window.location.href = '/admin/login';
     }
 
-    // Get slug from hidden input
     const slug = (document.getElementById('article-slug') as HTMLInputElement).value;
 
     // Elements
@@ -296,40 +257,32 @@ const { slug } = Astro.params;
     const publishDateEl = document.getElementById('publishDate') as HTMLInputElement;
     const tagsEl = document.getElementById('tags') as HTMLInputElement;
     const imageEl = document.getElementById('image') as HTMLInputElement;
-    const draftEl = document.getElementById('draft') as HTMLInputElement;
-    const featuredEl = document.getElementById('featured') as HTMLInputElement;
-    const sponsoredEl = document.getElementById('sponsored') as HTMLInputElement;
-    const sponsorFieldsEl = document.getElementById('sponsor-fields')!;
+    const draftToggle = document.getElementById('draft-toggle')!;
+    const featuredToggle = document.getElementById('featured-toggle')!;
+    const sponsoredToggle = document.getElementById('sponsored-toggle')!;
+    const sponsorFields = document.getElementById('sponsor-fields')!;
     const sponsorNameEl = document.getElementById('sponsorName') as HTMLInputElement;
     const sponsorUrlEl = document.getElementById('sponsorUrl') as HTMLInputElement;
-    const sponsorLogoEl = document.getElementById('sponsorLogo') as HTMLInputElement;
     const bodyEl = document.getElementById('body') as HTMLTextAreaElement;
     const previewEl = document.getElementById('preview')!;
 
-    // Toggle sponsor fields
-    sponsoredEl.addEventListener('change', () => {
-      sponsorFieldsEl.classList.toggle('hidden', !sponsoredEl.checked);
-    });
+    let draft = false, featured = false, sponsored = false;
 
-    // Live preview
+    // Toggles
+    draftToggle.addEventListener('click', () => { draft = !draft; draftToggle.classList.toggle('active', draft); });
+    featuredToggle.addEventListener('click', () => { featured = !featured; featuredToggle.classList.toggle('active', featured); });
+    sponsoredToggle.addEventListener('click', () => { sponsored = !sponsored; sponsoredToggle.classList.toggle('active', sponsored); sponsorFields.classList.toggle('hidden', !sponsored); });
+
+    // Preview
     bodyEl.addEventListener('input', updatePreview);
-    
     function updatePreview() {
-      const markdown = bodyEl.value;
-      if (markdown.trim()) {
-        previewEl.innerHTML = (window as any).marked.parse(markdown);
-      } else {
-        previewEl.innerHTML = '<p class="text-[#a0a0a0] italic">La prévisualisation apparaîtra ici...</p>';
-      }
+      previewEl.innerHTML = bodyEl.value.trim() ? (window as any).marked.parse(bodyEl.value) : '<p class="text-gray-500 italic">Prévisualisation...</p>';
     }
 
-    // Insert markdown helper
+    // Insert markdown
     function insertMarkdown(before: string, after: string) {
-      const start = bodyEl.selectionStart;
-      const end = bodyEl.selectionEnd;
-      const text = bodyEl.value;
-      const selected = text.substring(start, end);
-      
+      const start = bodyEl.selectionStart, end = bodyEl.selectionEnd;
+      const text = bodyEl.value, selected = text.substring(start, end);
       bodyEl.value = text.substring(0, start) + before + selected + after + text.substring(end);
       bodyEl.focus();
       bodyEl.setSelectionRange(start + before.length, start + before.length + selected.length);
@@ -337,116 +290,80 @@ const { slug } = Astro.params;
     }
     (window as any).insertMarkdown = insertMarkdown;
 
-    // Load article data
+    // Load article
     async function loadArticle() {
       try {
         const response = await fetch('/api/articles');
         const articles = await response.json();
         const article = articles.find((a: any) => a.slug === slug);
         
-        if (!article) {
-          loadingEl.innerHTML = '<p class="text-red-400">Article non trouvé</p>';
-          return;
-        }
+        if (!article) { loadingEl.innerHTML = '<p class="text-red-400">Article non trouvé</p>'; return; }
         
-        // Populate form
         titleEl.value = article.title || '';
         descriptionEl.value = article.description || '';
         categoryEl.value = article.category || '';
         publishDateEl.value = article.publishDate || '';
         tagsEl.value = Array.isArray(article.tags) ? article.tags.join(', ') : '';
         imageEl.value = article.image || '';
-        draftEl.checked = article.draft === true;
-        featuredEl.checked = article.featured === true;
-        sponsoredEl.checked = article.sponsored === true;
-        sponsorNameEl.value = article.sponsorName || '';
-        sponsorUrlEl.value = article.sponsorUrl || '';
-        sponsorLogoEl.value = article.sponsorLogo || '';
         bodyEl.value = article.body || '';
         
-        // Show sponsor fields if sponsored
-        if (article.sponsored) {
-          sponsorFieldsEl.classList.remove('hidden');
-        }
+        draft = article.draft === true;
+        featured = article.featured === true;
+        sponsored = article.sponsored === true;
         
-        // Update preview
+        if (draft) draftToggle.classList.add('active');
+        if (featured) featuredToggle.classList.add('active');
+        if (sponsored) { sponsoredToggle.classList.add('active'); sponsorFields.classList.remove('hidden'); }
+        
+        sponsorNameEl.value = article.sponsorName || '';
+        sponsorUrlEl.value = article.sponsorUrl || '';
+        
         updatePreview();
-        
-        // Show editor
         loadingEl.classList.add('hidden');
         editorEl.classList.remove('hidden');
-        
       } catch (error) {
-        loadingEl.innerHTML = '<p class="text-red-400">Erreur lors du chargement</p>';
+        loadingEl.innerHTML = '<p class="text-red-400">Erreur de chargement</p>';
       }
     }
 
-    // Save article
+    // Save
     async function saveArticle() {
-      if (!titleEl.value.trim()) {
-        alert('Le titre est requis');
-        titleEl.focus();
-        return;
-      }
-      if (!descriptionEl.value.trim()) {
-        alert('La description est requise');
-        descriptionEl.focus();
-        return;
-      }
+      if (!titleEl.value.trim()) { alert('Titre requis'); return; }
+      if (!descriptionEl.value.trim()) { alert('Description requise'); return; }
       
-      const tags = tagsEl.value
-        .split(',')
-        .map(t => t.trim())
-        .filter(t => t.length > 0);
-      
-      const data = {
-        slug,
-        title: titleEl.value,
-        description: descriptionEl.value,
-        publishDate: publishDateEl.value,
-        category: categoryEl.value || 'Général',
-        tags,
-        image: imageEl.value || 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop',
-        draft: draftEl.checked,
-        featured: featuredEl.checked,
-        sponsored: sponsoredEl.checked,
-        sponsorName: sponsoredEl.checked ? sponsorNameEl.value : undefined,
-        sponsorUrl: sponsoredEl.checked ? sponsorUrlEl.value : undefined,
-        sponsorLogo: sponsoredEl.checked ? sponsorLogoEl.value : undefined,
-        body: bodyEl.value,
-      };
+      const tags = tagsEl.value.split(',').map(t => t.trim()).filter(t => t);
       
       try {
         const response = await fetch('/api/articles', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
+          body: JSON.stringify({
+            slug,
+            title: titleEl.value,
+            description: descriptionEl.value,
+            publishDate: publishDateEl.value,
+            category: categoryEl.value || 'Général',
+            tags,
+            image: imageEl.value,
+            draft,
+            featured,
+            sponsored,
+            sponsorName: sponsored ? sponsorNameEl.value : undefined,
+            sponsorUrl: sponsored ? sponsorUrlEl.value : undefined,
+            body: bodyEl.value,
+          }),
         });
         
-        const result = await response.json();
-        
-        if (response.ok) {
-          alert('Article sauvegardé !');
-        } else {
-          alert(result.error || 'Erreur lors de la sauvegarde');
-        }
+        if (response.ok) alert('✅ Sauvegardé !');
+        else alert('Erreur');
       } catch (error) {
-        alert('Erreur lors de la sauvegarde');
+        alert('Erreur');
       }
     }
 
-    // Event listeners
     document.getElementById('save-btn')?.addEventListener('click', saveArticle);
+    document.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); saveArticle(); } });
 
-    // Keyboard shortcut: Ctrl+S to save
-    document.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault();
-        saveArticle();
-      }
-    });
-
-    // Initial load
     loadArticle();
   </script>
 </body>

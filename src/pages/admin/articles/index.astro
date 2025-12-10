@@ -1,87 +1,149 @@
 ---
-// Cette page est protégée côté client
+// Liste des articles - Admin
 ---
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestion des Articles - Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            dark: { 900: '#0a0a0f', 800: '#12121a', 700: '#1a1a2e', 600: '#252538' },
+            accent: { DEFAULT: '#06b6d4', light: '#22d3ee', dark: '#0891b2' },
+            orange: { DEFAULT: '#f97316', light: '#fb923c' }
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    :root {
-      --color-bg: #0a0a0f;
-      --color-bg-secondary: #1a1a2e;
-      --color-text: #ffffff;
-      --color-text-muted: #a0a0a0;
-      --color-accent: #06b6d4;
-      --color-accent-orange: #f97316;
+    body { font-family: 'Inter', sans-serif; }
+    .glass { background: rgba(26, 26, 46, 0.8); backdrop-filter: blur(12px); }
+    .gradient-border { 
+      position: relative;
+      background: linear-gradient(135deg, #06b6d4, #f97316);
+      padding: 1px;
+      border-radius: 12px;
     }
-    body {
-      background-color: var(--color-bg);
-      color: var(--color-text);
-    }
+    .gradient-border > div { background: #12121a; border-radius: 11px; }
+    .hover-lift { transition: transform 0.2s, box-shadow 0.2s; }
+    .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(6, 182, 212, 0.15); }
   </style>
 </head>
-<body class="min-h-screen">
+<body class="bg-dark-900 text-white min-h-screen">
+  <!-- Gradient Background -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-40 -right-40 w-80 h-80 bg-accent/20 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-orange/20 rounded-full blur-3xl"></div>
+  </div>
+
   <!-- Header -->
-  <header class="bg-[#1a1a2e] border-b border-[#2a2a3e] px-6 py-4">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-4">
-        <a href="/admin/comments" class="text-[#a0a0a0] hover:text-white transition-colors">
-          ← Retour aux commentaires
-        </a>
-        <h1 class="text-xl font-bold text-white">📝 Gestion des Articles</h1>
-      </div>
-      <div class="flex items-center gap-4">
-        <a 
-          href="/admin/articles/new"
-          class="px-4 py-2 bg-gradient-to-r from-[#06b6d4] to-[#f97316] text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
-        >
-          + Nouvel Article
-        </a>
-        <button 
-          id="logout-btn"
-          class="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
-        >
-          Déconnexion
-        </button>
+  <header class="relative z-10 glass border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-6">
+          <a href="/admin/comments" class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            <span class="hidden sm:inline">Commentaires</span>
+          </a>
+          <div class="h-6 w-px bg-white/10"></div>
+          <h1 class="text-xl font-semibold flex items-center gap-2">
+            <span class="text-2xl">📝</span>
+            <span class="bg-gradient-to-r from-accent to-orange bg-clip-text text-transparent">Articles</span>
+          </h1>
+        </div>
+        <div class="flex items-center gap-3">
+          <a 
+            href="/admin/articles/new"
+            class="group flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-accent to-orange rounded-xl font-medium text-white shadow-lg shadow-accent/25 hover:shadow-accent/40 transition-all hover:scale-105"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            <span>Nouvel Article</span>
+          </a>
+          <button 
+            id="logout-btn"
+            class="p-2.5 rounded-xl bg-dark-700 text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
+            title="Déconnexion"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="max-w-7xl mx-auto px-6 py-8">
-    <!-- Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-      <div class="bg-[#1a1a2e] rounded-xl p-4">
-        <p class="text-[#a0a0a0] text-sm">Total Articles</p>
-        <p id="stat-total" class="text-2xl font-bold text-white">-</p>
+  <main class="relative z-10 max-w-7xl mx-auto px-6 py-8">
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="gradient-border hover-lift">
+        <div class="p-5">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-gray-400 text-sm">Total</span>
+            <span class="text-2xl">📊</span>
+          </div>
+          <p id="stat-total" class="text-3xl font-bold">-</p>
+        </div>
       </div>
-      <div class="bg-[#1a1a2e] rounded-xl p-4">
-        <p class="text-[#a0a0a0] text-sm">Publiés</p>
-        <p id="stat-published" class="text-2xl font-bold text-green-400">-</p>
+      <div class="bg-dark-700/50 rounded-xl p-5 border border-green-500/20 hover-lift">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-gray-400 text-sm">Publiés</span>
+          <span class="text-2xl">✅</span>
+        </div>
+        <p id="stat-published" class="text-3xl font-bold text-green-400">-</p>
       </div>
-      <div class="bg-[#1a1a2e] rounded-xl p-4">
-        <p class="text-[#a0a0a0] text-sm">Brouillons</p>
-        <p id="stat-drafts" class="text-2xl font-bold text-yellow-400">-</p>
+      <div class="bg-dark-700/50 rounded-xl p-5 border border-yellow-500/20 hover-lift">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-gray-400 text-sm">Brouillons</span>
+          <span class="text-2xl">📝</span>
+        </div>
+        <p id="stat-drafts" class="text-3xl font-bold text-yellow-400">-</p>
       </div>
-      <div class="bg-[#1a1a2e] rounded-xl p-4">
-        <p class="text-[#a0a0a0] text-sm">Sponsorisés</p>
-        <p id="stat-sponsored" class="text-2xl font-bold text-amber-400">-</p>
+      <div class="bg-dark-700/50 rounded-xl p-5 border border-amber-500/20 hover-lift">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-gray-400 text-sm">Sponsorisés</span>
+          <span class="text-2xl">💰</span>
+        </div>
+        <p id="stat-sponsored" class="text-3xl font-bold text-amber-400">-</p>
       </div>
     </div>
 
     <!-- Articles List -->
-    <div class="bg-[#1a1a2e] rounded-xl overflow-hidden">
-      <div class="px-6 py-4 border-b border-[#2a2a3e]">
-        <h2 class="text-lg font-semibold text-white">Articles</h2>
+    <div class="bg-dark-800/50 rounded-2xl border border-white/5 overflow-hidden">
+      <div class="px-6 py-4 border-b border-white/5 flex items-center justify-between">
+        <h2 class="font-semibold text-lg">Tous les articles</h2>
+        <div class="flex items-center gap-2 text-sm text-gray-400">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+          </svg>
+          <span>Triés par date</span>
+        </div>
       </div>
       
-      <div id="articles-list" class="divide-y divide-[#2a2a3e]">
-        <div class="px-6 py-8 text-center text-[#a0a0a0]">
-          Chargement des articles...
+      <div id="articles-list">
+        <div class="px-6 py-16 text-center">
+          <div class="inline-flex items-center gap-3 text-gray-400">
+            <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Chargement des articles...</span>
+          </div>
         </div>
       </div>
     </div>
@@ -89,14 +151,18 @@
 
   <script>
     // Auth check
-    const isAuthenticated = localStorage.getItem('admin_authenticated') === 'true';
+    const session = localStorage.getItem('admin_session');
+    const expiry = localStorage.getItem('admin_session_expiry');
+    const isAuthenticated = session === 'authenticated' && expiry && Date.now() < parseInt(expiry);
+    
     if (!isAuthenticated) {
       window.location.href = '/admin/login';
     }
 
     // Logout
     document.getElementById('logout-btn')?.addEventListener('click', () => {
-      localStorage.removeItem('admin_authenticated');
+      localStorage.removeItem('admin_session');
+      localStorage.removeItem('admin_session_expiry');
       window.location.href = '/admin/login';
     });
 
@@ -112,59 +178,81 @@
         document.getElementById('stat-drafts')!.textContent = articles.filter((a: any) => a.draft).length.toString();
         document.getElementById('stat-sponsored')!.textContent = articles.filter((a: any) => a.sponsored).length.toString();
         
-        // Render articles
         const listEl = document.getElementById('articles-list')!;
         
         if (articles.length === 0) {
           listEl.innerHTML = `
-            <div class="px-6 py-12 text-center">
-              <p class="text-[#a0a0a0] mb-4">Aucun article pour le moment</p>
-              <a href="/admin/articles/new" class="text-[#06b6d4] hover:underline">
-                Créer votre premier article →
+            <div class="px-6 py-20 text-center">
+              <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-dark-700 flex items-center justify-center text-3xl">📄</div>
+              <p class="text-gray-400 mb-4">Aucun article pour le moment</p>
+              <a href="/admin/articles/new" class="inline-flex items-center gap-2 text-accent hover:text-accent-light transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Créer votre premier article
               </a>
             </div>
           `;
           return;
         }
         
-        listEl.innerHTML = articles.map((article: any) => `
-          <div class="px-6 py-4 flex items-center justify-between hover:bg-[#2a2a3e]/50 transition-colors">
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2 mb-1">
-                ${article.draft ? '<span class="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">Brouillon</span>' : '<span class="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded-full">Publié</span>'}
-                ${article.featured ? '<span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 text-xs rounded-full">⭐ Vedette</span>' : ''}
-                ${article.sponsored ? '<span class="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs rounded-full">💰 Sponsorisé</span>' : ''}
-                <span class="px-2 py-0.5 bg-[#06b6d4]/20 text-[#06b6d4] text-xs rounded-full">${article.category || 'Sans catégorie'}</span>
-              </div>
-              <h3 class="text-white font-medium truncate">${article.title || 'Sans titre'}</h3>
-              <p class="text-[#a0a0a0] text-sm truncate">${article.description || 'Pas de description'}</p>
-              <p class="text-[#a0a0a0] text-xs mt-1">
-                ${article.publishDate ? new Date(article.publishDate).toLocaleDateString('fr-FR') : 'Date non définie'}
-                · ${article.slug}.md
-              </p>
+        listEl.innerHTML = articles.map((article: any, index: number) => `
+          <div class="group px-6 py-5 flex items-center gap-6 hover:bg-white/[0.02] transition-colors ${index !== articles.length - 1 ? 'border-b border-white/5' : ''}">
+            <!-- Thumbnail -->
+            <div class="hidden sm:block w-20 h-14 rounded-lg overflow-hidden bg-dark-700 flex-shrink-0">
+              <img src="${article.image || 'https://via.placeholder.com/80x56'}" alt="" class="w-full h-full object-cover">
             </div>
-            <div class="flex items-center gap-2 ml-4">
+            
+            <!-- Content -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                ${article.draft 
+                  ? '<span class="px-2 py-0.5 bg-yellow-500/10 text-yellow-400 text-xs font-medium rounded-full border border-yellow-500/20">Brouillon</span>' 
+                  : '<span class="px-2 py-0.5 bg-green-500/10 text-green-400 text-xs font-medium rounded-full border border-green-500/20">Publié</span>'}
+                ${article.featured ? '<span class="px-2 py-0.5 bg-purple-500/10 text-purple-400 text-xs font-medium rounded-full border border-purple-500/20">⭐ Vedette</span>' : ''}
+                ${article.sponsored ? '<span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 text-xs font-medium rounded-full border border-amber-500/20">💰 Sponsorisé</span>' : ''}
+                <span class="px-2 py-0.5 bg-accent/10 text-accent text-xs font-medium rounded-full">${article.category || 'Sans catégorie'}</span>
+              </div>
+              <h3 class="font-medium text-white truncate group-hover:text-accent transition-colors">${article.title || 'Sans titre'}</h3>
+              <p class="text-gray-500 text-sm truncate mt-0.5">${article.description || 'Pas de description'}</p>
+            </div>
+            
+            <!-- Date -->
+            <div class="hidden md:block text-right flex-shrink-0">
+              <p class="text-sm text-gray-400">${article.publishDate ? new Date(article.publishDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'}</p>
+              <p class="text-xs text-gray-600">${article.slug}.md</p>
+            </div>
+            
+            <!-- Actions -->
+            <div class="flex items-center gap-1 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
               <a 
                 href="/blog/${article.slug}" 
                 target="_blank"
-                class="p-2 text-[#a0a0a0] hover:text-white hover:bg-[#2a2a3e] rounded-lg transition-colors"
-                title="Voir l'article"
+                class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all"
+                title="Voir"
               >
-                👁️
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
               </a>
               <a 
                 href="/admin/articles/${article.slug}"
-                class="p-2 text-[#a0a0a0] hover:text-[#06b6d4] hover:bg-[#06b6d4]/10 rounded-lg transition-colors"
+                class="p-2 rounded-lg text-gray-400 hover:text-accent hover:bg-accent/10 transition-all"
                 title="Modifier"
               >
-                ✏️
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
               </a>
               <button 
                 onclick="deleteArticle('${article.slug}')"
-                class="p-2 text-[#a0a0a0] hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                class="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
                 title="Supprimer"
               >
-                🗑️
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
               </button>
             </div>
           </div>
@@ -173,18 +261,16 @@
       } catch (error) {
         console.error('Failed to load articles:', error);
         document.getElementById('articles-list')!.innerHTML = `
-          <div class="px-6 py-8 text-center text-red-400">
-            Erreur lors du chargement des articles
+          <div class="px-6 py-16 text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-500/10 flex items-center justify-center text-3xl">❌</div>
+            <p class="text-red-400">Erreur lors du chargement</p>
           </div>
         `;
       }
     }
 
-    // Delete article
     async function deleteArticle(slug: string) {
-      if (!confirm(`Êtes-vous sûr de vouloir supprimer l'article "${slug}" ?`)) {
-        return;
-      }
+      if (!confirm(`Supprimer l'article "${slug}" ?`)) return;
       
       try {
         const response = await fetch('/api/articles', {
@@ -193,20 +279,14 @@
           body: JSON.stringify({ slug }),
         });
         
-        if (response.ok) {
-          loadArticles();
-        } else {
-          alert('Erreur lors de la suppression');
-        }
+        if (response.ok) loadArticles();
+        else alert('Erreur lors de la suppression');
       } catch (error) {
         alert('Erreur lors de la suppression');
       }
     }
 
-    // Make deleteArticle available globally
     (window as any).deleteArticle = deleteArticle;
-
-    // Initial load
     loadArticles();
   </script>
 </body>
