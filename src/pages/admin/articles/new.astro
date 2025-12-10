@@ -1,0 +1,392 @@
+---
+// Cette page est protégée côté client
+---
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nouvel Article - Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Marked.js for Markdown preview -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root {
+      --color-bg: #0a0a0f;
+      --color-bg-secondary: #1a1a2e;
+      --color-text: #ffffff;
+      --color-text-muted: #a0a0a0;
+      --color-accent: #06b6d4;
+      --color-accent-orange: #f97316;
+    }
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+    }
+    .prose {
+      color: var(--color-text);
+    }
+    .prose h1, .prose h2, .prose h3, .prose h4 {
+      color: var(--color-text);
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+    }
+    .prose h1 { font-size: 2em; font-weight: bold; }
+    .prose h2 { font-size: 1.5em; font-weight: bold; }
+    .prose h3 { font-size: 1.25em; font-weight: bold; }
+    .prose p { margin-bottom: 1em; line-height: 1.7; }
+    .prose ul, .prose ol { margin-left: 1.5em; margin-bottom: 1em; }
+    .prose li { margin-bottom: 0.5em; }
+    .prose code {
+      background: var(--color-bg);
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    .prose pre {
+      background: var(--color-bg);
+      padding: 1em;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 1em;
+    }
+    .prose blockquote {
+      border-left: 4px solid var(--color-accent);
+      padding-left: 1em;
+      margin-left: 0;
+      font-style: italic;
+      color: var(--color-text-muted);
+    }
+    .prose a {
+      color: var(--color-accent);
+      text-decoration: underline;
+    }
+    .prose img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- Header -->
+  <header class="bg-[#1a1a2e] border-b border-[#2a2a3e] px-6 py-4 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="/admin/articles" class="text-[#a0a0a0] hover:text-white transition-colors">
+          ← Retour aux articles
+        </a>
+        <h1 class="text-xl font-bold text-white">✨ Nouvel Article</h1>
+      </div>
+      <div class="flex items-center gap-4">
+        <button 
+          id="save-draft-btn"
+          class="px-4 py-2 bg-yellow-500/20 text-yellow-400 rounded-lg hover:bg-yellow-500/30 transition-colors"
+        >
+          💾 Sauvegarder brouillon
+        </button>
+        <button 
+          id="publish-btn"
+          class="px-4 py-2 bg-gradient-to-r from-[#06b6d4] to-[#f97316] text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
+        >
+          🚀 Publier
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-6 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Editor Panel -->
+      <div class="space-y-6">
+        <!-- Frontmatter -->
+        <div class="bg-[#1a1a2e] rounded-xl p-6 space-y-4">
+          <h2 class="text-lg font-semibold text-white mb-4">📋 Métadonnées</h2>
+          
+          <div>
+            <label class="block text-sm text-[#a0a0a0] mb-1">Titre *</label>
+            <input 
+              type="text" 
+              id="title"
+              class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-[#06b6d4] focus:outline-none"
+              placeholder="Mon super article"
+            />
+          </div>
+          
+          <div>
+            <label class="block text-sm text-[#a0a0a0] mb-1">Description *</label>
+            <textarea 
+              id="description"
+              rows="2"
+              class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-[#06b6d4] focus:outline-none resize-none"
+              placeholder="Une courte description de l'article..."
+            ></textarea>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm text-[#a0a0a0] mb-1">Catégorie</label>
+              <input 
+                type="text" 
+                id="category"
+                class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-[#06b6d4] focus:outline-none"
+                placeholder="Tech"
+              />
+            </div>
+            <div>
+              <label class="block text-sm text-[#a0a0a0] mb-1">Tags (séparés par ,)</label>
+              <input 
+                type="text" 
+                id="tags"
+                class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-[#06b6d4] focus:outline-none"
+                placeholder="javascript, react, tutorial"
+              />
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm text-[#a0a0a0] mb-1">Image de couverture (URL)</label>
+            <input 
+              type="text" 
+              id="image"
+              class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-[#06b6d4] focus:outline-none"
+              placeholder="https://images.unsplash.com/..."
+            />
+          </div>
+          
+          <div class="flex items-center gap-6">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="featured" class="w-4 h-4 accent-[#06b6d4]" />
+              <span class="text-sm text-[#a0a0a0]">⭐ Article en vedette</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Sponsoring -->
+        <div class="bg-[#1a1a2e] rounded-xl p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-white">💰 Sponsoring</h2>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="sponsored" class="w-4 h-4 accent-amber-500" />
+              <span class="text-sm text-amber-400">Article sponsorisé</span>
+            </label>
+          </div>
+          
+          <div id="sponsor-fields" class="space-y-4 hidden">
+            <div>
+              <label class="block text-sm text-[#a0a0a0] mb-1">Nom du sponsor</label>
+              <input 
+                type="text" 
+                id="sponsorName"
+                class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-amber-500 focus:outline-none"
+                placeholder="TechCompany"
+              />
+            </div>
+            <div>
+              <label class="block text-sm text-[#a0a0a0] mb-1">URL du sponsor</label>
+              <input 
+                type="url" 
+                id="sponsorUrl"
+                class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-amber-500 focus:outline-none"
+                placeholder="https://sponsor.com"
+              />
+            </div>
+            <div>
+              <label class="block text-sm text-[#a0a0a0] mb-1">Logo du sponsor (URL)</label>
+              <input 
+                type="text" 
+                id="sponsorLogo"
+                class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white focus:border-amber-500 focus:outline-none"
+                placeholder="/sponsors/logo.png"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Markdown Editor -->
+        <div class="bg-[#1a1a2e] rounded-xl p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-white">✍️ Contenu (Markdown)</h2>
+            <!-- Toolbar -->
+            <div class="flex items-center gap-1">
+              <button onclick="insertMarkdown('**', '**')" class="p-2 hover:bg-[#2a2a3e] rounded" title="Gras">
+                <strong>B</strong>
+              </button>
+              <button onclick="insertMarkdown('*', '*')" class="p-2 hover:bg-[#2a2a3e] rounded" title="Italique">
+                <em>I</em>
+              </button>
+              <button onclick="insertMarkdown('## ', '')" class="p-2 hover:bg-[#2a2a3e] rounded" title="Titre">
+                H2
+              </button>
+              <button onclick="insertMarkdown('[', '](url)')" class="p-2 hover:bg-[#2a2a3e] rounded" title="Lien">
+                🔗
+              </button>
+              <button onclick="insertMarkdown('![alt](', ')')" class="p-2 hover:bg-[#2a2a3e] rounded" title="Image">
+                🖼️
+              </button>
+              <button onclick="insertMarkdown('`', '`')" class="p-2 hover:bg-[#2a2a3e] rounded" title="Code inline">
+                &lt;/&gt;
+              </button>
+              <button onclick="insertMarkdown('\n```\n', '\n```\n')" class="p-2 hover:bg-[#2a2a3e] rounded" title="Bloc de code">
+                📝
+              </button>
+            </div>
+          </div>
+          
+          <textarea 
+            id="body"
+            rows="20"
+            class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3e] rounded-lg text-white font-mono text-sm focus:border-[#06b6d4] focus:outline-none resize-none"
+            placeholder="## Introduction
+
+Commencez à écrire votre article ici...
+
+### Sous-titre
+
+Votre contenu en **Markdown**."
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Preview Panel -->
+      <div class="bg-[#1a1a2e] rounded-xl p-6 sticky top-24 h-fit max-h-[calc(100vh-8rem)] overflow-y-auto">
+        <h2 class="text-lg font-semibold text-white mb-4">👁️ Prévisualisation</h2>
+        <div id="preview" class="prose">
+          <p class="text-[#a0a0a0] italic">La prévisualisation apparaîtra ici...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Auth check
+    const isAuthenticated = localStorage.getItem('admin_authenticated') === 'true';
+    if (!isAuthenticated) {
+      window.location.href = '/admin/login';
+    }
+
+    // Elements
+    const titleEl = document.getElementById('title') as HTMLInputElement;
+    const descriptionEl = document.getElementById('description') as HTMLTextAreaElement;
+    const categoryEl = document.getElementById('category') as HTMLInputElement;
+    const tagsEl = document.getElementById('tags') as HTMLInputElement;
+    const imageEl = document.getElementById('image') as HTMLInputElement;
+    const featuredEl = document.getElementById('featured') as HTMLInputElement;
+    const sponsoredEl = document.getElementById('sponsored') as HTMLInputElement;
+    const sponsorFieldsEl = document.getElementById('sponsor-fields')!;
+    const sponsorNameEl = document.getElementById('sponsorName') as HTMLInputElement;
+    const sponsorUrlEl = document.getElementById('sponsorUrl') as HTMLInputElement;
+    const sponsorLogoEl = document.getElementById('sponsorLogo') as HTMLInputElement;
+    const bodyEl = document.getElementById('body') as HTMLTextAreaElement;
+    const previewEl = document.getElementById('preview')!;
+
+    // Toggle sponsor fields
+    sponsoredEl.addEventListener('change', () => {
+      sponsorFieldsEl.classList.toggle('hidden', !sponsoredEl.checked);
+    });
+
+    // Live preview
+    bodyEl.addEventListener('input', updatePreview);
+    
+    function updatePreview() {
+      const markdown = bodyEl.value;
+      if (markdown.trim()) {
+        previewEl.innerHTML = (window as any).marked.parse(markdown);
+      } else {
+        previewEl.innerHTML = '<p class="text-[#a0a0a0] italic">La prévisualisation apparaîtra ici...</p>';
+      }
+    }
+
+    // Insert markdown helper
+    function insertMarkdown(before: string, after: string) {
+      const start = bodyEl.selectionStart;
+      const end = bodyEl.selectionEnd;
+      const text = bodyEl.value;
+      const selected = text.substring(start, end);
+      
+      bodyEl.value = text.substring(0, start) + before + selected + after + text.substring(end);
+      bodyEl.focus();
+      bodyEl.setSelectionRange(start + before.length, start + before.length + selected.length);
+      updatePreview();
+    }
+    (window as any).insertMarkdown = insertMarkdown;
+
+    // Get form data
+    function getFormData(isDraft: boolean) {
+      const tags = tagsEl.value
+        .split(',')
+        .map(t => t.trim())
+        .filter(t => t.length > 0);
+      
+      return {
+        title: titleEl.value,
+        description: descriptionEl.value,
+        category: categoryEl.value || 'Général',
+        tags,
+        image: imageEl.value || 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop',
+        draft: isDraft,
+        featured: featuredEl.checked,
+        sponsored: sponsoredEl.checked,
+        sponsorName: sponsoredEl.checked ? sponsorNameEl.value : undefined,
+        sponsorUrl: sponsoredEl.checked ? sponsorUrlEl.value : undefined,
+        sponsorLogo: sponsoredEl.checked ? sponsorLogoEl.value : undefined,
+        body: bodyEl.value,
+      };
+    }
+
+    // Validate form
+    function validateForm(): boolean {
+      if (!titleEl.value.trim()) {
+        alert('Le titre est requis');
+        titleEl.focus();
+        return false;
+      }
+      if (!descriptionEl.value.trim()) {
+        alert('La description est requise');
+        descriptionEl.focus();
+        return false;
+      }
+      return true;
+    }
+
+    // Save article
+    async function saveArticle(isDraft: boolean) {
+      if (!validateForm()) return;
+      
+      const data = getFormData(isDraft);
+      
+      try {
+        const response = await fetch('/api/articles', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          alert(isDraft ? 'Brouillon sauvegardé !' : 'Article publié !');
+          window.location.href = '/admin/articles';
+        } else {
+          alert(result.error || 'Erreur lors de la sauvegarde');
+        }
+      } catch (error) {
+        alert('Erreur lors de la sauvegarde');
+      }
+    }
+
+    // Event listeners
+    document.getElementById('save-draft-btn')?.addEventListener('click', () => saveArticle(true));
+    document.getElementById('publish-btn')?.addEventListener('click', () => saveArticle(false));
+
+    // Keyboard shortcut: Ctrl+S to save draft
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        saveArticle(true);
+      }
+    });
+  </script>
+</body>
+</html>

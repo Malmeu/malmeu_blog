@@ -33,12 +33,20 @@ const rejectedCount = comments.filter(c => c.status === 'rejected').length;
         <h1 class="text-4xl font-bold text-[var(--color-text)]">
           🛡️ Administration des commentaires
         </h1>
-        <button 
-          id="logout-btn"
-          class="px-4 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
-        >
-          🚪 Déconnexion
-        </button>
+        <div class="flex items-center gap-4">
+          <a 
+            href="/admin/articles"
+            class="px-4 py-2 bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-orange)] text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
+          >
+            📝 Gérer les articles
+          </a>
+          <button 
+            id="logout-btn"
+            class="px-4 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
+          >
+            🚪 Déconnexion
+          </button>
+        </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div class="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">

@@ -7,6 +7,10 @@ tags: ["algerie", "freelance", "paiement", "remote"]
 image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop"
 draft: false
 featured: false
+sponsored: true
+sponsorName: "TechCompany"
+sponsorUrl: "https://techcompany.com"
+sponsorLogo: "/sponsors/techcompany.png"
 ---
 
 ## Être développeur en Algérie
