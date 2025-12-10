@@ -3,10 +3,11 @@ title: "IA et développement SaaS en Algérie : opportunité ou mirage ?"
 description: "L'IA transforme le développement SaaS. Mais en Algérie, où les outils et données manquent, comment en tirer parti ? Mes retours d'expérience et stratégies concrètes."
 publishDate: 2025-12-09
 category: "Algérie Tech"
-tags: ["algerie", "ia", "saas", "startups", "claude", "llm"]
+tags: ["algerie","ia","saas","startups","claude","llm"]
 image: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?q=80&w=2664&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 draft: false
-featured: true
+featured: false
+sponsored: false
 ---
 
 ## Pourquoi j'ai commencé à m'intéresser sérieusement à l'IA
