@@ -4,7 +4,7 @@ description: "Lancer un SaaS en Algérie en 2025 sans Stripe ? C'est possible. V
 publishDate: 2025-12-11
 category: "SaaS & Business"
 tags: ["saas", "paiement", "algerie", "windsurf", "ia", "ccp"]
-image: "/images/saas-paiement-algerie.jpg"
+image: "https://i.postimg.cc/Jh9RHpYM/strip-ccp.jpg"
 draft: false
 featured: true
 ---
