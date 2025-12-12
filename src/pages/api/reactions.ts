@@ -3,16 +3,55 @@ import { supabase } from '../../lib/supabase';
 
 // GET: Récupérer les compteurs de réactions pour un article
 export const GET: APIRoute = async ({ url }) => {
-  const slug = url.searchParams.get('slug');
-  
-  if (!slug) {
-    return new Response(JSON.stringify({ error: 'Slug requis' }), {
-      status: 400,
+  try {
+    const slug = url.searchParams.get('slug');
+    
+    if (!slug) {
+      return new Response(JSON.stringify({ error: 'Slug requis' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    
+    if (!supabase) {
+      // Fallback si Supabase n'est pas configuré
+      return new Response(JSON.stringify({ 
+        like: 0, love: 0, fire: 0, think: 0 
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    
+    const { data, error } = await supabase
+      .from('post_reactions')
+      .select('reaction_type')
+      .eq('article_slug', slug);
+    
+    if (error) {
+      console.error('Supabase error:', error);
+      // Retourner des valeurs par défaut au lieu d'une erreur 500
+      return new Response(JSON.stringify({ 
+        like: 0, love: 0, fire: 0, think: 0 
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    
+    const counts = {
+      like: (data || []).filter(r => r.reaction_type === 'like').length,
+      love: (data || []).filter(r => r.reaction_type === 'love').length,
+      fire: (data || []).filter(r => r.reaction_type === 'fire').length,
+      think: (data || []).filter(r => r.reaction_type === 'think').length
+    };
+    
+    return new Response(JSON.stringify(counts), {
+      status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
-  }
-  
-  if (!supabase) {
+  } catch (err) {
+    console.error('Reactions GET error:', err);
     return new Response(JSON.stringify({ 
       like: 0, love: 0, fire: 0, think: 0 
     }), {
@@ -20,30 +59,6 @@ export const GET: APIRoute = async ({ url }) => {
       headers: { 'Content-Type': 'application/json' }
     });
   }
-  
-  const { data, error } = await supabase
-    .from('post_reactions')
-    .select('reaction_type')
-    .eq('article_slug', slug);
-  
-  if (error) {
-    return new Response(JSON.stringify({ error: 'Erreur serveur' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
-  
-  const counts = {
-    like: data.filter(r => r.reaction_type === 'like').length,
-    love: data.filter(r => r.reaction_type === 'love').length,
-    fire: data.filter(r => r.reaction_type === 'fire').length,
-    think: data.filter(r => r.reaction_type === 'think').length
-  };
-  
-  return new Response(JSON.stringify(counts), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json' }
-  });
 };
 
 // POST: Ajouter ou modifier une réaction
