@@ -8,7 +8,7 @@ import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://malmeu.info',
+  site: 'https://www.malmeu.info',
   output: 'server',
   adapter: vercel({
     imageService: true
