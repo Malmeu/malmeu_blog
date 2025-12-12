@@ -1,5 +1,12 @@
 import type { APIRoute } from 'astro';
-import { supabase } from '../../lib/supabase';
+import { createClient } from '@supabase/supabase-js';
+
+function getSupabase() {
+  const url = import.meta.env.PUBLIC_SUPABASE_URL;
+  const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
+}
 
 // GET: Récupérer les compteurs de réactions pour un article
 export const GET: APIRoute = async ({ url }) => {
@@ -13,8 +20,8 @@ export const GET: APIRoute = async ({ url }) => {
       });
     }
     
+    const supabase = getSupabase();
     if (!supabase) {
-      // Fallback si Supabase n'est pas configuré
       return new Response(JSON.stringify({ 
         like: 0, love: 0, fire: 0, think: 0 
       }), {
@@ -40,10 +47,10 @@ export const GET: APIRoute = async ({ url }) => {
     }
     
     const counts = {
-      like: (data || []).filter(r => r.reaction_type === 'like').length,
-      love: (data || []).filter(r => r.reaction_type === 'love').length,
-      fire: (data || []).filter(r => r.reaction_type === 'fire').length,
-      think: (data || []).filter(r => r.reaction_type === 'think').length
+      like: (data || []).filter((r: any) => r.reaction_type === 'like').length,
+      love: (data || []).filter((r: any) => r.reaction_type === 'love').length,
+      fire: (data || []).filter((r: any) => r.reaction_type === 'fire').length,
+      think: (data || []).filter((r: any) => r.reaction_type === 'think').length
     };
     
     return new Response(JSON.stringify(counts), {
@@ -73,6 +80,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
     
+    const supabase = getSupabase();
     if (!supabase) {
       return new Response(JSON.stringify({ success: true }), {
         status: 200,

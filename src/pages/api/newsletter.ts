@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { supabase } from '../../lib/supabase';
+import { createClient } from '@supabase/supabase-js';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -13,26 +13,26 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
     
-    if (!supabase) {
-      console.log(`Newsletter signup (no DB configured): ${email}`);
-      // Retourner succès même sans DB pour ne pas bloquer l'UX
+    // Créer le client Supabase directement dans l'API
+    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+    const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseKey) {
+      console.log(`Newsletter signup (no DB): ${email}`);
       return new Response(JSON.stringify({ success: true }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
     }
     
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
     const { error } = await supabase
       .from('newsletter_subscribers')
       .upsert({ email }, { onConflict: 'email' });
     
     if (error) {
-      console.error('Newsletter Supabase error:', error);
-      // Retourner succès quand même pour ne pas frustrer l'utilisateur
-      return new Response(JSON.stringify({ success: true, note: 'saved_locally' }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
+      console.error('Newsletter error:', error);
     }
     
     return new Response(JSON.stringify({ success: true }), {
@@ -41,7 +41,6 @@ export const POST: APIRoute = async ({ request }) => {
     });
   } catch (err) {
     console.error('Newsletter error:', err);
-    // Ne jamais retourner 500 pour la newsletter
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }

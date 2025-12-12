@@ -1,6 +1,11 @@
-import { s as supabase } from '../../chunks/supabase_CADXvh8V.mjs';
+import { createClient } from '@supabase/supabase-js';
 export { renderers } from '../../renderers.mjs';
 
+function getSupabase() {
+  const url = "https://pzyyjsljzcnmbovbftmh.supabase.co";
+  const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXlqc2xqemNubWJvdmJmdG1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMjU4NjMsImV4cCI6MjA4MDgwMTg2M30.xq5pjLruOTEGBQ7Pr12C5X4iyHkCYCwH6HNwfYUCswk";
+  return createClient(url, key);
+}
 const GET = async ({ url }) => {
   try {
     const slug = url.searchParams.get("slug");
@@ -10,6 +15,7 @@ const GET = async ({ url }) => {
         headers: { "Content-Type": "application/json" }
       });
     }
+    const supabase = getSupabase();
     if (!supabase) {
       return new Response(JSON.stringify({
         like: 0,
@@ -66,6 +72,7 @@ const POST = async ({ request }) => {
         headers: { "Content-Type": "application/json" }
       });
     }
+    const supabase = getSupabase();
     if (!supabase) {
       return new Response(JSON.stringify({ success: true }), {
         status: 200,
