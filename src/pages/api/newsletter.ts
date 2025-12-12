@@ -1,49 +1,35 @@
 import type { APIRoute } from 'astro';
-import { createClient } from '@supabase/supabase-js';
 
 export const POST: APIRoute = async ({ request }) => {
+  const headers = { 'Content-Type': 'application/json' };
+  
   try {
     const body = await request.json();
     const email = body?.email;
     
     if (!email || !email.includes('@')) {
-      return new Response(JSON.stringify({ error: 'Email invalide' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
+      return new Response(JSON.stringify({ error: 'Email invalide' }), { status: 400, headers });
     }
     
-    // Créer le client Supabase directement dans l'API
+    // Supabase via fetch direct (évite les problèmes d'import)
     const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
     const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
     
-    if (!supabaseUrl || !supabaseKey) {
-      console.log(`Newsletter signup (no DB): ${email}`);
-      return new Response(JSON.stringify({ success: true }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
+    if (supabaseUrl && supabaseKey) {
+      await fetch(`${supabaseUrl}/rest/v1/newsletter_subscribers`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify({ email })
       });
     }
     
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    
-    const { error } = await supabase
-      .from('newsletter_subscribers')
-      .upsert({ email }, { onConflict: 'email' });
-    
-    if (error) {
-      console.error('Newsletter error:', error);
-    }
-    
-    return new Response(JSON.stringify({ success: true }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    return new Response(JSON.stringify({ success: true }), { status: 200, headers });
   } catch (err) {
-    console.error('Newsletter error:', err);
-    return new Response(JSON.stringify({ success: true }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    return new Response(JSON.stringify({ success: true }), { status: 200, headers });
   }
 };

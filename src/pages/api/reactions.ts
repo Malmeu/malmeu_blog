@@ -1,134 +1,96 @@
 import type { APIRoute } from 'astro';
-import { createClient } from '@supabase/supabase-js';
 
-function getSupabase() {
-  const url = import.meta.env.PUBLIC_SUPABASE_URL;
-  const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) return null;
-  return createClient(url, key);
-}
+const headers = { 'Content-Type': 'application/json' };
+const defaultCounts = { like: 0, love: 0, fire: 0, think: 0 };
 
-// GET: Récupérer les compteurs de réactions pour un article
+// GET: Récupérer les compteurs de réactions
 export const GET: APIRoute = async ({ url }) => {
   try {
     const slug = url.searchParams.get('slug');
-    
     if (!slug) {
-      return new Response(JSON.stringify({ error: 'Slug requis' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
+      return new Response(JSON.stringify({ error: 'Slug requis' }), { status: 400, headers });
     }
     
-    const supabase = getSupabase();
-    if (!supabase) {
-      return new Response(JSON.stringify({ 
-        like: 0, love: 0, fire: 0, think: 0 
-      }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
+    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+    const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseKey) {
+      return new Response(JSON.stringify(defaultCounts), { status: 200, headers });
     }
     
-    const { data, error } = await supabase
-      .from('post_reactions')
-      .select('reaction_type')
-      .eq('article_slug', slug);
+    const res = await fetch(
+      `${supabaseUrl}/rest/v1/post_reactions?article_slug=eq.${encodeURIComponent(slug)}&select=reaction_type`,
+      {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`
+        }
+      }
+    );
     
-    if (error) {
-      console.error('Supabase error:', error);
-      // Retourner des valeurs par défaut au lieu d'une erreur 500
-      return new Response(JSON.stringify({ 
-        like: 0, love: 0, fire: 0, think: 0 
-      }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
+    if (!res.ok) {
+      return new Response(JSON.stringify(defaultCounts), { status: 200, headers });
     }
     
+    const data = await res.json();
     const counts = {
-      like: (data || []).filter((r: any) => r.reaction_type === 'like').length,
-      love: (data || []).filter((r: any) => r.reaction_type === 'love').length,
-      fire: (data || []).filter((r: any) => r.reaction_type === 'fire').length,
-      think: (data || []).filter((r: any) => r.reaction_type === 'think').length
+      like: data.filter((r: any) => r.reaction_type === 'like').length,
+      love: data.filter((r: any) => r.reaction_type === 'love').length,
+      fire: data.filter((r: any) => r.reaction_type === 'fire').length,
+      think: data.filter((r: any) => r.reaction_type === 'think').length
     };
     
-    return new Response(JSON.stringify(counts), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    return new Response(JSON.stringify(counts), { status: 200, headers });
   } catch (err) {
-    console.error('Reactions GET error:', err);
-    return new Response(JSON.stringify({ 
-      like: 0, love: 0, fire: 0, think: 0 
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    return new Response(JSON.stringify(defaultCounts), { status: 200, headers });
   }
 };
 
-// POST: Ajouter ou modifier une réaction
+// POST: Ajouter une réaction
 export const POST: APIRoute = async ({ request }) => {
   try {
     const { slug, reaction, fingerprint } = await request.json();
     
     if (!slug || !reaction || !fingerprint) {
-      return new Response(JSON.stringify({ error: 'Données manquantes' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
+      return new Response(JSON.stringify({ error: 'Données manquantes' }), { status: 400, headers });
     }
     
-    const supabase = getSupabase();
-    if (!supabase) {
-      return new Response(JSON.stringify({ success: true }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      });
+    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+    const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseKey) {
+      return new Response(JSON.stringify({ success: true }), { status: 200, headers });
     }
     
-    // Vérifier si l'utilisateur a déjà réagi
-    const { data: existing } = await supabase
-      .from('post_reactions')
-      .select('id, reaction_type')
-      .eq('article_slug', slug)
-      .eq('user_fingerprint', fingerprint)
-      .single();
-    
-    if (existing) {
-      if (existing.reaction_type === reaction) {
-        // Même réaction = supprimer (toggle off)
-        await supabase
-          .from('post_reactions')
-          .delete()
-          .eq('id', existing.id);
-      } else {
-        // Réaction différente = mettre à jour
-        await supabase
-          .from('post_reactions')
-          .update({ reaction_type: reaction })
-          .eq('id', existing.id);
+    // Supprimer l'ancienne réaction si elle existe
+    await fetch(
+      `${supabaseUrl}/rest/v1/post_reactions?article_slug=eq.${encodeURIComponent(slug)}&user_fingerprint=eq.${encodeURIComponent(fingerprint)}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`
+        }
       }
-    } else {
-      // Nouvelle réaction
-      await supabase
-        .from('post_reactions')
-        .insert({
-          article_slug: slug,
-          reaction_type: reaction,
-          user_fingerprint: fingerprint
-        });
-    }
+    );
     
-    return new Response(JSON.stringify({ success: true }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
+    // Ajouter la nouvelle réaction
+    await fetch(`${supabaseUrl}/rest/v1/post_reactions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': supabaseKey,
+        'Authorization': `Bearer ${supabaseKey}`
+      },
+      body: JSON.stringify({
+        article_slug: slug,
+        reaction_type: reaction,
+        user_fingerprint: fingerprint
+      })
     });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: 'Erreur serveur' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    
+    return new Response(JSON.stringify({ success: true }), { status: 200, headers });
+  } catch (err) {
+    return new Response(JSON.stringify({ success: true }), { status: 200, headers });
   }
 };
