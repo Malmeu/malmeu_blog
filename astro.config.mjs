@@ -10,7 +10,9 @@ import vercel from '@astrojs/vercel';
 export default defineConfig({
   site: 'https://malmeu.info',
   output: 'server',
-  adapter: vercel(),
+  adapter: vercel({
+    imageService: true
+  }),
   vite: {
     plugins: [tailwindcss()]
   },
