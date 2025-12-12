@@ -1,0 +1,105 @@
+---
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+---
+
+<div class="flex items-center gap-4 py-4" id="reactions-container" data-slug={slug}>
+  <span class="text-sm text-[var(--color-text-muted)]">Cet article vous a plu ?</span>
+  
+  <div class="flex items-center gap-2">
+    <button 
+      class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all"
+      data-reaction="like"
+    >
+      <span class="text-lg">👍</span>
+      <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span>
+    </button>
+    
+    <button 
+      class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all"
+      data-reaction="love"
+    >
+      <span class="text-lg">❤️</span>
+      <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span>
+    </button>
+    
+    <button 
+      class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all"
+      data-reaction="fire"
+    >
+      <span class="text-lg">🔥</span>
+      <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span>
+    </button>
+    
+    <button 
+      class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all"
+      data-reaction="think"
+    >
+      <span class="text-lg">🤔</span>
+      <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span>
+    </button>
+  </div>
+</div>
+
+<script>
+  const container = document.getElementById('reactions-container');
+  const slug = container?.getAttribute('data-slug');
+  const storageKey = `reactions_${slug}`;
+  
+  // Load saved reactions from localStorage
+  const savedReactions = JSON.parse(localStorage.getItem(storageKey) || '{}');
+  const userReaction = localStorage.getItem(`user_reaction_${slug}`);
+  
+  // Initialize counts
+  document.querySelectorAll('.reaction-btn').forEach(btn => {
+    const reaction = btn.getAttribute('data-reaction');
+    const countEl = btn.querySelector('.reaction-count');
+    if (reaction && countEl && savedReactions[reaction]) {
+      countEl.textContent = savedReactions[reaction];
+    }
+    
+    // Highlight user's previous reaction
+    if (reaction === userReaction) {
+      btn.classList.add('ring-2', 'ring-[var(--color-accent)]');
+    }
+    
+    btn.addEventListener('click', () => {
+      const currentReaction = btn.getAttribute('data-reaction');
+      if (!currentReaction) return;
+      
+      // Remove previous highlight
+      document.querySelectorAll('.reaction-btn').forEach(b => {
+        b.classList.remove('ring-2', 'ring-[var(--color-accent)]');
+      });
+      
+      // If clicking same reaction, toggle off
+      if (userReaction === currentReaction) {
+        savedReactions[currentReaction] = Math.max(0, (savedReactions[currentReaction] || 1) - 1);
+        localStorage.removeItem(`user_reaction_${slug}`);
+      } else {
+        // Remove old reaction count
+        if (userReaction && savedReactions[userReaction]) {
+          savedReactions[userReaction] = Math.max(0, savedReactions[userReaction] - 1);
+          const oldBtn = document.querySelector(`[data-reaction="${userReaction}"]`);
+          const oldCount = oldBtn?.querySelector('.reaction-count');
+          if (oldCount) oldCount.textContent = savedReactions[userReaction];
+        }
+        
+        // Add new reaction
+        savedReactions[currentReaction] = (savedReactions[currentReaction] || 0) + 1;
+        localStorage.setItem(`user_reaction_${slug}`, currentReaction);
+        btn.classList.add('ring-2', 'ring-[var(--color-accent)]');
+      }
+      
+      // Update display
+      const countEl = btn.querySelector('.reaction-count');
+      if (countEl) countEl.textContent = savedReactions[currentReaction];
+      
+      // Save to localStorage
+      localStorage.setItem(storageKey, JSON.stringify(savedReactions));
+    });
+  });
+</script>

@@ -1,0 +1,268 @@
+<!DOCTYPE html><html lang="fr-DZ" data-theme="dark"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image/webp" href="/logo_malm.webp"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml"><!-- Primary Meta Tags --><title>Ma journée type : Coder un SaaS complet en 24h avec Windsurf (depuis l&#39;Algérie) | Blog</title><meta name="title" content="Ma journée type : Coder un SaaS complet en 24h avec Windsurf (depuis l'Algérie) | Blog"><meta name="description" content="Plongée dans mon workflow avec Windsurf AI. De l'idée à l'architecture, en passant par le debug, voici comment je construis des SaaS ultra-rapides sans perdre mon âme de dev."><meta name="author" content="Malmeu"><link rel="canonical" href="https://malmeu.info/blog/coder-un-saas-complet-en-24h-avec-windsurf/"><!-- Google Search Console Verification --><meta name="google-site-verification" content="Ksqriu5LJRJzCSOPlW_pmQqvbLsW6Oi-cBP3U5Fl5bs"><!-- SEO Meta Tags --><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://malmeu.info/blog/coder-un-saas-complet-en-24h-avec-windsurf/"><meta property="og:title" content="Ma journée type : Coder un SaaS complet en 24h avec Windsurf (depuis l'Algérie) | Blog"><meta property="og:description" content="Plongée dans mon workflow avec Windsurf AI. De l'idée à l'architecture, en passant par le debug, voici comment je construis des SaaS ultra-rapides sans perdre mon âme de dev."><meta property="og:image" content="https://images.unsplash.com/photo-1484417894907-623942c8ee29?q=80&#38;w=2664&#38;auto=format&#38;fit=crop&#38;ixlib=rb-4.1.0&#38;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"><meta property="og:locale" content="fr_DZ"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://malmeu.info/blog/coder-un-saas-complet-en-24h-avec-windsurf/"><meta property="twitter:title" content="Ma journée type : Coder un SaaS complet en 24h avec Windsurf (depuis l'Algérie) | Blog"><meta property="twitter:description" content="Plongée dans mon workflow avec Windsurf AI. De l'idée à l'architecture, en passant par le debug, voici comment je construis des SaaS ultra-rapides sans perdre mon âme de dev."><meta property="twitter:image" content="https://images.unsplash.com/photo-1484417894907-623942c8ee29?q=80&#38;w=2664&#38;auto=format&#38;fit=crop&#38;ixlib=rb-4.1.0&#38;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"><!-- Article specific --><meta property="article:published_time" content="2025-12-10T00:00:00.000Z"><!-- hreflang --><link rel="alternate" hreflang="fr-DZ" href="https://malmeu.info/blog/coder-un-saas-complet-en-24h-avec-windsurf/"><link rel="alternate" hreflang="x-default" href="https://malmeu.info/blog/coder-un-saas-complet-en-24h-avec-windsurf/"><!-- Fonts --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><!-- Schema.org --><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Malmeu Dev Blog","description":"Le blog tech d'un développeur algérien : SaaS, IA et Freelance.","url":"https://malmeu.info/","inLanguage":"fr-DZ","publisher":{"@type":"Person","name":"Malmeu","url":"https://malmeu.info/"},"potentialAction":{"@type":"SearchAction","target":"https://malmeu.info//blog?q={search_term_string}","query-input":"required name=search_term_string"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://malmeu.info/blog/coder-un-saas-complet-en-24h-avec-windsurf/"},"headline":"Ma journée type : Coder un SaaS complet en 24h avec Windsurf (depuis l'Algérie) | Blog","description":"Plongée dans mon workflow avec Windsurf AI. De l'idée à l'architecture, en passant par le debug, voici comment je construis des SaaS ultra-rapides sans perdre mon âme de dev.","image":"https://images.unsplash.com/photo-1484417894907-623942c8ee29?q=80&w=2664&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","author":{"@type":"Person","name":"Malmeu","url":"https://malmeu.info/"},"publisher":{"@type":"Organization","name":"Malmeu Dev Blog","logo":{"@type":"ImageObject","url":"https://malmeu.info//logo_malm.webp"}},"datePublished":"2025-12-10T00:00:00.000Z","dateModified":"2025-12-10T00:00:00.000Z","inLanguage":"fr-DZ","keywords":"windsurf, saas, astro, workflow, ia, algerie","articleSection":"Productivité & IA","wordCount":787,"timeRequired":"PT4M"}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://malmeu.info/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://malmeu.info//blog"},{"@type":"ListItem","position":3,"name":"Ma journée type : Coder un SaaS complet en 24h avec Windsurf (depuis l'Algérie) | Blog","item":"https://malmeu.info/blog/coder-un-saas-complet-en-24h-avec-windsurf/"}]}</script><link rel="stylesheet" href="/_astro/_slug_.BETu01_r.css"></head> <body class="min-h-screen flex flex-col"> <header class="sticky top-0 z-50 bg-[var(--color-bg)]/95 backdrop-blur-sm border-b border-[var(--color-bg-secondary)]"> <nav class="max-w-6xl mx-auto px-4 py-4"> <div class="flex items-center justify-between"> <!-- Logo --> <a href="/" class="flex items-center gap-2 group"> <img src="/logo_malm.webp" alt="Malmeu Logo" class="h-10 w-auto"> <span class="text-xl font-bold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors"></span> </a> <!-- Desktop Navigation --> <div class="hidden md:flex items-center gap-8"> <a href="/" class="text-sm font-medium transition-colors text-[var(--color-text-muted)] hover:text-[var(--color-accent)]"> Accueil </a><a href="/blog" class="text-sm font-medium transition-colors text-[var(--color-text-muted)] hover:text-[var(--color-accent)]"> Blog </a><a href="/about" class="text-sm font-medium transition-colors text-[var(--color-text-muted)] hover:text-[var(--color-accent)]"> À propos </a><a href="/contact" class="text-sm font-medium transition-colors text-[var(--color-text-muted)] hover:text-[var(--color-accent)]"> Contact </a> <!-- Search --> <div class="relative" id="search-container"> <button id="search-trigger" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--color-bg-secondary)] hover:bg-[var(--color-bg-tertiary)] transition-colors text-[var(--color-text-muted)] text-sm"> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path> </svg> <span class="hidden sm:inline">Rechercher...</span> <kbd class="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-xs bg-[var(--color-bg)] rounded border border-[var(--color-bg-tertiary)]"> <span>⌘</span>K
+</kbd> </button> </div> <!-- Search Modal --> <div id="search-modal" class="fixed inset-0 z-50 hidden"> <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="search-backdrop"></div> <div class="relative max-w-2xl mx-auto mt-20 mx-4"> <div class="bg-[var(--color-bg)] rounded-2xl shadow-2xl border border-[var(--color-bg-secondary)] overflow-hidden"> <div class="p-4 border-b border-[var(--color-bg-secondary)]"> <div class="flex items-center gap-3"> <svg class="w-5 h-5 text-[var(--color-text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path> </svg> <input type="text" id="search-input" placeholder="Rechercher un article..." class="flex-1 bg-transparent text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:outline-none text-lg" autocomplete="off"> <button id="search-close" class="p-1 rounded hover:bg-[var(--color-bg-secondary)] transition-colors"> <svg class="w-5 h-5 text-[var(--color-text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path> </svg> </button> </div> </div> <div id="search-results" class="max-h-96 overflow-y-auto p-2"> <p class="text-center text-[var(--color-text-muted)] py-8">
+Tapez pour rechercher...
+</p> </div> </div> </div> </div> <script>
+  (function() {
+    const trigger = document.getElementById('search-trigger');
+    const modal = document.getElementById('search-modal');
+    const backdrop = document.getElementById('search-backdrop');
+    const closeBtn = document.getElementById('search-close');
+    const input = document.getElementById('search-input');
+    const results = document.getElementById('search-results');
+    
+    let pagefind = null;
+    
+    async function loadPagefind() {
+      if (!pagefind) {
+        try {
+          pagefind = await import('/pagefind/pagefind.js');
+          await pagefind.init();
+        } catch (e) {
+          console.log('Pagefind not available yet (run build first)');
+        }
+      }
+      return pagefind;
+    }
+    
+    function openSearch() {
+      modal?.classList.remove('hidden');
+      input?.focus();
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeSearch() {
+      modal?.classList.add('hidden');
+      document.body.style.overflow = '';
+      if (input) input.value = '';
+      if (results) results.innerHTML = '<p class="text-center py-8" style="color: var(--color-text-muted)">Tapez pour rechercher...</p>';
+    }
+    
+    trigger?.addEventListener('click', openSearch);
+    backdrop?.addEventListener('click', closeSearch);
+    closeBtn?.addEventListener('click', closeSearch);
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        openSearch();
+      }
+      if (e.key === 'Escape') {
+        closeSearch();
+      }
+    });
+    
+    // Search functionality
+    let debounceTimer;
+    
+    input?.addEventListener('input', async () => {
+      clearTimeout(debounceTimer);
+      const query = input.value.trim();
+      
+      if (!query) {
+        if (results) results.innerHTML = '<p class="text-center py-8" style="color: var(--color-text-muted)">Tapez pour rechercher...</p>';
+        return;
+      }
+      
+      debounceTimer = setTimeout(async () => {
+        const pf = await loadPagefind();
+        
+        if (!pf) {
+          if (results) results.innerHTML = '<p class="text-center py-8" style="color: var(--color-text-muted)">Recherche non disponible</p>';
+          return;
+        }
+        
+        const search = await pf.search(query);
+        
+        if (search.results.length === 0) {
+          if (results) results.innerHTML = '<p class="text-center py-8" style="color: var(--color-text-muted)">Aucun résultat trouvé</p>';
+          return;
+        }
+        
+        const items = await Promise.all(search.results.slice(0, 8).map((r) => r.data()));
+        
+        if (results) {
+          results.innerHTML = items.map((item) => `
+            <a href="${item.url}" class="block p-3 rounded-lg hover:bg-gray-800 transition-colors">
+              <h3 class="font-medium" style="color: var(--color-text)">${item.meta?.title || 'Sans titre'}</h3>
+              <p class="text-sm mt-1 line-clamp-2" style="color: var(--color-text-muted)">${item.excerpt}</p>
+            </a>
+          `).join('');
+        }
+      }, 200);
+    });
+  })();
+</script> <!-- Theme Toggle --> <button onclick="toggleTheme()" class="p-2 rounded-lg bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-colors" aria-label="Changer le thème"> <svg class="w-5 h-5 text-[var(--color-text)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path> </svg> </button> </div> <!-- Mobile Menu Button --> <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg bg-[var(--color-bg-secondary)]" aria-label="Menu"> <svg class="w-6 h-6 text-[var(--color-text)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path> </svg> </button> </div> <!-- Mobile Navigation --> <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4"> <div class="flex flex-col gap-4"> <a href="/" class="text-sm font-medium transition-colors text-[var(--color-text-muted)] hover:text-[var(--color-accent)]"> Accueil </a><a href="/blog" class="text-sm font-medium transition-colors text-[var(--color-text-muted)] hover:text-[var(--color-accent)]"> Blog </a><a href="/about" class="text-sm font-medium transition-colors text-[var(--color-text-muted)] hover:text-[var(--color-accent)]"> À propos </a><a href="/contact" class="text-sm font-medium transition-colors text-[var(--color-text-muted)] hover:text-[var(--color-accent)]"> Contact </a> <button onclick="toggleTheme()" class="flex items-center gap-2 text-sm text-[var(--color-text-muted)]"> <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path> </svg>
+Changer le thème
+</button> </div> </div> </nav> </header> <script type="module">const e=document.getElementById("mobile-menu-btn"),n=document.getElementById("mobile-menu");e?.addEventListener("click",()=>{n?.classList.toggle("hidden")});</script> <main class="flex-1">  <article class="max-w-4xl mx-auto px-4 py-12"> <!-- Breadcrumbs --> <nav class="mb-8 text-sm" aria-label="Breadcrumb"> <ol class="flex items-center gap-2 text-[var(--color-text-muted)]" itemscope itemtype="https://schema.org/BreadcrumbList"> <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"> <a href="/" itemprop="item" class="hover:text-[var(--color-accent)] transition-colors"> <span itemprop="name">Accueil</span> </a> <meta itemprop="position" content="1"> </li> <li class="text-[var(--color-text-muted)]">/</li> <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"> <a href="/blog" itemprop="item" class="hover:text-[var(--color-accent)] transition-colors"> <span itemprop="name">Blog</span> </a> <meta itemprop="position" content="2"> </li> <li class="text-[var(--color-text-muted)]">/</li> <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"> <span itemprop="name" class="text-[var(--color-accent)]">Ma journée type : Coder un SaaS complet en 24h avec Windsurf (depuis l&#39;Algérie)</span> <meta itemprop="position" content="3"> </li> </ol> </nav> <!-- Header --> <header class="mb-12"> <div class="flex items-center gap-4 mb-4 flex-wrap">  <a href="/blog/category/productivité &#38; ia" class="px-3 py-1 bg-[var(--color-accent)] text-[var(--color-bg)] rounded-full text-sm font-medium hover:opacity-90 transition-opacity"> Productivité &amp; IA </a> <span class="text-[var(--color-text-muted)] text-sm"> 4 min de lecture
+</span> </div> <h1 class="text-4xl md:text-5xl font-bold mb-4 text-[var(--color-text)]"> Ma journée type : Coder un SaaS complet en 24h avec Windsurf (depuis l&#39;Algérie) </h1> <p class="text-xl text-[var(--color-text-muted)] mb-6"> Plongée dans mon workflow avec Windsurf AI. De l&#39;idée à l&#39;architecture, en passant par le debug, voici comment je construis des SaaS ultra-rapides sans perdre mon âme de dev. </p> <div class="flex items-center justify-between flex-wrap gap-4"> <time datetime="2025-12-10T00:00:00.000Z" class="text-sm text-[var(--color-text-muted)]"> 10 décembre 2025 </time> <div class="flex items-center gap-3"> <span class="text-sm text-[var(--color-text-muted)]">Partager :</span> <!-- Twitter/X --> <a href="https://twitter.com/intent/tweet?text=Ma%20journ%C3%A9e%20type%20%3A%20Coder%20un%20SaaS%20complet%20en%2024h%20avec%20Windsurf%20(depuis%20l'Alg%C3%A9rie)&url=https%3A%2F%2Fmalmeu.info%2Fblog%2Fcoder-un-saas-complet-en-24h-avec-windsurf%2F" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)] hover:text-[var(--color-bg)] transition-all" title="Partager sur X (Twitter)"> <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"> <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path> </svg> </a> <!-- LinkedIn --> <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmalmeu.info%2Fblog%2Fcoder-un-saas-complet-en-24h-avec-windsurf%2F" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-[var(--color-bg-secondary)] hover:bg-[#0077b5] hover:text-white transition-all" title="Partager sur LinkedIn"> <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"> <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path> </svg> </a> <!-- Copy Link --> <button id="copy-link-btn" data-url="https://malmeu.info/blog/coder-un-saas-complet-en-24h-avec-windsurf/" class="p-2 rounded-lg bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)] hover:text-[var(--color-bg)] transition-all" title="Copier le lien"> <svg class="w-5 h-5" id="copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path> </svg> <svg class="w-5 h-5 hidden" id="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path> </svg> </button> </div> <script type="module">const t=document.getElementById("copy-link-btn"),c=document.getElementById("copy-icon"),n=document.getElementById("check-icon");t?.addEventListener("click",async()=>{const e=t.getAttribute("data-url");e&&(await navigator.clipboard.writeText(e),c?.classList.add("hidden"),n?.classList.remove("hidden"),setTimeout(()=>{c?.classList.remove("hidden"),n?.classList.add("hidden")},2e3))});</script> </div> <div class="flex flex-wrap gap-2 mt-4"> <span class="px-2 py-1 bg-[var(--color-bg-secondary)] text-[var(--color-text-muted)] rounded text-xs">
+#windsurf </span><span class="px-2 py-1 bg-[var(--color-bg-secondary)] text-[var(--color-text-muted)] rounded text-xs">
+#saas </span><span class="px-2 py-1 bg-[var(--color-bg-secondary)] text-[var(--color-text-muted)] rounded text-xs">
+#astro </span><span class="px-2 py-1 bg-[var(--color-bg-secondary)] text-[var(--color-text-muted)] rounded text-xs">
+#workflow </span><span class="px-2 py-1 bg-[var(--color-bg-secondary)] text-[var(--color-text-muted)] rounded text-xs">
+#ia </span><span class="px-2 py-1 bg-[var(--color-bg-secondary)] text-[var(--color-text-muted)] rounded text-xs">
+#algerie </span> </div> </header> <!-- Sponsor Banner -->  <!-- Cover Image --> <img src="https://images.unsplash.com/photo-1484417894907-623942c8ee29?q=80&w=2664&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Ma journée type : Coder un SaaS complet en 24h avec Windsurf (depuis l'Algérie)" class="w-full h-64 md:h-96 object-cover rounded-xl mb-12"> <!-- Content with TOC --> <div class="lg:grid lg:grid-cols-[1fr_250px] lg:gap-12"> <div class="prose prose-lg max-w-none">  <p>Il est 9h du matin à Béjaïa. Mon café est chaud, et j’ai une idée de SaaS qui me trotte dans la tête depuis la veille.</p>
+<p>Avant 2024, ça voulait dire : ouvrir un Google Doc, procrastiner sur le choix de la stack, passer 3 jours à configurer l’authentification, et abandonner le projet deux semaines plus tard.</p>
+<p>Aujourd’hui ? J’ouvre <strong>Windsurf</strong>. Et le jeu a complètement changé.</p>
+<p>Voici comment se déroule une journée de “Deep Work” assistée par l’IA, où je passe de zéro à un MVP fonctionnel avant le dîner.</p>
+<h2 id="9h30--larchitecture-ou-comment-gagner-3-jours-en-30-minutes">9h30 : L’architecture (ou comment gagner 3 jours en 30 minutes)</h2>
+<p>Je ne commence jamais par coder. Je commence par discuter.</p>
+<p>J’ouvre le panneau “Cascade” de Windsurf et je lui pitche mon idée comme à un associé technique senior :</p>
+<blockquote>
+<p>“Je veux créer un outil de lead gen pour les centres d’appels. Stack : Astro, React, Supabase, Tailwind. Fais-moi une structure de projet scalable.”</p>
+</blockquote>
+<p>Là où ChatGPT me donnerait une liste générique, Windsurf <strong>connaît mon codebase</strong>. Il sait que j’aime mon architecture en dossiers <code>/src/modules</code>, il sait que j’utilise des alias TypeScript spécifiques.</p>
+<p>En 2 minutes, il m’a non seulement proposé l’architecture, mais il a créé les 15 fichiers de configuration (tsconfig, tailwind.config, fichiers d’env) sans que je touche au clavier.</p>
+<p><strong>Le gain ?</strong> Zéro fatigue décisionnelle. Je suis frais pour la vraie valeur ajoutée.</p>
+<h2 id="11h00--le-flow-du-backend-avec-supabase">11h00 : Le “Flow” du Backend avec Supabase</h2>
+<p>C’est là que la magie opère. Au lieu d’écrire mes tables SQL à la main, je demande à Windsurf :</p>
+<blockquote>
+<p>“Analyse mes types TypeScript dans <code>/src/types</code> et génère le schéma SQL Supabase correspondant. Ajoute les politiques RLS pour que chaque centre d’appel ne voie que ses leads.”</p>
+</blockquote>
+<p>Il lit mes fichiers locaux (chose que ChatGPT web ne peut pas faire aussi bien), comprend les relations entre mes entités, et me sort un script SQL migration-ready.</p>
+<p>Je copie, je colle dans Supabase. Boom. Backend prêt.</p>
+<h2 id="14h00--coder-linterface-sans-toucher-au-css">14h00 : Coder l’interface sans toucher au CSS</h2>
+<p>L’après-midi, c’est le front-end. C’est souvent là qu’on perd du temps à centrer des divs.</p>
+<p>Ma méthode avec Windsurf :</p>
+<ol>
+<li>Je lui donne une capture d’écran d’une inspiration (Dribbble ou autre).</li>
+<li>Je lui dis : <em>“Reproduis ce layout en utilisant mes composants UI existants dans <code>/src/components/ui</code>”</em>.</li>
+</ol>
+<p>Il ne réinvente pas la roue. Il utilise <strong>mes</strong> boutons, <strong>mes</strong> inputs, mon système de design existant.</p>
+<p>Le résultat n’est jamais parfait du premier coup (on va dire 85%), mais c’est infiniment plus rapide que de partir d’une page blanche. Je passe mon temps à ajuster les marges et les interactions fines, pas à écrire du boilerplate.</p>
+<h2 id="16h30--le-moment-où-ça-casse-et-où-lia-brille">16h30 : Le moment où ça casse (et où l’IA brille)</h2>
+<p>Vers 16h, fatigué, j’introduis un bug vicieux. Une boucle de re-rendu infinie dans un useEffect. Le classique.</p>
+<p>Avant, c’était 1h de console.log et de frustration.
+Maintenant ? Je surligne le composant fautif et je clique sur “Explain &#x26; Fix”.</p>
+<p>Windsurf analyse le contexte global (pas juste le fichier ouvert), repère que mon store global mettait à jour l’état trop souvent, et me propose le fix.</p>
+<p>C’est là que je réalise que l’IA n’est pas là pour me remplacer, mais pour m’empêcher de devenir fou sur des détails techniques.</p>
+<h2 id="20h00--déploiement-sur-vercel">20h00 : Déploiement sur Vercel</h2>
+<p>Le MVP tourne en local. Il est moche, mais il marche.
+Je demande à Windsurf de générer un <code>README.md</code> propre pour le projet, d’ajouter les instructions de déploiement et de vérifier si je n’ai pas laissé de clés API en dur dans le code (ça arrive aux meilleurs).</p>
+<p>Git push. Vercel build. En ligne.</p>
+<h2 id="ce-que-jai-appris-la-vérité-sans-filtre">Ce que j’ai appris (La vérité sans filtre)</h2>
+<p>Utiliser Windsurf ne fait pas de vous un bon développeur par magie.</p>
+<ol>
+<li><strong>Il faut savoir lire le code</strong> : Si vous acceptez aveuglément tout ce que l’IA génère, vous aurez une dette technique monstrueuse en 48h.</li>
+<li><strong>Le contexte est roi</strong> : La force de Windsurf, c’est qu’il lit tout votre projet. Plus votre projet est bien structuré, plus l’IA est pertinente.</li>
+<li><strong>Ça coûte cher (mais pas tant que ça)</strong> : Oui, c’est un abonnement. Mais comparé au coût d’un freelance ou juste à la valeur de mon temps ? C’est rentabilisé en une matinée.</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>En Algérie, on a souvent l’impression d’être désavantagé par le manque de ressources ou d’écosystème. Mais avec des outils comme Windsurf, un développeur seul dans sa chambre à Béjaïa ou Oran a la même puissance de feu qu’une petite équipe à la Silicon Valley.</p>
+<p>La barrière à l’entrée n’a jamais été aussi basse. La seule question qui reste, c’est : <strong>qu’allez-vous construire demain ?</strong></p>
+<hr>
+<p><em>Envie de voir le résultat ? Abonnez-vous à la newsletter pour être notifié du lancement de ce SaaS.</em></p>  </div> <aside class="hidden lg:block"> <div class="sticky top-24"> <nav class="p-4 bg-[var(--color-bg-secondary)] rounded-xl" aria-label="Table des matières"><h2 class="text-sm font-semibold text-[var(--color-text)] mb-4 uppercase tracking-wider">
+Table des matières
+</h2><ul class="space-y-2"><li class><a href="#9h30--larchitecture-ou-comment-gagner-3-jours-en-30-minutes" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">9h30 : L’architecture (ou comment gagner 3 jours en 30 minutes)</a></li><li class><a href="#11h00--le-flow-du-backend-avec-supabase" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">11h00 : Le “Flow” du Backend avec Supabase</a></li><li class><a href="#14h00--coder-linterface-sans-toucher-au-css" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">14h00 : Coder l’interface sans toucher au CSS</a></li><li class><a href="#16h30--le-moment-où-ça-casse-et-où-lia-brille" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">16h30 : Le moment où ça casse (et où l’IA brille)</a></li><li class><a href="#20h00--déploiement-sur-vercel" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">20h00 : Déploiement sur Vercel</a></li><li class><a href="#ce-que-jai-appris-la-vérité-sans-filtre" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">Ce que j’ai appris (La vérité sans filtre)</a></li><li class><a href="#conclusion" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">Conclusion</a></li></ul></nav> </div> </aside> </div> <!-- Reactions --> <div class="mt-12 pt-8 border-t border-[var(--color-bg-secondary)]"> <div class="flex items-center gap-4 py-4" id="reactions-container" data-slug="coder-un-saas-complet-en-24h-avec-windsurf"> <span class="text-sm text-[var(--color-text-muted)]">Cet article vous a plu ?</span> <div class="flex items-center gap-2"> <button class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all" data-reaction="like"> <span class="text-lg">👍</span> <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span> </button> <button class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all" data-reaction="love"> <span class="text-lg">❤️</span> <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span> </button> <button class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all" data-reaction="fire"> <span class="text-lg">🔥</span> <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span> </button> <button class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all" data-reaction="think"> <span class="text-lg">🤔</span> <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span> </button> </div> </div> <script type="module">const g=document.getElementById("reactions-container"),n=g?.getAttribute("data-slug"),u=`reactions_${n}`,t=JSON.parse(localStorage.getItem(u)||"{}"),o=localStorage.getItem(`user_reaction_${n}`);document.querySelectorAll(".reaction-btn").forEach(c=>{const r=c.getAttribute("data-reaction"),a=c.querySelector(".reaction-count");r&&a&&t[r]&&(a.textContent=t[r]),r===o&&c.classList.add("ring-2","ring-[var(--color-accent)]"),c.addEventListener("click",()=>{const e=c.getAttribute("data-reaction");if(!e)return;if(document.querySelectorAll(".reaction-btn").forEach(s=>{s.classList.remove("ring-2","ring-[var(--color-accent)]")}),o===e)t[e]=Math.max(0,(t[e]||1)-1),localStorage.removeItem(`user_reaction_${n}`);else{if(o&&t[o]){t[o]=Math.max(0,t[o]-1);const l=document.querySelector(`[data-reaction="${o}"]`)?.querySelector(".reaction-count");l&&(l.textContent=t[o])}t[e]=(t[e]||0)+1,localStorage.setItem(`user_reaction_${n}`,e),c.classList.add("ring-2","ring-[var(--color-accent)]")}const i=c.querySelector(".reaction-count");i&&(i.textContent=t[e]),localStorage.setItem(u,JSON.stringify(t))})});</script> </div> <!-- Related Posts --> <section class="mt-16 pt-8 border-t border-[var(--color-bg-secondary)]"><h2 class="text-2xl font-bold mb-6 text-[var(--color-text)]">Articles similaires</h2><div class="grid gap-6 md:grid-cols-3"><a href="/blog/pourquoi-je-ne-vends-pas-mon-saas-par-carte-bancaire" class="group block p-4 rounded-xl bg-[var(--color-bg-secondary)] hover:bg-[var(--color-bg-tertiary)] transition-colors"><img src="https://i.postimg.cc/Jh9RHpYM/strip-ccp.jpg" alt="Pourquoi je ne vends pas mon SaaS par carte bancaire (et comment l'IA gère mes virements CCP)" class="w-full h-32 object-cover rounded-lg mb-3"><span class="text-xs text-[var(--color-accent)] font-medium">SaaS &amp; Business</span><h3 class="font-semibold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors line-clamp-2 mt-1">Pourquoi je ne vends pas mon SaaS par carte bancaire (et comment l&#39;IA gère mes virements CCP)</h3><p class="text-sm text-[var(--color-text-muted)] mt-2 line-clamp-2">Lancer un SaaS en Algérie en 2025 sans Stripe ? C&#39;est possible. Voici ma stratégie technique avec Windsurf pour automatiser les paiements par virement et contourner le blocage du e-paiement.</p></a><a href="/blog/ia-et-developpement-saas-en-algerie-opportunite-ou-mirage" class="group block p-4 rounded-xl bg-[var(--color-bg-secondary)] hover:bg-[var(--color-bg-tertiary)] transition-colors"><img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?q=80&w=2664&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="IA et développement SaaS en Algérie : opportunité ou mirage ?" class="w-full h-32 object-cover rounded-lg mb-3"><span class="text-xs text-[var(--color-accent)] font-medium">Algérie Tech</span><h3 class="font-semibold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors line-clamp-2 mt-1">IA et développement SaaS en Algérie : opportunité ou mirage ?</h3><p class="text-sm text-[var(--color-text-muted)] mt-2 line-clamp-2">L&#39;IA transforme le développement SaaS. Mais en Algérie, où les outils et données manquent, comment en tirer parti ? Mes retours d&#39;expérience et stratégies concrètes.</p></a><a href="/blog/integrer-ia-projets-saas" class="group block p-4 rounded-xl bg-[var(--color-bg-secondary)] hover:bg-[var(--color-bg-tertiary)] transition-colors"><img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop" alt="Intégrer l'IA dans vos projets SaaS : retour d'expérience" class="w-full h-32 object-cover rounded-lg mb-3"><span class="text-xs text-[var(--color-accent)] font-medium">IA-ML</span><h3 class="font-semibold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors line-clamp-2 mt-1">Intégrer l&#39;IA dans vos projets SaaS : retour d&#39;expérience</h3><p class="text-sm text-[var(--color-text-muted)] mt-2 line-clamp-2">Comment j&#39;ai intégré l&#39;intelligence artificielle dans mes projets SaaS, les défis rencontrés et les leçons apprises en cours de route.</p></a></div></section> <!-- Newsletter --> <section class="mt-16 p-8 rounded-2xl bg-gradient-to-br from-[var(--color-accent)]/10 to-[var(--color-accent-orange)]/10 border border-[var(--color-accent)]/20"><div class="text-center max-w-xl mx-auto"><h2 class="text-2xl font-bold mb-2 text-[var(--color-text)]">
+Restez informé
+</h2><p class="text-[var(--color-text-muted)] mb-6">
+Recevez mes derniers articles sur le SaaS, l'IA et le développement en Algérie. Pas de spam, promis.
+</p><form id="newsletter-form" class="flex flex-col sm:flex-row gap-3"><input type="email" name="email" placeholder="votre@email.com" required class="flex-1 px-4 py-3 rounded-xl bg-[var(--color-bg)] border border-[var(--color-bg-secondary)] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-accent)] transition-colors"><button type="submit" class="px-6 py-3 rounded-xl bg-[var(--color-accent)] text-[var(--color-bg)] font-semibold hover:opacity-90 transition-opacity whitespace-nowrap">
+S'abonner
+</button></form><p id="newsletter-message" class="mt-4 text-sm hidden"></p></div></section><script type="module">const r=document.querySelectorAll("#newsletter-form, #newsletter-form-inline");r.forEach(t=>{t?.addEventListener("submit",async s=>{s.preventDefault();const n=new FormData(t).get("email"),e=document.getElementById("newsletter-message");try{if((await fetch("/api/newsletter",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:n})})).ok)e&&(e.textContent="✅ Merci ! Vous êtes inscrit.",e.className="mt-4 text-sm text-green-500",e.classList.remove("hidden")),t.reset();else throw new Error("Erreur")}catch{e&&(e.textContent="❌ Une erreur est survenue. Réessayez.",e.className="mt-4 text-sm text-red-500",e.classList.remove("hidden"))}})});</script> <!-- Navigation --> <nav class="mt-16 pt-8 border-t border-[var(--color-bg-secondary)]"> <div class="flex justify-between items-center"> <a href="/blog/ia-et-developpement-saas-en-algerie-opportunite-ou-mirage" class="group flex flex-col items-start max-w-[45%]"> <span class="text-sm text-[var(--color-text-muted)] mb-1">← Article précédent</span> <span class="text-[var(--color-accent)] group-hover:text-[var(--color-accent-orange)] transition-colors font-medium truncate w-full"> IA et développement SaaS en Algérie : opportunité ou mirage ? </span> </a> <a href="/blog/pourquoi-je-ne-vends-pas-mon-saas-par-carte-bancaire" class="group flex flex-col items-end max-w-[45%]"> <span class="text-sm text-[var(--color-text-muted)] mb-1">Article suivant →</span> <span class="text-[var(--color-accent)] group-hover:text-[var(--color-accent-orange)] transition-colors font-medium truncate w-full text-right"> Pourquoi je ne vends pas mon SaaS par carte bancaire (et comment l&#39;IA gère mes virements CCP) </span> </a> </div> </nav> </article>  <!-- Comments Section --><section class="mt-16 pt-8 border-t border-[var(--color-bg-secondary)]" data-slug="coder-un-saas-complet-en-24h-avec-windsurf" data-title="Ma journée type : Coder un SaaS complet en 24h avec Windsurf (depuis l'Algérie)"> <div class="max-w-4xl mx-auto"> <h3 class="text-2xl font-bold text-[var(--color-text)] mb-6">
+💬 Commentaires
+</h3> <!-- Comment Form --> <div class="bg-[var(--color-bg-secondary)] rounded-xl p-6 mb-6"> <form id="comment-form" class="space-y-4"> <div class="grid grid-cols-1 md:grid-cols-2 gap-4"> <div> <label for="name" class="block text-sm font-medium text-[var(--color-text)] mb-2">
+Nom *
+</label> <input type="text" id="name" name="name" required class="w-full px-4 py-2 bg-[var(--color-bg)] border border-[var(--color-bg)] rounded-lg text-[var(--color-text)] placeholder-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent" placeholder="Votre nom"> </div> <div> <label for="email" class="block text-sm font-medium text-[var(--color-text)] mb-2">
+Email *
+</label> <input type="email" id="email" name="email" required class="w-full px-4 py-2 bg-[var(--color-bg)] border border-[var(--color-bg)] rounded-lg text-[var(--color-text)] placeholder-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent" placeholder="votre@email.com"> </div> </div> <div> <label for="comment" class="block text-sm font-medium text-[var(--color-text)] mb-2">
+Commentaire *
+</label> <textarea id="comment" name="comment" rows="4" required class="w-full px-4 py-2 bg-[var(--color-bg)] border border-[var(--color-bg)] rounded-lg text-[var(--color-text)] placeholder-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent resize-vertical" placeholder="Partagez vos pensées..."></textarea> </div> <div class="flex items-center justify-between"> <p class="text-sm text-[var(--color-text-muted)]">
+Votre email ne sera pas publié. Les champs obligatoires sont marqués *
+</p> <button type="submit" class="px-6 py-2 bg-[var(--color-accent)] text-[var(--color-bg)] rounded-lg font-medium hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg-secondary)]">
+Publier le commentaire
+</button> </div> </form> </div> <!-- Comments List --> <div id="comments-list" class="space-y-6"> <div class="text-center py-8 text-[var(--color-text-muted)]"> <p>Soyez le premier à commenter cet article !</p> </div> <!-- Placeholder for new comments (pending) --> <div id="new-comments" class="space-y-6"></div> </div> <!-- Success Message --> <div id="success-message" class="hidden bg-green-500/10 border border-green-500/20 rounded-lg p-4 text-green-400 text-center">
+✅ Merci pour votre commentaire ! Il sera visible après modération.
+</div> </div> </section> <script type="module">
+  import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
+  
+  // Get article data from data attributes
+  const commentsSection = document.querySelector('section[data-slug]');
+  const articleSlug = commentsSection?.dataset.slug || '';
+  const articleTitle = commentsSection?.dataset.title || '';
+  
+  // Supabase configuration
+  const supabaseUrl = 'https://pzyyjsljzcnmbovbftmh.supabase.co';
+  const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6eXlqc2xqemNubWJvdmJmdG1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMjU4NjMsImV4cCI6MjA4MDgwMTg2M30.xq5pjLruOTEGBQ7Pr12C5X4iyHkCYCwH6HNwfYUCswk';
+  
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  
+  // Handle comment form submission
+  const commentForm = document.getElementById('comment-form');
+  if (commentForm) {
+    commentForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const target = e.target;
+      if (!target) return;
+      
+      // Get form data
+      const formData = new FormData(target);
+      const nameValue = formData.get('name');
+      const emailValue = formData.get('email');
+      const commentValue = formData.get('comment');
+      
+      // Type guards
+      if (!nameValue || !emailValue || !commentValue || 
+          typeof nameValue !== 'string' || 
+          typeof emailValue !== 'string' || 
+          typeof commentValue !== 'string') {
+        return;
+      }
+      
+      // Show loading state
+      const submitButton = target.querySelector('button[type="submit"]');
+      const originalText = submitButton?.textContent;
+      if (submitButton) {
+        submitButton.textContent = 'Envoi en cours...';
+        submitButton.disabled = true;
+      }
+      
+      try {
+        // Insert comment into Supabase
+        const { data, error } = await supabase
+          .from('comments')
+          .insert({
+            name: nameValue,
+            email: emailValue,
+            content: commentValue,
+            article_slug: articleSlug,
+            article_title: articleTitle,
+            status: 'pending'
+          })
+          .select();
+        
+        if (error) throw error;
+        
+        // Show success message
+        const successMessage = document.getElementById('success-message');
+        if (successMessage) {
+          successMessage.classList.remove('hidden');
+        }
+        
+        // Reset form
+        target.reset();
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          if (successMessage) {
+            successMessage.classList.add('hidden');
+          }
+        }, 5000);
+        
+      } catch (error) {
+        console.error('Error submitting comment:', error);
+        alert('Une erreur est survenue. Veuillez réessayer plus tard.');
+      } finally {
+        // Reset button state
+        if (submitButton) {
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
+        }
+      }
+    });
+  }
+</script> <vercel-analytics data-props="{}" data-params="{&#34;slug&#34;:&#34;coder-un-saas-complet-en-24h-avec-windsurf&#34;}" data-pathname="/blog/coder-un-saas-complet-en-24h-avec-windsurf/"></vercel-analytics> <script type="module">var f="@vercel/analytics",l="1.6.1",w=()=>{window.va||(window.va=function(...r){(window.vaq=window.vaq||[]).push(r)})};function d(){return typeof window<"u"}function u(){try{const e="production"}catch{}return"production"}function v(e="auto"){if(e==="auto"){window.vam=u();return}window.vam=e}function m(){return(d()?window.vam:u())||"production"}function c(){return m()==="development"}function b(e,r){if(!e||!r)return e;let n=e;try{const t=Object.entries(r);for(const[a,i]of t)if(!Array.isArray(i)){const o=s(i);o.test(n)&&(n=n.replace(o,`/[${a}]`))}for(const[a,i]of t)if(Array.isArray(i)){const o=s(i.join("/"));o.test(n)&&(n=n.replace(o,`/[...${a}]`))}return n}catch{return e}}function s(e){return new RegExp(`/${h(e)}(?=[/?#]|$)`)}function h(e){return e.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}function y(e){return e.scriptSrc?e.scriptSrc:c()?"https://va.vercel-scripts.com/v1/script.debug.js":e.basePath?`${e.basePath}/insights/script.js`:"/_vercel/insights/script.js"}function g(e={debug:!0}){var r;if(!d())return;v(e.mode),w(),e.beforeSend&&((r=window.va)==null||r.call(window,"beforeSend",e.beforeSend));const n=y(e);if(document.head.querySelector(`script[src*="${n}"]`))return;const t=document.createElement("script");t.src=n,t.defer=!0,t.dataset.sdkn=f+(e.framework?`/${e.framework}`:""),t.dataset.sdkv=l,e.disableAutoTrack&&(t.dataset.disableAutoTrack="1"),e.endpoint?t.dataset.endpoint=e.endpoint:e.basePath&&(t.dataset.endpoint=`${e.basePath}/insights`),e.dsn&&(t.dataset.dsn=e.dsn),t.onerror=()=>{const a=c()?"Please check if any ad blockers are enabled and try again.":"Be sure to enable Web Analytics for your project and deploy again. See https://vercel.com/docs/analytics/quickstart for more information.";console.log(`[Vercel Web Analytics] Failed to load script from ${n}. ${a}`)},c()&&e.debug===!1&&(t.dataset.debug="false"),document.head.appendChild(t)}function p({route:e,path:r}){var n;(n=window.va)==null||n.call(window,"pageview",{route:e,path:r})}function k(){try{return}catch{}}customElements.define("vercel-analytics",class extends HTMLElement{constructor(){super();try{const r=JSON.parse(this.dataset.props??"{}"),n=JSON.parse(this.dataset.params??"{}");g({...r,disableAutoTrack:!0,framework:"astro",basePath:k(),beforeSend:window.webAnalyticsBeforeSend});const t=this.dataset.pathname;p({route:b(t??"",n),path:t})}catch(r){throw new Error(`Failed to parse WebAnalytics properties: ${r}`)}}});</script>  </main> <footer class="bg-[var(--color-bg-secondary)] border-t border-[var(--color-bg-secondary)]"> <div class="max-w-6xl mx-auto px-4 py-12"> <div class="grid grid-cols-1 md:grid-cols-3 gap-8"> <!-- Brand --> <div> <a href="/" class="flex items-center gap-2 mb-4"> <img src="/logo_malm.webp" alt="Malmeu Logo" class="h-10 w-auto"> <span class="text-xl font-bold text-[var(--color-text)]"></span> </a> <p class="text-[var(--color-text-muted)] text-sm">
+Blog technique sur le développement web, l'IA, les SaaS et l'entrepreneuriat tech depuis l'Algérie.
+</p> </div> <!-- Links --> <div> <h3 class="text-[var(--color-text)] font-semibold mb-4">Navigation</h3> <ul class="space-y-2"> <li> <a href="/blog" class="text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors text-sm"> Blog </a> </li><li> <a href="/about" class="text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors text-sm"> À propos </a> </li><li> <a href="/contact" class="text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors text-sm"> Contact </a> </li><li> <a href="/rss.xml" class="text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors text-sm"> RSS </a> </li> </ul> </div> <!-- Social --> <div> <h3 class="text-[var(--color-text)] font-semibold mb-4">Réseaux sociaux</h3> <div class="flex gap-4"> <a href="https://github.com/Malmeu" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-[var(--color-bg)] hover:bg-[var(--color-accent)]/20 transition-colors" aria-label="GitHub"> <svg class="w-5 h-5 text-[var(--color-text-muted)] hover:text-[var(--color-accent)]" fill="currentColor" viewBox="0 0 24 24"> <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path> </svg> </a><a href="https://www.linkedin.com/in/sofiane-boudjada-a9960512b/" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-[var(--color-bg)] hover:bg-[var(--color-accent)]/20 transition-colors" aria-label="LinkedIn"> <svg class="w-5 h-5 text-[var(--color-text-muted)] hover:text-[var(--color-accent)]" fill="currentColor" viewBox="0 0 24 24"> <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path> </svg> </a><a href="https://comeup.com/fr/@sofianeboudjada" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-[var(--color-bg)] hover:bg-[var(--color-accent)]/20 transition-colors" aria-label="ComeUp"> <svg class="w-5 h-5 text-[var(--color-text-muted)] hover:text-[var(--color-accent)]" fill="currentColor" viewBox="0 0 24 24"> <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"></path> </svg> </a> </div> </div> </div> <!-- Copyright --> <div class="mt-12 pt-8 border-t border-[var(--color-bg)] text-center"> <p class="text-[var(--color-text-muted)] text-sm">
+© 2025 Malmeu. Tous droits réservés. Fait avec ❤️ depuis l'espace.
+</p> </div> </div> </footer> <vercel-analytics data-props="{}" data-params="{&#34;slug&#34;:&#34;coder-un-saas-complet-en-24h-avec-windsurf&#34;}" data-pathname="/blog/coder-un-saas-complet-en-24h-avec-windsurf/"></vercel-analytics>  <script type="module">const e=localStorage.getItem("theme")||"dark";document.documentElement.setAttribute("data-theme",e);function m(){const t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t),localStorage.setItem("theme",t)}window.toggleTheme=m;</script> </body> </html>

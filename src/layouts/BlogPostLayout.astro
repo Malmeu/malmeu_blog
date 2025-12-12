@@ -2,8 +2,14 @@
 import BaseLayout from './BaseLayout.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import Comments from '../components/Comments.astro';
+import ShareButtons from '../components/ShareButtons.astro';
+import RelatedPosts from '../components/RelatedPosts.astro';
+import Newsletter from '../components/Newsletter.astro';
+import PostReactions from '../components/PostReactions.astro';
 import type { CollectionEntry } from 'astro:content';
 import Analytics from '@vercel/analytics/astro'
+
+const currentUrl = Astro.url.href;
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -85,14 +91,15 @@ const readingTime = Math.ceil(wordCount / wordsPerMinute);
         {description}
       </p>
       
-      <div class="flex items-center gap-4 text-sm text-[var(--color-text-muted)]">
-        <time datetime={publishDate.toISOString()}>
+      <div class="flex items-center justify-between flex-wrap gap-4">
+        <time datetime={publishDate.toISOString()} class="text-sm text-[var(--color-text-muted)]">
           {publishDate.toLocaleDateString('fr-FR', { 
             year: 'numeric', 
             month: 'long', 
             day: 'numeric' 
           })}
         </time>
+        <ShareButtons title={title} url={currentUrl} />
       </div>
       
       {tags && tags.length > 0 && (
@@ -152,6 +159,21 @@ const readingTime = Math.ceil(wordCount / wordsPerMinute);
         </aside>
       )}
     </div>
+
+    <!-- Reactions -->
+    <div class="mt-12 pt-8 border-t border-[var(--color-bg-secondary)]">
+      <PostReactions slug={post.slug} />
+    </div>
+
+    <!-- Related Posts -->
+    <RelatedPosts 
+      currentSlug={post.slug} 
+      currentTags={tags || []} 
+      currentCategory={category} 
+    />
+
+    <!-- Newsletter -->
+    <Newsletter />
 
     <!-- Navigation -->
     <nav class="mt-16 pt-8 border-t border-[var(--color-bg-secondary)]">

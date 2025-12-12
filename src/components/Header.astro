@@ -1,4 +1,6 @@
 ---
+import Search from './Search.astro';
+
 const navLinks = [
   { href: '/', label: 'Accueil' },
   { href: '/blog', label: 'Blog' },
@@ -38,6 +40,9 @@ const currentPath = Astro.url.pathname;
             {link.label}
           </a>
         ))}
+        
+        <!-- Search -->
+        <Search />
         
         <!-- Theme Toggle -->
         <button 
