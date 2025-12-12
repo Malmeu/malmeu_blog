@@ -11,35 +11,41 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Email invalide' }), { status: 400, headers });
     }
     
-    // Supabase via fetch direct
-    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-    const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+    const apiKey = import.meta.env.SYSTEME_IO_API_KEY;
     
-    if (!supabaseUrl || !supabaseKey) {
-      console.log('Newsletter: Missing Supabase env vars');
-      return new Response(JSON.stringify({ success: true, db: false }), { status: 200, headers });
+    if (!apiKey) {
+      console.log('Newsletter: Missing Systeme.io API key');
+      return new Response(JSON.stringify({ success: false, error: 'Configuration manquante' }), { status: 500, headers });
     }
     
-    const res = await fetch(`${supabaseUrl}/rest/v1/newsletter_subscribers`, {
+    // Ajouter le contact à Systeme.io
+    const res = await fetch('https://api.systeme.io/api/contacts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
-        'Prefer': 'resolution=merge-duplicates'
+        'X-API-Key': apiKey
       },
-      body: JSON.stringify({ email })
+      body: JSON.stringify({
+        email: email,
+        tags: [{ name: 'blog-newsletter' }]
+      })
     });
     
     if (!res.ok) {
       const error = await res.text();
-      console.log('Newsletter Supabase error:', error);
-      return new Response(JSON.stringify({ success: true, db: false, error }), { status: 200, headers });
+      console.log('Systeme.io error:', error);
+      
+      // Si le contact existe déjà, c'est OK
+      if (res.status === 422) {
+        return new Response(JSON.stringify({ success: true, message: 'Déjà inscrit' }), { status: 200, headers });
+      }
+      
+      return new Response(JSON.stringify({ success: false, error: 'Erreur inscription' }), { status: 500, headers });
     }
     
-    return new Response(JSON.stringify({ success: true, db: true }), { status: 200, headers });
+    return new Response(JSON.stringify({ success: true }), { status: 200, headers });
   } catch (err) {
     console.log('Newsletter error:', err);
-    return new Response(JSON.stringify({ success: true, db: false }), { status: 200, headers });
+    return new Response(JSON.stringify({ success: false, error: 'Erreur serveur' }), { status: 500, headers });
   }
 };
