@@ -1,6 +1,6 @@
+import { s as supabase } from '../../chunks/supabase_BDHK2hk_.mjs';
 export { renderers } from '../../renderers.mjs';
 
-const subscribers = /* @__PURE__ */ new Set();
 const POST = async ({ request }) => {
   try {
     const { email } = await request.json();
@@ -10,8 +10,21 @@ const POST = async ({ request }) => {
         headers: { "Content-Type": "application/json" }
       });
     }
-    subscribers.add(email);
-    console.log(`New subscriber: ${email}`);
+    if (!supabase) {
+      console.log(`Newsletter signup (no DB): ${email}`);
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    const { error } = await supabase.from("newsletter_subscribers").upsert({ email }, { onConflict: "email" });
+    if (error) {
+      console.error("Newsletter error:", error);
+      return new Response(JSON.stringify({ error: "Erreur inscription" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
       headers: { "Content-Type": "application/json" }

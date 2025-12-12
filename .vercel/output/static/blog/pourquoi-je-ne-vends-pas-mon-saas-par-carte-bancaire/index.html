@@ -156,7 +156,103 @@ L’innovation, ce n’est pas utiliser les derniers outils à la mode. C’est 
 <hr>
 <p><em>Vous voulez voir le code de ma fonction de validation de reçus ? Dites-le moi en commentaire, je ferai un tuto technique dédié.</em></p>  </div> <aside class="hidden lg:block"> <div class="sticky top-24"> <nav class="p-4 bg-[var(--color-bg-secondary)] rounded-xl" aria-label="Table des matières"><h2 class="text-sm font-semibold text-[var(--color-text)] mb-4 uppercase tracking-wider">
 Table des matières
-</h2><ul class="space-y-2"><li class><a href="#le-problème--labonnement-mensuel-est-mort-en-algérie" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">Le problème : L’abonnement mensuel est mort en Algérie</a></li><li class><a href="#mon-workflow-technique--automatiser-larchaïque" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">Mon workflow technique : Automatiser l’archaïque</a></li><li class="ml-4"><a href="#1-lupload-du-reçu-preuve-de-paiement" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">1. L’upload du reçu (Preuve de paiement)</a></li><li class="ml-4"><a href="#2-lanalyse-par-ia-ocr-intelligent" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">2. L’analyse par IA (OCR intelligent)</a></li><li class><a href="#pourquoi-lia-change-tout-pour-le-saas-local" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">Pourquoi l’IA change tout pour le SaaS local</a></li><li class><a href="#les-chiffres--est-ce-que-ça-marche" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">Les chiffres : Est-ce que ça marche ?</a></li><li class><a href="#conclusion--ne-copiez-pas-la-silicon-valley" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">Conclusion : Ne copiez pas la Silicon Valley</a></li></ul></nav> </div> </aside> </div> <!-- Reactions --> <div class="mt-12 pt-8 border-t border-[var(--color-bg-secondary)]"> <div class="flex items-center gap-4 py-4" id="reactions-container" data-slug="pourquoi-je-ne-vends-pas-mon-saas-par-carte-bancaire"> <span class="text-sm text-[var(--color-text-muted)]">Cet article vous a plu ?</span> <div class="flex items-center gap-2"> <button class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all" data-reaction="like"> <span class="text-lg">👍</span> <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span> </button> <button class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all" data-reaction="love"> <span class="text-lg">❤️</span> <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span> </button> <button class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all" data-reaction="fire"> <span class="text-lg">🔥</span> <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span> </button> <button class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all" data-reaction="think"> <span class="text-lg">🤔</span> <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span> </button> </div> </div> <script type="module">const g=document.getElementById("reactions-container"),n=g?.getAttribute("data-slug"),u=`reactions_${n}`,t=JSON.parse(localStorage.getItem(u)||"{}"),o=localStorage.getItem(`user_reaction_${n}`);document.querySelectorAll(".reaction-btn").forEach(c=>{const r=c.getAttribute("data-reaction"),a=c.querySelector(".reaction-count");r&&a&&t[r]&&(a.textContent=t[r]),r===o&&c.classList.add("ring-2","ring-[var(--color-accent)]"),c.addEventListener("click",()=>{const e=c.getAttribute("data-reaction");if(!e)return;if(document.querySelectorAll(".reaction-btn").forEach(s=>{s.classList.remove("ring-2","ring-[var(--color-accent)]")}),o===e)t[e]=Math.max(0,(t[e]||1)-1),localStorage.removeItem(`user_reaction_${n}`);else{if(o&&t[o]){t[o]=Math.max(0,t[o]-1);const l=document.querySelector(`[data-reaction="${o}"]`)?.querySelector(".reaction-count");l&&(l.textContent=t[o])}t[e]=(t[e]||0)+1,localStorage.setItem(`user_reaction_${n}`,e),c.classList.add("ring-2","ring-[var(--color-accent)]")}const i=c.querySelector(".reaction-count");i&&(i.textContent=t[e]),localStorage.setItem(u,JSON.stringify(t))})});</script> </div> <!-- Related Posts --> <section class="mt-16 pt-8 border-t border-[var(--color-bg-secondary)]"><h2 class="text-2xl font-bold mb-6 text-[var(--color-text)]">Articles similaires</h2><div class="grid gap-6 md:grid-cols-3"><a href="/blog/coder-un-saas-complet-en-24h-avec-windsurf" class="group block p-4 rounded-xl bg-[var(--color-bg-secondary)] hover:bg-[var(--color-bg-tertiary)] transition-colors"><img src="https://images.unsplash.com/photo-1484417894907-623942c8ee29?q=80&w=2664&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Ma journée type : Coder un SaaS complet en 24h avec Windsurf (depuis l'Algérie)" class="w-full h-32 object-cover rounded-lg mb-3"><span class="text-xs text-[var(--color-accent)] font-medium">Productivité &amp; IA</span><h3 class="font-semibold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors line-clamp-2 mt-1">Ma journée type : Coder un SaaS complet en 24h avec Windsurf (depuis l&#39;Algérie)</h3><p class="text-sm text-[var(--color-text-muted)] mt-2 line-clamp-2">Plongée dans mon workflow avec Windsurf AI. De l&#39;idée à l&#39;architecture, en passant par le debug, voici comment je construis des SaaS ultra-rapides sans perdre mon âme de dev.</p></a><a href="/blog/ia-et-developpement-saas-en-algerie-opportunite-ou-mirage" class="group block p-4 rounded-xl bg-[var(--color-bg-secondary)] hover:bg-[var(--color-bg-tertiary)] transition-colors"><img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?q=80&w=2664&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="IA et développement SaaS en Algérie : opportunité ou mirage ?" class="w-full h-32 object-cover rounded-lg mb-3"><span class="text-xs text-[var(--color-accent)] font-medium">Algérie Tech</span><h3 class="font-semibold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors line-clamp-2 mt-1">IA et développement SaaS en Algérie : opportunité ou mirage ?</h3><p class="text-sm text-[var(--color-text-muted)] mt-2 line-clamp-2">L&#39;IA transforme le développement SaaS. Mais en Algérie, où les outils et données manquent, comment en tirer parti ? Mes retours d&#39;expérience et stratégies concrètes.</p></a><a href="/blog/developper-deployer-algerie" class="group block p-4 rounded-xl bg-[var(--color-bg-secondary)] hover:bg-[var(--color-bg-tertiary)] transition-colors"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop" alt="Développer et déployer depuis l'Algérie : défis et solutions" class="w-full h-32 object-cover rounded-lg mb-3"><span class="text-xs text-[var(--color-accent)] font-medium">Algérie Tech</span><h3 class="font-semibold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors line-clamp-2 mt-1">Développer et déployer depuis l&#39;Algérie : défis et solutions</h3><p class="text-sm text-[var(--color-text-muted)] mt-2 line-clamp-2">Mon expérience en tant que développeur basé en Algérie, les obstacles rencontrés et les solutions que j&#39;ai trouvées pour travailler efficacement.</p></a></div></section> <!-- Newsletter --> <section class="mt-16 p-8 rounded-2xl bg-gradient-to-br from-[var(--color-accent)]/10 to-[var(--color-accent-orange)]/10 border border-[var(--color-accent)]/20"><div class="text-center max-w-xl mx-auto"><h2 class="text-2xl font-bold mb-2 text-[var(--color-text)]">
+</h2><ul class="space-y-2"><li class><a href="#le-problème--labonnement-mensuel-est-mort-en-algérie" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">Le problème : L’abonnement mensuel est mort en Algérie</a></li><li class><a href="#mon-workflow-technique--automatiser-larchaïque" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">Mon workflow technique : Automatiser l’archaïque</a></li><li class="ml-4"><a href="#1-lupload-du-reçu-preuve-de-paiement" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">1. L’upload du reçu (Preuve de paiement)</a></li><li class="ml-4"><a href="#2-lanalyse-par-ia-ocr-intelligent" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">2. L’analyse par IA (OCR intelligent)</a></li><li class><a href="#pourquoi-lia-change-tout-pour-le-saas-local" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">Pourquoi l’IA change tout pour le SaaS local</a></li><li class><a href="#les-chiffres--est-ce-que-ça-marche" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">Les chiffres : Est-ce que ça marche ?</a></li><li class><a href="#conclusion--ne-copiez-pas-la-silicon-valley" class="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors block py-1">Conclusion : Ne copiez pas la Silicon Valley</a></li></ul></nav> </div> </aside> </div> <!-- Reactions --> <div class="mt-12 pt-8 border-t border-[var(--color-bg-secondary)]"> <div class="flex items-center gap-4 py-4" id="reactions-container" data-slug="pourquoi-je-ne-vends-pas-mon-saas-par-carte-bancaire"> <span class="text-sm text-[var(--color-text-muted)]">Cet article vous a plu ?</span> <div class="flex items-center gap-2"> <button class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all" data-reaction="like"> <span class="text-lg">👍</span> <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span> </button> <button class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all" data-reaction="love"> <span class="text-lg">❤️</span> <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span> </button> <button class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all" data-reaction="fire"> <span class="text-lg">🔥</span> <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span> </button> <button class="reaction-btn flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 transition-all" data-reaction="think"> <span class="text-lg">🤔</span> <span class="reaction-count text-sm font-medium text-[var(--color-text-muted)]">0</span> </button> </div> </div> <script>
+  (function() {
+    const container = document.getElementById('reactions-container');
+    const slug = container?.getAttribute('data-slug');
+    
+    // Générer un fingerprint simple pour identifier l'utilisateur
+    function getFingerprint() {
+      let fp = localStorage.getItem('user_fingerprint');
+      if (!fp) {
+        fp = 'fp_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+        localStorage.setItem('user_fingerprint', fp);
+      }
+      return fp;
+    }
+    
+    const fingerprint = getFingerprint();
+    let userReaction = localStorage.getItem(`user_reaction_${slug}`);
+    
+    // Charger les compteurs depuis l'API
+    async function loadReactions() {
+      try {
+        const res = await fetch(`/api/reactions?slug=${slug}`);
+        const counts = await res.json();
+        
+        document.querySelectorAll('.reaction-btn').forEach(btn => {
+          const reaction = btn.getAttribute('data-reaction');
+          const countEl = btn.querySelector('.reaction-count');
+          if (reaction && countEl && counts[reaction] !== undefined) {
+            countEl.textContent = counts[reaction];
+          }
+          
+          // Highlight user's previous reaction
+          if (reaction === userReaction) {
+            btn.classList.add('ring-2', 'ring-[var(--color-accent)]');
+          }
+        });
+      } catch (e) {
+        console.log('Could not load reactions');
+      }
+    }
+    
+    // Envoyer une réaction à l'API
+    async function sendReaction(reaction) {
+      try {
+        await fetch('/api/reactions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug, reaction, fingerprint })
+        });
+      } catch (e) {
+        console.log('Could not save reaction');
+      }
+    }
+    
+    // Initialiser
+    loadReactions();
+    
+    // Event listeners
+    document.querySelectorAll('.reaction-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const currentReaction = btn.getAttribute('data-reaction');
+        if (!currentReaction) return;
+        
+        // Remove previous highlight
+        document.querySelectorAll('.reaction-btn').forEach(b => {
+          b.classList.remove('ring-2', 'ring-[var(--color-accent)]');
+        });
+        
+        const countEl = btn.querySelector('.reaction-count');
+        const currentCount = parseInt(countEl?.textContent || '0');
+        
+        if (userReaction === currentReaction) {
+          // Toggle off
+          if (countEl) countEl.textContent = Math.max(0, currentCount - 1);
+          localStorage.removeItem(`user_reaction_${slug}`);
+          userReaction = null;
+        } else {
+          // Decrement old reaction
+          if (userReaction) {
+            const oldBtn = document.querySelector(`[data-reaction="${userReaction}"]`);
+            const oldCount = oldBtn?.querySelector('.reaction-count');
+            if (oldCount) oldCount.textContent = Math.max(0, parseInt(oldCount.textContent || '1') - 1);
+          }
+          
+          // Add new reaction
+          if (countEl) countEl.textContent = currentCount + 1;
+          localStorage.setItem(`user_reaction_${slug}`, currentReaction);
+          userReaction = currentReaction;
+          btn.classList.add('ring-2', 'ring-[var(--color-accent)]');
+        }
+        
+        // Sync with server
+        await sendReaction(currentReaction);
+      });
+    });
+  })();
+</script> </div> <!-- Related Posts --> <section class="mt-16 pt-8 border-t border-[var(--color-bg-secondary)]"><h2 class="text-2xl font-bold mb-6 text-[var(--color-text)]">Articles similaires</h2><div class="grid gap-6 md:grid-cols-3"><a href="/blog/coder-un-saas-complet-en-24h-avec-windsurf" class="group block p-4 rounded-xl bg-[var(--color-bg-secondary)] hover:bg-[var(--color-bg-tertiary)] transition-colors"><img src="https://images.unsplash.com/photo-1484417894907-623942c8ee29?q=80&w=2664&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Ma journée type : Coder un SaaS complet en 24h avec Windsurf (depuis l'Algérie)" class="w-full h-32 object-cover rounded-lg mb-3"><span class="text-xs text-[var(--color-accent)] font-medium">Productivité &amp; IA</span><h3 class="font-semibold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors line-clamp-2 mt-1">Ma journée type : Coder un SaaS complet en 24h avec Windsurf (depuis l&#39;Algérie)</h3><p class="text-sm text-[var(--color-text-muted)] mt-2 line-clamp-2">Plongée dans mon workflow avec Windsurf AI. De l&#39;idée à l&#39;architecture, en passant par le debug, voici comment je construis des SaaS ultra-rapides sans perdre mon âme de dev.</p></a><a href="/blog/ia-et-developpement-saas-en-algerie-opportunite-ou-mirage" class="group block p-4 rounded-xl bg-[var(--color-bg-secondary)] hover:bg-[var(--color-bg-tertiary)] transition-colors"><img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?q=80&w=2664&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="IA et développement SaaS en Algérie : opportunité ou mirage ?" class="w-full h-32 object-cover rounded-lg mb-3"><span class="text-xs text-[var(--color-accent)] font-medium">Algérie Tech</span><h3 class="font-semibold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors line-clamp-2 mt-1">IA et développement SaaS en Algérie : opportunité ou mirage ?</h3><p class="text-sm text-[var(--color-text-muted)] mt-2 line-clamp-2">L&#39;IA transforme le développement SaaS. Mais en Algérie, où les outils et données manquent, comment en tirer parti ? Mes retours d&#39;expérience et stratégies concrètes.</p></a><a href="/blog/developper-deployer-algerie" class="group block p-4 rounded-xl bg-[var(--color-bg-secondary)] hover:bg-[var(--color-bg-tertiary)] transition-colors"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop" alt="Développer et déployer depuis l'Algérie : défis et solutions" class="w-full h-32 object-cover rounded-lg mb-3"><span class="text-xs text-[var(--color-accent)] font-medium">Algérie Tech</span><h3 class="font-semibold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors line-clamp-2 mt-1">Développer et déployer depuis l&#39;Algérie : défis et solutions</h3><p class="text-sm text-[var(--color-text-muted)] mt-2 line-clamp-2">Mon expérience en tant que développeur basé en Algérie, les obstacles rencontrés et les solutions que j&#39;ai trouvées pour travailler efficacement.</p></a></div></section> <!-- Newsletter --> <section class="mt-16 p-8 rounded-2xl bg-gradient-to-br from-[var(--color-accent)]/10 to-[var(--color-accent-orange)]/10 border border-[var(--color-accent)]/20"><div class="text-center max-w-xl mx-auto"><h2 class="text-2xl font-bold mb-2 text-[var(--color-text)]">
 Restez informé
 </h2><p class="text-[var(--color-text-muted)] mb-6">
 Recevez mes derniers articles sur le SaaS, l'IA et le développement en Algérie. Pas de spam, promis.

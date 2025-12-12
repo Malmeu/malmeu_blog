@@ -1,7 +1,5 @@
 import type { APIRoute } from 'astro';
-
-// Simple in-memory storage for demo - replace with Supabase or other DB
-const subscribers = new Set<string>();
+import { supabase } from '../../lib/supabase';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -14,12 +12,25 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
     
-    // TODO: Replace with actual database storage (Supabase)
-    // Example with Supabase:
-    // const { error } = await supabase.from('newsletter').insert({ email });
+    if (!supabase) {
+      console.log(`Newsletter signup (no DB): ${email}`);
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
     
-    subscribers.add(email);
-    console.log(`New subscriber: ${email}`);
+    const { error } = await supabase
+      .from('newsletter_subscribers')
+      .upsert({ email }, { onConflict: 'email' });
+    
+    if (error) {
+      console.error('Newsletter error:', error);
+      return new Response(JSON.stringify({ error: 'Erreur inscription' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
     
     return new Response(JSON.stringify({ success: true }), {
       status: 200,

@@ -44,62 +44,100 @@ const { slug } = Astro.props;
   </div>
 </div>
 
-<script>
-  const container = document.getElementById('reactions-container');
-  const slug = container?.getAttribute('data-slug');
-  const storageKey = `reactions_${slug}`;
-  
-  // Load saved reactions from localStorage
-  const savedReactions = JSON.parse(localStorage.getItem(storageKey) || '{}');
-  const userReaction = localStorage.getItem(`user_reaction_${slug}`);
-  
-  // Initialize counts
-  document.querySelectorAll('.reaction-btn').forEach(btn => {
-    const reaction = btn.getAttribute('data-reaction');
-    const countEl = btn.querySelector('.reaction-count');
-    if (reaction && countEl && savedReactions[reaction]) {
-      countEl.textContent = savedReactions[reaction];
+<script is:inline>
+  (function() {
+    const container = document.getElementById('reactions-container');
+    const slug = container?.getAttribute('data-slug');
+    
+    // Générer un fingerprint simple pour identifier l'utilisateur
+    function getFingerprint() {
+      let fp = localStorage.getItem('user_fingerprint');
+      if (!fp) {
+        fp = 'fp_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+        localStorage.setItem('user_fingerprint', fp);
+      }
+      return fp;
     }
     
-    // Highlight user's previous reaction
-    if (reaction === userReaction) {
-      btn.classList.add('ring-2', 'ring-[var(--color-accent)]');
+    const fingerprint = getFingerprint();
+    let userReaction = localStorage.getItem(`user_reaction_${slug}`);
+    
+    // Charger les compteurs depuis l'API
+    async function loadReactions() {
+      try {
+        const res = await fetch(`/api/reactions?slug=${slug}`);
+        const counts = await res.json();
+        
+        document.querySelectorAll('.reaction-btn').forEach(btn => {
+          const reaction = btn.getAttribute('data-reaction');
+          const countEl = btn.querySelector('.reaction-count');
+          if (reaction && countEl && counts[reaction] !== undefined) {
+            countEl.textContent = counts[reaction];
+          }
+          
+          // Highlight user's previous reaction
+          if (reaction === userReaction) {
+            btn.classList.add('ring-2', 'ring-[var(--color-accent)]');
+          }
+        });
+      } catch (e) {
+        console.log('Could not load reactions');
+      }
     }
     
-    btn.addEventListener('click', () => {
-      const currentReaction = btn.getAttribute('data-reaction');
-      if (!currentReaction) return;
-      
-      // Remove previous highlight
-      document.querySelectorAll('.reaction-btn').forEach(b => {
-        b.classList.remove('ring-2', 'ring-[var(--color-accent)]');
-      });
-      
-      // If clicking same reaction, toggle off
-      if (userReaction === currentReaction) {
-        savedReactions[currentReaction] = Math.max(0, (savedReactions[currentReaction] || 1) - 1);
-        localStorage.removeItem(`user_reaction_${slug}`);
-      } else {
-        // Remove old reaction count
-        if (userReaction && savedReactions[userReaction]) {
-          savedReactions[userReaction] = Math.max(0, savedReactions[userReaction] - 1);
-          const oldBtn = document.querySelector(`[data-reaction="${userReaction}"]`);
-          const oldCount = oldBtn?.querySelector('.reaction-count');
-          if (oldCount) oldCount.textContent = savedReactions[userReaction];
+    // Envoyer une réaction à l'API
+    async function sendReaction(reaction) {
+      try {
+        await fetch('/api/reactions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug, reaction, fingerprint })
+        });
+      } catch (e) {
+        console.log('Could not save reaction');
+      }
+    }
+    
+    // Initialiser
+    loadReactions();
+    
+    // Event listeners
+    document.querySelectorAll('.reaction-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const currentReaction = btn.getAttribute('data-reaction');
+        if (!currentReaction) return;
+        
+        // Remove previous highlight
+        document.querySelectorAll('.reaction-btn').forEach(b => {
+          b.classList.remove('ring-2', 'ring-[var(--color-accent)]');
+        });
+        
+        const countEl = btn.querySelector('.reaction-count');
+        const currentCount = parseInt(countEl?.textContent || '0');
+        
+        if (userReaction === currentReaction) {
+          // Toggle off
+          if (countEl) countEl.textContent = Math.max(0, currentCount - 1);
+          localStorage.removeItem(`user_reaction_${slug}`);
+          userReaction = null;
+        } else {
+          // Decrement old reaction
+          if (userReaction) {
+            const oldBtn = document.querySelector(`[data-reaction="${userReaction}"]`);
+            const oldCount = oldBtn?.querySelector('.reaction-count');
+            if (oldCount) oldCount.textContent = Math.max(0, parseInt(oldCount.textContent || '1') - 1);
+          }
+          
+          // Add new reaction
+          if (countEl) countEl.textContent = currentCount + 1;
+          localStorage.setItem(`user_reaction_${slug}`, currentReaction);
+          userReaction = currentReaction;
+          btn.classList.add('ring-2', 'ring-[var(--color-accent)]');
         }
         
-        // Add new reaction
-        savedReactions[currentReaction] = (savedReactions[currentReaction] || 0) + 1;
-        localStorage.setItem(`user_reaction_${slug}`, currentReaction);
-        btn.classList.add('ring-2', 'ring-[var(--color-accent)]');
-      }
-      
-      // Update display
-      const countEl = btn.querySelector('.reaction-count');
-      if (countEl) countEl.textContent = savedReactions[currentReaction];
-      
-      // Save to localStorage
-      localStorage.setItem(storageKey, JSON.stringify(savedReactions));
+        // Sync with server
+        await sendReaction(currentReaction);
+      });
     });
-  });
+  })();
 </script>
