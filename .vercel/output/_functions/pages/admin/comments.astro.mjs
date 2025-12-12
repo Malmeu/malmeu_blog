@@ -1,7 +1,7 @@
 import { c as createComponent, a as renderTemplate, r as renderComponent, m as maybeRenderHead, d as addAttribute } from '../../chunks/astro/server_BUXZWwQS.mjs';
 import 'piccolore';
 import { $ as $$BaseLayout } from '../../chunks/BaseLayout_B6vaW939.mjs';
-import { s as supabase } from '../../chunks/supabase_BDHK2hk_.mjs';
+import { s as supabase } from '../../chunks/supabase_CADXvh8V.mjs';
 export { renderers } from '../../renderers.mjs';
 
 var __freeze = Object.freeze;
