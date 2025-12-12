@@ -1,5 +1,5 @@
 ---
-title: "Pourquoi je ne vends pas mon SaaS par carte bancaire (et comment l'IA gère mes virements CCP)"
+title: "Pourquoi je ne vends pas mon SaaS par carte bancaire"
 description: "Lancer un SaaS en Algérie en 2025 sans Stripe ? Voici ma stratégie pour automatiser l'encaissement par virement et sécuriser chaque transaction grâce à l'IA."
 publishDate: 2025-12-11
 category: "SaaS & Business"
