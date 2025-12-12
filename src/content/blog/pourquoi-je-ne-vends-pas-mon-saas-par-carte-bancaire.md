@@ -15,7 +15,7 @@ Sauf qu'ici, en Algérie, la réalité est plus brutale. Pas de Stripe. Pas de P
 
 Alors, on fait quoi ? On abandonne l'idée de faire du SaaS ?
 
-Non. On s'adapte. J'ai construit un système hybride qui mixe les **moyens de paiement** traditionnels (le virement bancaire/CCP) avec la technologie de pointe pour automatiser ce qui semblait impossible.
+Non.J'ai créé un système **hybride**. Il combine le virement bancaire classique avec l'IA pour automatiser l'impossible.
 
 Voici comment je gère un SaaS rentable depuis Béjaïa sans processeur de paiement international.
 
