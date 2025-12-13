@@ -41,35 +41,38 @@ const categories = [
 >
   <!-- Hero Section -->
   <section class="relative py-20 px-4 overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-[var(--color-accent)]/10 to-[var(--color-accent-orange)]/10"></div>
+    <div class="absolute inset-0 bg-linear-to-br from-(--color-accent)/10 to-(--color-accent-orange)/10"></div>
     <div class="max-w-4xl mx-auto text-center relative z-10">
       <!-- Mascotte -->
-      <div class="w-40 h-40 mx-auto mb-6 rounded-full p-1 animate-fade-in">
-        <img 
-          src="/malmcat2.webp" 
-          alt="Malmeu - Développeur" 
-          class="w-full h-full rounded-full object-cover"
-        />
+      <div class="w-40 h-40 mx-auto mb-6 animate-fade-in">
+        <lottie-player 
+          src="/Sleeping_cat.json"
+          background="transparent"
+          speed="1"
+          style="width: 320px; height: 320px;"
+          loop
+          autoplay
+        ></lottie-player>
       </div>
       <h1 class="text-4xl md:text-6xl font-bold mb-6 animate-fade-in" style="animation-delay: 0.1s;">
-        <span class="text-[var(--color-text)]">Salut, je suis </span>
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-orange)]">
+        <span class="text-(--color-text)">Salut, je suis </span>
+        <span class="text-transparent bg-clip-text bg-linear-to-r from-(--color-accent) to-(--color-accent-orange)">
           Malmeu
         </span>
       </h1>
-      <p class="text-xl text-[var(--color-text-muted)] mb-8 max-w-2xl mx-auto animate-fade-in" style="animation-delay: 0.1s;">
+      <p class="text-xl text-(--color-text-muted) mb-8 max-w-2xl mx-auto animate-fade-in" style="animation-delay: 0.1s;">
         Je partage mes idées, astuces et retours d'expérience sur le développement web, l'IA, les SaaS et l'entrepreneuriat tech depuis l'Algérie.
       </p>
       <div class="flex flex-wrap justify-center gap-4 animate-fade-in" style="animation-delay: 0.2s;">
         <a 
           href="/blog" 
-          class="px-6 py-3 bg-[var(--color-accent)] text-[var(--color-bg)] rounded-lg font-medium hover:opacity-90 transition-opacity"
+          class="px-6 py-3 bg-(--color-accent) text-(--color-bg) rounded-lg font-medium hover:opacity-90 transition-opacity"
         >
           Lire le blog
         </a>
         <a 
           href="/about" 
-          class="px-6 py-3 border border-[var(--color-accent)] text-[var(--color-accent)] rounded-lg font-medium hover:bg-[var(--color-accent)]/10 transition-colors"
+          class="px-6 py-3 border border-(--color-accent) text-(--color-accent) rounded-lg font-medium hover:bg-(--color-accent)/10 transition-colors"
         >
           À propos de moi
         </a>
@@ -79,13 +82,13 @@ const categories = [
 
   <!-- Featured Posts -->
   {featuredPosts.length > 0 && (
-    <section class="py-16 px-4 bg-gradient-to-br from-[var(--color-accent)]/5 to-[var(--color-accent-orange)]/5">
+    <section class="py-16 px-4 bg-linear-to-br from-(--color-accent)/5 to-(--color-accent-orange)/5">
       <div class="max-w-6xl mx-auto">
         <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-4">
+          <h2 class="text-3xl md:text-4xl font-bold text-(--color-text) mb-4">
             ⭐ Articles en vedette
           </h2>
-          <p class="text-lg text-[var(--color-text-muted)] max-w-2xl mx-auto">
+          <p class="text-lg text-(--color-text-muted) max-w-2xl mx-auto">
             Les articles les plus populaires et pertinents que vous ne voulez pas manquer.
           </p>
         </div>
@@ -111,12 +114,12 @@ const categories = [
   <section class="py-16 px-4">
     <div class="max-w-6xl mx-auto">
       <div class="flex items-center justify-between mb-8">
-        <h2 class="text-2xl md:text-3xl font-bold text-[var(--color-text)]">
+        <h2 class="text-2xl md:text-3xl font-bold text-(--color-text)">
           Articles récents
         </h2>
         <a 
           href="/blog" 
-          class="text-[var(--color-accent)] hover:text-[var(--color-accent-orange)] transition-colors font-medium"
+          class="text-(--color-accent) hover:text-(--color-accent-orange) transition-colors font-medium"
         >
           Voir tous →
         </a>
@@ -137,30 +140,30 @@ const categories = [
           ))}
         </div>
       ) : (
-        <div class="text-center py-12 bg-[var(--color-bg-secondary)] rounded-xl">
-          <p class="text-[var(--color-text-muted)]">Aucun article pour le moment. Revenez bientôt !</p>
+        <div class="text-center py-12 bg-(--color-bg-secondary) rounded-xl">
+          <p class="text-(--color-text-muted)">Aucun article pour le moment. Revenez bientôt !</p>
         </div>
       )}
     </div>
   </section>
 
   <!-- Categories -->
-  <section class="py-16 px-4 bg-[var(--color-bg-secondary)]">
+  <section class="py-16 px-4 bg-(--color-bg-secondary)">
     <div class="max-w-6xl mx-auto">
-      <h2 class="text-2xl md:text-3xl font-bold text-[var(--color-text)] mb-8 text-center">
+      <h2 class="text-2xl md:text-3xl font-bold text-(--color-text) mb-8 text-center">
         Catégories
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {categories.map((cat) => (
           <a 
             href={`/blog/category/${cat.slug}`}
-            class="group p-6 bg-[var(--color-bg)] rounded-xl hover:shadow-lg hover:shadow-[var(--color-accent)]/10 transition-all duration-300 hover:-translate-y-1 text-center"
+            class="group p-6 bg-(--color-bg) rounded-xl hover:shadow-lg hover:shadow-(--color-accent)/10 transition-all duration-300 hover:-translate-y-1 text-center"
           >
             <span class="text-4xl mb-4 block">{cat.icon}</span>
-            <h3 class="font-semibold text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors mb-2">
+            <h3 class="font-semibold text-(--color-text) group-hover:text-(--color-accent) transition-colors mb-2">
               {cat.name}
             </h3>
-            <p class="text-xs text-[var(--color-text-muted)]">{cat.description}</p>
+            <p class="text-xs text-(--color-text-muted)">{cat.description}</p>
           </a>
         ))}
       </div>
@@ -170,15 +173,15 @@ const categories = [
   <!-- CTA Section -->
   <section class="py-20 px-4">
     <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-2xl md:text-3xl font-bold text-[var(--color-text)] mb-4">
+      <h2 class="text-2xl md:text-3xl font-bold text-(--color-text) mb-4">
         Restons en contact
       </h2>
-      <p class="text-[var(--color-text-muted)] mb-8">
+      <p class="text-(--color-text-muted) mb-8">
         Vous avez une question ou souhaitez collaborer ? N'hésitez pas à me contacter.
       </p>
       <a 
         href="/contact" 
-        class="inline-block px-8 py-4 bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-orange)] text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
+        class="inline-block px-8 py-4 bg-linear-to-r from-(--color-accent) to-(--color-accent-orange) text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
       >
         Me contacter
       </a>

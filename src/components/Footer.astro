@@ -27,7 +27,7 @@ const footerLinks = [
 ];
 ---
 
-<footer class="bg-[var(--color-bg-secondary)] border-t border-[var(--color-bg-secondary)]">
+<footer class="bg-(--color-bg-secondary) border-t border-(--color-bg-secondary)">
   <div class="max-w-6xl mx-auto px-4 py-12">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Brand -->
@@ -36,24 +36,24 @@ const footerLinks = [
           <img 
             src="/malmcat2.webp" 
             alt="Malmeu Logo" 
-            class="h-10 w-auto"
+            class="h-10 w-auto logo-adaptive"
           />
-          <span class="text-xl font-bold text-[var(--color-text)]"></span>
+          <span class="text-xl font-bold text-(--color-text)"></span>
         </a>
-        <p class="text-[var(--color-text-muted)] text-sm">
+        <p class="text-(--color-text-muted) text-sm">
           Blog technique sur le développement web, l'IA, les SaaS et l'entrepreneuriat tech depuis l'Algérie.
         </p>
       </div>
 
       <!-- Links -->
       <div>
-        <h3 class="text-[var(--color-text)] font-semibold mb-4">Navigation</h3>
+        <h3 class="text-(--color-text) font-semibold mb-4">Navigation</h3>
         <ul class="space-y-2">
           {footerLinks.map((link) => (
             <li>
               <a 
                 href={link.href}
-                class="text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors text-sm"
+                class="text-(--color-text-muted) hover:text-(--color-accent) transition-colors text-sm"
               >
                 {link.label}
               </a>
@@ -64,17 +64,17 @@ const footerLinks = [
 
       <!-- Social -->
       <div>
-        <h3 class="text-[var(--color-text)] font-semibold mb-4">Réseaux sociaux</h3>
+        <h3 class="text-(--color-text) font-semibold mb-4">Réseaux sociaux</h3>
         <div class="flex gap-4">
           {socialLinks.map((social) => (
             <a 
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              class="p-2 rounded-lg bg-[var(--color-bg)] hover:bg-[var(--color-accent)]/20 transition-colors"
+              class="p-2 rounded-lg bg-(--color-bg) hover:bg-(--color-accent)/20 transition-colors"
               aria-label={social.name}
             >
-              <svg class="w-5 h-5 text-[var(--color-text-muted)] hover:text-[var(--color-accent)]" fill="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 text-(--color-text-muted) hover:text-(--color-accent)" fill="currentColor" viewBox="0 0 24 24">
                 <path d={social.icon} />
               </svg>
             </a>
@@ -84,8 +84,8 @@ const footerLinks = [
     </div>
 
     <!-- Copyright -->
-    <div class="mt-12 pt-8 border-t border-[var(--color-bg)] text-center">
-      <p class="text-[var(--color-text-muted)] text-sm">
+    <div class="mt-12 pt-8 border-t border-(--color-bg) text-center">
+      <p class="text-(--color-text-muted) text-sm">
         © {currentYear} Malmeu. Tous droits réservés. Fait avec ❤️ depuis l'espace.
       </p>
     </div>

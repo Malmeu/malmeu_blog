@@ -200,3 +200,13 @@ code {
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
 }
+
+/* Logo inversion for dark/light mode */
+.logo-adaptive {
+  filter: invert(1);
+  transition: filter 0.3s ease;
+}
+
+[data-theme="light"] .logo-adaptive {
+  filter: invert(0);
+}

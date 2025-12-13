@@ -74,32 +74,35 @@ const socialLinks = [
   <div class="max-w-4xl mx-auto px-4 py-12">
     <!-- Header -->
     <header class="text-center mb-16">
-      <div class="w-40 h-40 mx-auto mb-6 rounded-bl-md  p-1">
-        <img 
-          src="/malmcat2.webp"
-          alt="Malmeu - Développeur Full-Stack Algérie" 
-          class="w-full h-full rounded-full object-cover"
-        />
+      <div class="w-40 h-40 mx-auto mb-6">
+        <lottie-player 
+          src="/Sleeping_cat.json"
+          background="transparent"
+          speed="1"
+          style="width: 320px; height: 320px;"
+          loop
+          autoplay
+        ></lottie-player>
       </div>
-      <h1 class="text-4xl md:text-5xl font-bold text-[var(--color-text)] mb-4">
+      <h1 class="text-4xl md:text-5xl font-bold text-(--color-text) mb-4">
         À propos de moi
       </h1>
-      <p class="text-xl text-[var(--color-text-muted)] max-w-2xl mx-auto">
+      <p class="text-xl text-(--color-text-muted) max-w-2xl mx-auto">
         Développeur full-stack et entrepreneur basé en Algérie, passionné par le développement web, l'IA et les SaaS.
       </p>
     </header>
 
     <!-- Bio -->
     <section class="mb-16">
-      <h2 class="text-2xl font-bold text-[var(--color-accent)] mb-6">Mon parcours</h2>
-      <div class="prose prose-lg text-[var(--color-text-muted)] space-y-4">
+      <h2 class="text-2xl font-bold text-(--color-accent) mb-6">Mon parcours</h2>
+      <div class="prose prose-lg text-(--color-text-muted) space-y-4">
         <p>
           Salut ! Je suis développeur Full-Stack et entrepreneur Tech basé en Algérie (Béjaïa). Mon quotidien ? Transformer des lignes de code en solutions business rentables.
         </p>
         <p>
           Mon aventure a commencé par une frustration : voir tant d'entreprises locales bloquées par des outils inadaptés. J'ai donc décidé de ne pas seulement coder, mais de construire des produits qui résolvent de vrais problèmes.
         </p>
-       <h2 class="text-2xl font-bold text-[var(--color-accent)] mb-6">🛠 Mon expertise technique</h2> 
+       <h2 class="text-2xl font-bold text-(--color-accent) mb-6">🛠 Mon expertise technique</h2> 
         <p>
          Je ne suis pas fan de la théorie. Je suis un "Maker".
 Mon arme secrète est l'utilisation avancée de l'Intelligence Artificielle dans le cycle de développement.
@@ -120,14 +123,14 @@ Mon arme secrète est l'utilisation avancée de l'Intelligence Artificielle dans
 
     <!-- Skills -->
     <section class="mb-16">
-      <h2 class="text-2xl font-bold text-[var(--color-accent)] mb-6">Compétences</h2>
+      <h2 class="text-2xl font-bold text-(--color-accent) mb-6">Compétences</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {skills.map((skill) => (
-          <div class="p-6 bg-[var(--color-bg-secondary)] rounded-xl">
-            <h3 class="font-semibold text-[var(--color-text)] mb-4">{skill.category}</h3>
+          <div class="p-6 bg-(--color-bg-secondary) rounded-xl">
+            <h3 class="font-semibold text-(--color-text) mb-4">{skill.category}</h3>
             <div class="flex flex-wrap gap-2">
               {skill.items.map((item) => (
-                <span class="px-3 py-1 bg-[var(--color-bg)] text-[var(--color-text-muted)] rounded-full text-sm">
+                <span class="px-3 py-1 bg-(--color-bg) text-(--color-text-muted) rounded-full text-sm">
                   {item}
                 </span>
               ))}
@@ -139,18 +142,18 @@ Mon arme secrète est l'utilisation avancée de l'Intelligence Artificielle dans
 
     <!-- Projects -->
     <section class="mb-16">
-      <h2 class="text-2xl font-bold text-[var(--color-accent)] mb-6">Projets en cours</h2>
+      <h2 class="text-2xl font-bold text-(--color-accent) mb-6">Projets en cours</h2>
       <div class="space-y-4">
         {projects.map((project) => (
-          <div class="p-6 bg-[var(--color-bg-secondary)] rounded-xl flex items-center justify-between">
+          <div class="p-6 bg-(--color-bg-secondary) rounded-xl flex items-center justify-between">
             <div>
-              <h3 class="font-semibold text-[var(--color-text)]">{project.name}</h3>
-              <p class="text-[var(--color-text-muted)] text-sm">{project.description}</p>
+              <h3 class="font-semibold text-(--color-text)">{project.name}</h3>
+              <p class="text-(--color-text-muted) text-sm">{project.description}</p>
             </div>
             <span class={`px-3 py-1 rounded-full text-xs font-medium ${
               project.status === 'Actif' 
                 ? 'bg-green-500/20 text-green-400' 
-                : 'bg-[var(--color-accent)]/20 text-[var(--color-accent)]'
+                : 'bg-(--color-accent)/20 text-(--color-accent)'
             }`}>
               {project.status}
             </span>
@@ -161,8 +164,8 @@ Mon arme secrète est l'utilisation avancée de l'Intelligence Artificielle dans
 
     <!-- Portfolio -->
     <section class="mb-16">
-      <h2 class="text-2xl font-bold text-[var(--color-accent)] mb-6">🚀 Mon Portfolio</h2>
-      <p class="text-[var(--color-text-muted)] mb-8">
+      <h2 class="text-2xl font-bold text-(--color-accent) mb-6">🚀 Mon Portfolio</h2>
+      <p class="text-(--color-text-muted) mb-8">
         Découvrez quelques-uns des projets que j'ai réalisés pour mes clients et pour moi-même.
       </p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -171,7 +174,7 @@ Mon arme secrète est l'utilisation avancée de l'Intelligence Artificielle dans
             href={project.url}
             target="_blank"
             rel="noopener noreferrer"
-            class="group block bg-[var(--color-bg-secondary)] rounded-xl overflow-hidden hover:ring-2 hover:ring-[var(--color-accent)] transition-all duration-300"
+            class="group block bg-(--color-bg-secondary) rounded-xl overflow-hidden hover:ring-2 hover:ring-(--color-accent) transition-all duration-300"
           >
             <div class="aspect-video overflow-hidden">
               <img 
@@ -181,20 +184,20 @@ Mon arme secrète est l'utilisation avancée de l'Intelligence Artificielle dans
               />
             </div>
             <div class="p-5">
-              <h3 class="font-semibold text-[var(--color-text)] mb-2 group-hover:text-[var(--color-accent)] transition-colors">
+              <h3 class="font-semibold text-(--color-text) mb-2 group-hover:text-(--color-accent) transition-colors">
                 {project.name}
               </h3>
-              <p class="text-[var(--color-text-muted)] text-sm mb-3">
+              <p class="text-(--color-text-muted) text-sm mb-3">
                 {project.description}
               </p>
               <div class="flex flex-wrap gap-2">
                 {project.tags.map((tag) => (
-                  <span class="px-2 py-1 bg-[var(--color-bg)] text-[var(--color-accent)] rounded text-xs">
+                  <span class="px-2 py-1 bg-(--color-bg) text-(--color-accent) rounded text-xs">
                     {tag}
                   </span>
                 ))}
               </div>
-              <div class="mt-4 flex items-center text-[var(--color-accent)] text-sm font-medium">
+              <div class="mt-4 flex items-center text-(--color-accent) text-sm font-medium">
                 <span>Voir le projet</span>
                 <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -208,17 +211,17 @@ Mon arme secrète est l'utilisation avancée de l'Intelligence Artificielle dans
 
     <!-- Social Links -->
     <section class="text-center">
-      <h2 class="text-2xl font-bold text-[var(--color-accent)] mb-6">Me suivre</h2>
+      <h2 class="text-2xl font-bold text-(--color-accent) mb-6">Me suivre</h2>
       <div class="flex justify-center gap-4">
         {socialLinks.map((social) => (
           <a 
             href={social.href}
             target="_blank"
             rel="noopener noreferrer"
-            class="p-4 bg-[var(--color-bg-secondary)] rounded-xl hover:bg-[var(--color-accent)]/20 transition-colors group"
+            class="p-4 bg-(--color-bg-secondary) rounded-xl hover:bg-(--color-accent)/20 transition-colors group"
             aria-label={social.name}
           >
-            <svg class="w-6 h-6 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors" fill="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 text-(--color-text-muted) group-hover:text-(--color-accent) transition-colors" fill="currentColor" viewBox="0 0 24 24">
               <path d={social.icon} />
             </svg>
           </a>
@@ -227,14 +230,14 @@ Mon arme secrète est l'utilisation avancée de l'Intelligence Artificielle dans
     </section>
 
     <!-- CTA -->
-    <section class="mt-16 text-center p-8 bg-gradient-to-r from-[var(--color-accent)]/10 to-[var(--color-accent-orange)]/10 rounded-xl">
-      <h2 class="text-2xl font-bold text-[var(--color-text)] mb-4">Travaillons ensemble</h2>
-      <p class="text-[var(--color-text-muted)] mb-6">
+    <section class="mt-16 text-center p-8 bg-linear-to-r from-(--color-accent)/10 to-(--color-accent-orange)/10 rounded-xl">
+      <h2 class="text-2xl font-bold text-(--color-text) mb-4">Travaillons ensemble</h2>
+      <p class="text-(--color-text-muted) mb-6">
         Vous avez un projet en tête ou souhaitez simplement discuter ? N'hésitez pas à me contacter !
       </p>
       <a 
         href="/contact"
-        class="inline-block px-6 py-3 bg-[var(--color-accent)] text-[var(--color-bg)] rounded-lg font-medium hover:opacity-90 transition-opacity"
+        class="inline-block px-6 py-3 bg-(--color-accent) text-(--color-bg) rounded-lg font-medium hover:opacity-90 transition-opacity"
       >
         Me contacter
       </a>
