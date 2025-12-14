@@ -6,6 +6,7 @@ category: "IA & Design"
 tags: ["ia", "nano banana", "google", "design", "midjourney", "tuto"]
 image: "https://i.postimg.cc/LXbKx5VM/nanobanana-vs-midjourney.jpg"
 draft: false
+featured: true
 ---
 
 On connaît tous la galère de Midjourney en Algérie : Discord obligatoire, abonnement en dollars, cartes bloquées... Bref, un parcours du combattant pour générer une simple image pro.
