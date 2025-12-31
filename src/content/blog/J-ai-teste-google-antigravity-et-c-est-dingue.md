@@ -169,17 +169,17 @@ Y a **beaucoup** de panneaux. Task list, Implementation plan, Screenshots, Artif
 
 Après 3 jours ça devient naturel. Mais oui, c'est un peu overwhelming les premières heures.
 
-## Antigravity vs les concurrents (Windsurf, Cursor, Replit)
+## Antigravity vs Windsurf
 
-| Aspect | Antigravity | Windsurf | Cursor | Replit |
-|--------|------------|----------|--------|--------|
-| **Agent autonome** | ✅ Vraiment auto | ⚠️ Semi-auto | ❌ Pas auto | ✅ Oui mais limité |
-| **Artifacts** | ✅ Complets | ❌ Non | ❌ Non | ⚠️ Basique |
-| **Multi-model** | ✅ Gemini/Claude/GPT | ❌ Pas choix | ⚠️ Limité | ⚠️ Limité |
-| **Browser control** | ✅ Chrome ext native | ❌ Non | ⚠️ Extension | ⚠️ Basique |
-| **Learning (Knowledge Base)** | ✅ Oui | ❌ Non | ❌ Non | ❌ Non |
-| **Prix** | ✅ **Gratuit** | 💰 $15-30/mois | 💰 $20-40/mois | 💰 $20-35/mois |
-| **Open Source friendly** | ✅ Oui | ✅ Oui | ❌ Propriétaire | ⚠️ Un peu |
+| Aspect | Antigravity | Windsurf |
+|--------|------------|----------|
+| **Agent autonome** | ✅ Vraiment auto | ⚠️ Semi-auto |
+| **Artifacts** | ✅ Complets | ❌ Non |
+| **Multi-model** | ✅ Gemini/Claude/GPT | ❌ Pas choix |
+| **Browser control** | ✅ Chrome ext native | ❌ Non |
+| **Learning (Knowledge Base)** | ✅ Oui | ❌ Non |
+| **Prix** | ✅ **Gratuit** | 💰 $15-30/mois | 💰 $20-40/mois |
+| **Open Source friendly** | ✅ Oui | ✅ Oui |
 
 **Le verdict ?** Antigravity gagne sur l'autonomie et le coût. Windsurf gagne sur la familiarité.
 
