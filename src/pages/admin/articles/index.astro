@@ -32,7 +32,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
       </div>
 
       <!-- Stats -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         <div class="bg-[var(--color-bg-secondary)] rounded-xl p-4 border border-[var(--color-accent)]/20">
           <p class="text-[var(--color-text-muted)] text-sm">Total</p>
           <p id="stat-total" class="text-2xl font-bold text-[var(--color-text)]">-</p>
@@ -48,6 +48,10 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         <div class="bg-[var(--color-bg-secondary)] rounded-xl p-4 border border-amber-500/20">
           <p class="text-[var(--color-text-muted)] text-sm">Sponsorisés</p>
           <p id="stat-sponsored" class="text-2xl font-bold text-amber-400">-</p>
+        </div>
+        <div class="bg-[var(--color-bg-secondary)] rounded-xl p-4 border border-cyan-500/20 col-span-2 sm:col-span-1">
+          <p class="text-[var(--color-text-muted)] text-sm">👁️ Vues totales</p>
+          <p id="stat-views" class="text-2xl font-bold text-cyan-400">-</p>
         </div>
       </div>
     </header>
@@ -85,13 +89,21 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     });
 
     function loadArticles() {
-      fetch('/api/articles').then(function(response) {
-        return response.json();
-      }).then(function(articles) {
+      Promise.all([
+        fetch('/api/articles').then(function(res) { return res.json(); }),
+        fetch('/api/views').then(function(res) { return res.json(); }).catch(function() { return { totalViews: 0, viewsBySlug: {} }; })
+      ]).then(function(results) {
+        var articles = results[0] || [];
+        var viewsData = results[1] || { totalViews: 0, viewsBySlug: {} };
+        var viewsBySlug = viewsData.viewsBySlug || {};
+
         document.getElementById('stat-total').textContent = articles.length.toString();
         document.getElementById('stat-published').textContent = articles.filter(function(a) { return !a.draft; }).length.toString();
         document.getElementById('stat-drafts').textContent = articles.filter(function(a) { return a.draft; }).length.toString();
         document.getElementById('stat-sponsored').textContent = articles.filter(function(a) { return a.sponsored; }).length.toString();
+        
+        var formattedTotalViews = new Intl.NumberFormat('fr-FR').format(viewsData.totalViews || 0);
+        document.getElementById('stat-views').textContent = formattedTotalViews;
         
         var listEl = document.getElementById('articles-list');
         
@@ -107,25 +119,30 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
           var featuredBadge = article.featured ? '<span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 text-xs rounded-full">⭐ Vedette</span>' : '';
           var sponsoredBadge = article.sponsored ? '<span class="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs rounded-full">💰 Sponsorisé</span>' : '';
           var categoryBadge = '<span class="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 text-xs rounded-full">' + (article.category || 'Sans catégorie') + '</span>';
+          
+          var articleViews = viewsBySlug[article.slug] || 0;
+          var formattedViews = new Intl.NumberFormat('fr-FR').format(articleViews);
+          var viewsBadge = '<span class="inline-flex items-center gap-1 px-2.5 py-0.5 bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-xs font-semibold rounded-full" title="' + formattedViews + ' vues réelles">👁️ ' + formattedViews + ' ' + (articleViews > 1 ? 'vues' : 'vue') + '</span>';
+
           var date = article.publishDate ? new Date(article.publishDate).toLocaleDateString('fr-FR') : '-';
           
           return '<div class="px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors">' +
             '<div class="flex-1 min-w-0">' +
-              '<div class="flex items-center gap-2 mb-1 flex-wrap">' + statusBadge + featuredBadge + sponsoredBadge + categoryBadge + '</div>' +
+              '<div class="flex items-center gap-2 mb-1 flex-wrap">' + statusBadge + featuredBadge + sponsoredBadge + categoryBadge + viewsBadge + '</div>' +
               '<h3 class="font-medium text-white truncate">' + (article.title || 'Sans titre') + '</h3>' +
               '<p class="text-gray-500 text-sm truncate">' + (article.description || 'Pas de description') + '</p>' +
               '<p class="text-gray-600 text-xs mt-1">' + date + ' · ' + article.slug + '.md</p>' +
             '</div>' +
             '<div class="flex items-center gap-2 ml-4">' +
-              '<a href="/blog/' + article.slug + '" target="_blank" class="p-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/10" title="Voir">👁️</a>' +
+              '<a href="/blog/' + article.slug + '" target="_blank" class="p-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/10" title="Voir l\'article">👁️</a>' +
               '<a href="/admin/articles/' + article.slug + '" class="p-2 text-gray-400 hover:text-cyan-400 rounded-lg hover:bg-cyan-500/10" title="Modifier">✏️</a>' +
               '<button onclick="deleteArticle(\'' + article.slug + '\')" class="p-2 text-gray-400 hover:text-red-400 rounded-lg hover:bg-red-500/10" title="Supprimer">🗑️</button>' +
             '</div>' +
           '</div>';
         }).join('');
       }).catch(function(error) {
-        console.error('Failed to load articles:', error);
-        document.getElementById('articles-list').innerHTML = '<div class="px-6 py-12 text-center text-red-400">Erreur</div>';
+        console.error('Failed to load articles or views:', error);
+        document.getElementById('articles-list').innerHTML = '<div class="px-6 py-12 text-center text-red-400">Erreur lors du chargement</div>';
       });
     }
 

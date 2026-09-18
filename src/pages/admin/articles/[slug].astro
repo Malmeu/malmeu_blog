@@ -18,6 +18,9 @@ const { slug } = Astro.params;
         <span class="text-[var(--color-text-muted)] text-sm">({slug}.md)</span>
       </div>
       <div class="flex items-center gap-3">
+        <span id="article-views-badge" class="px-3 py-1.5 bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 rounded-lg text-sm font-medium flex items-center gap-1.5" title="Vues réelles">
+          👁️ <span id="article-views-count">-</span> vues
+        </span>
         <a href={`/blog/${slug}`} target="_blank" class="px-4 py-2 bg-[var(--color-bg-secondary)] text-[var(--color-text-muted)] rounded-lg hover:text-white transition-colors">
           👁️ Voir
         </a>
@@ -170,9 +173,18 @@ const { slug } = Astro.params;
         draftEl.checked = article.draft === true;
         featuredEl.checked = article.featured === true;
         sponsoredEl.checked = article.sponsored === true;
-        sponsorNameEl.value = article.sponsorName || '';
-        sponsorUrlEl.value = article.sponsorUrl || '';
         bodyEl.value = article.body || '';
+        
+        // Charger le compteur de vues réelles
+        fetch('/api/views?slug=' + encodeURIComponent(slug))
+          .then(function(r) { return r.json(); })
+          .then(function(vData) {
+            var countEl = document.getElementById('article-views-count');
+            if (countEl && vData && typeof vData.views === 'number') {
+              countEl.textContent = new Intl.NumberFormat('fr-FR').format(vData.views);
+            }
+          })
+          .catch(function() {});
         
         if (article.sponsored) sponsorFields.classList.remove('hidden');
         

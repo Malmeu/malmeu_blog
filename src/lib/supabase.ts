@@ -27,3 +27,11 @@ export interface Comment {
   status: 'pending' | 'approved' | 'rejected'
   created_at: string
 }
+
+export interface ArticleView {
+  article_slug: string
+  views_count: number
+  created_at: string
+  updated_at: string
+}
+

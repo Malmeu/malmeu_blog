@@ -81,6 +81,10 @@ const readingTime = Math.ceil(wordCount / wordsPerMinute);
         <span class="text-[var(--color-text-muted)] text-sm">
           {readingTime} min de lecture
         </span>
+        <span class="text-[var(--color-text-muted)] text-sm flex items-center gap-1" title="Vues réelles">
+          <span>👁️</span>
+          <span id="article-views-count">-</span> vues
+        </span>
       </div>
       
       <h1 class="text-4xl md:text-5xl font-bold mb-4 text-[var(--color-text)]">
@@ -221,4 +225,42 @@ const readingTime = Math.ceil(wordCount / wordsPerMinute);
   <!-- Comments Section -->
   <Comments slug={post.slug} title={post.data.title} />
   <Analytics />
+
+  <script is:inline define:vars={{ slug: post.slug }}>
+    (function() {
+      const viewsCountEl = document.getElementById('article-views-count');
+      if (!slug) return;
+
+      const sessionKey = 'viewed_article_' + slug;
+      const isAdmin = localStorage.getItem('admin_session') === 'authenticated';
+      const alreadyViewedInSession = sessionStorage.getItem(sessionKey);
+
+      // Si l'utilisateur est admin ou a déjà vu l'article dans cette session, on récupère juste le compteur
+      if (isAdmin || alreadyViewedInSession) {
+        fetch('/api/views?slug=' + encodeURIComponent(slug))
+          .then(res => res.json())
+          .then(data => {
+            if (viewsCountEl && data && typeof data.views === 'number') {
+              viewsCountEl.textContent = new Intl.NumberFormat('fr-FR').format(data.views);
+            }
+          })
+          .catch(() => {});
+      } else {
+        // Enregistrer la vue réelle (une seule fois par session visiteur)
+        sessionStorage.setItem(sessionKey, '1');
+        fetch('/api/views', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug: slug })
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (viewsCountEl && data && typeof data.views === 'number') {
+              viewsCountEl.textContent = new Intl.NumberFormat('fr-FR').format(data.views);
+            }
+          })
+          .catch(() => {});
+      }
+    })();
+  </script>
 </BaseLayout>
