@@ -1,4 +1,16 @@
 {
+  "redirects": [
+    {
+      "source": "/blog/coder-un-saas-complet-en-24h-avec-windsurf",
+      "destination": "/blog/ia-et-developpement-saas-en-algerie-opportunite-ou-mirage",
+      "permanent": true
+    },
+    {
+      "source": "/blog/jai-teste-nano-banana-pro-copy",
+      "destination": "/blog/jai-teste-nano-banana-pro",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)\\.(jpg|jpeg|png|gif|webp|svg|ico|avif)",
