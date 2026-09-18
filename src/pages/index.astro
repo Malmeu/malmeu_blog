@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogCard from '../components/BlogCard.astro';
 import FeaturedCard from '../components/FeaturedCard.astro';
+import PopularPosts from '../components/PopularPosts.astro';
 import { getCollection } from 'astro:content';
 
 // Get all posts
@@ -110,6 +111,13 @@ const categories = [
     </section>
   )}
 
+  <!-- Section Articles Populaires (Tendances & Vues Réelles) -->
+  <section class="py-6 px-4">
+    <div class="max-w-6xl mx-auto">
+      <PopularPosts />
+    </div>
+  </section>
+
   <!-- Recent Posts -->
   <section class="py-16 px-4">
     <div class="max-w-6xl mx-auto">
@@ -187,4 +195,8 @@ const categories = [
       </a>
     </div>
   </section>
+
+  <!-- Lottie Player différé uniquement pour la mascotte de l'accueil -->
+  <script is:inline defer src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </BaseLayout>
+

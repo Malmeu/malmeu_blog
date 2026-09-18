@@ -34,7 +34,7 @@ const {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(image, Astro.site);
-const siteUrl = Astro.site?.toString() || 'https://malmeu.info';
+const siteUrl = Astro.site?.toString() || 'https://www.malmeu.info';
 
 // Schema.org structured data
 const websiteSchema = {
@@ -129,9 +129,6 @@ const breadcrumbSchema = type === 'article' ? {
     <meta name="description" content={description} />
     <meta name="author" content={author} />
     <link rel="canonical" href={canonicalURL} />
-    
-    <!-- Lottie Player -->
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="Ksqriu5LJRJzCSOPlW_pmQqvbLsW6Oi-cBP3U5Fl5bs" />

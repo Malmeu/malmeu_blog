@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
 
-Sitemap: https://malmeu.info/sitemap-index.xml
+Sitemap: https://www.malmeu.info/sitemap-index.xml

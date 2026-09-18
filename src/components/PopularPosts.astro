@@ -1,0 +1,108 @@
+---
+import { getCollection } from 'astro:content';
+import { supabase } from '../lib/supabase';
+
+// Récupérer tous les articles publiés
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+// Récupérer les vues depuis Supabase
+const viewsMap: Record<string, number> = {};
+
+if (supabase) {
+  try {
+    const { data, error } = await supabase
+      .from('article_views')
+      .select('article_slug, views_count')
+      .order('views_count', { ascending: false })
+      .limit(10);
+
+    if (!error && Array.isArray(data)) {
+      data.forEach((row) => {
+        viewsMap[row.article_slug] = Number(row.views_count) || 0;
+      });
+    }
+  } catch (e) {
+    console.warn('Unable to load popular post views:', e);
+  }
+}
+
+// Trier les articles : priorité aux vues enregistrées, puis date de publication
+const popularPosts = [...allPosts]
+  .sort((a, b) => {
+    const viewsA = viewsMap[a.slug] || 0;
+    const viewsB = viewsMap[b.slug] || 0;
+    if (viewsB !== viewsA) {
+      return viewsB - viewsA;
+    }
+    return b.data.publishDate.valueOf() - a.data.publishDate.valueOf();
+  })
+  .slice(0, 4);
+---
+
+{popularPosts.length > 0 && (
+  <section class="py-12">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 text-amber-400 rounded-full text-xs font-semibold uppercase tracking-wider mb-2">
+          <span>🔥</span> Tendances
+        </div>
+        <h2 class="text-2xl md:text-3xl font-bold text-[var(--color-text)]">
+          Articles les plus populaires
+        </h2>
+      </div>
+      <a 
+        href="/blog" 
+        class="text-sm text-[var(--color-accent)] hover:underline flex items-center gap-1 font-medium"
+      >
+        Voir tout <span>→</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {popularPosts.map((post, idx) => {
+        const views = viewsMap[post.slug] || 0;
+        const formattedViews = new Intl.NumberFormat('fr-FR').format(views);
+
+        return (
+          <a 
+            href={`/blog/${post.slug}`}
+            class="group relative flex items-start gap-4 p-4 rounded-xl bg-[var(--color-bg-secondary)] hover:bg-[var(--color-bg-tertiary)] border border-[var(--color-bg-tertiary)] hover:border-[var(--color-accent)]/30 transition-all duration-200"
+          >
+            <!-- Badge classement -->
+            <div class={`shrink-0 w-9 h-9 rounded-lg flex items-center justify-center font-bold text-sm ${
+              idx === 0 
+                ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' 
+                : idx === 1 
+                ? 'bg-slate-300/20 text-slate-300 border border-slate-300/30' 
+                : idx === 2 
+                ? 'bg-amber-700/20 text-amber-600 border border-amber-700/30' 
+                : 'bg-[var(--color-bg)] text-[var(--color-text-muted)]'
+            }`}>
+              #{idx + 1}
+            </div>
+
+            <!-- Contenu -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                <span class="text-xs font-medium text-[var(--color-accent)]">
+                  {post.data.category}
+                </span>
+                {views > 0 && (
+                  <>
+                    <span class="text-[var(--color-text-muted)] text-xs">•</span>
+                    <span class="text-xs text-[var(--color-text-muted)] flex items-center gap-1">
+                      👁️ {formattedViews} {views > 1 ? 'vues' : 'vue'}
+                    </span>
+                  </>
+                )}
+              </div>
+              <h3 class="font-semibold text-sm md:text-base text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors line-clamp-2">
+                {post.data.title}
+              </h3>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+)}
