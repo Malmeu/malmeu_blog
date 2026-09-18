@@ -1,73 +1,118 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const skills = [
-  { category: 'Frontend', items: ['React', 'Vue.js', 'TypeScript', 'Tailwind CSS', 'Astro'] },
-  { category: 'Backend', items: ['Node.js', 'Python', 'PostgreSQL', 'MongoDB', 'REST APIs'] },
-  { category: 'DevOps', items: ['Docker', 'CI/CD', 'Vercel', 'AWS', 'Linux'] },
-  { category: 'IA/ML', items: ['OpenAI API', 'LangChain', 'RAG', 'Prompt Engineering'] },
+  {
+    category: "Frontend",
+    items: ["React", "Vue.js", "TypeScript", "Tailwind CSS", "Astro"],
+  },
+  {
+    category: "Backend",
+    items: ["Node.js", "Python", "PostgreSQL", "MongoDB", "REST APIs"],
+  },
+  { category: "DevOps", items: ["Docker", "CI/CD", "Vercel", "AWS", "Linux"] },
+  {
+    category: "IA/ML",
+    items: ["OpenAI API", "LangChain", "RAG", "Prompt Engineering"],
+  },
 ];
 
 const projects = [
-  { name: 'Projet SaaS', description: 'Application SaaS en cours de développement', status: 'En cours' },
-  { name: 'Blog Tech', description: 'Ce blog que vous lisez actuellement', status: 'Actif' },
-  { name: 'Outils IA', description: 'Intégrations et automatisations avec l\'IA', status: 'En cours' },
+  {
+    name: "Projet SaaS",
+    description: "Application SaaS en cours de développement",
+    status: "En cours",
+  },
+  {
+    name: "Blog Tech",
+    description: "Ce blog que vous lisez actuellement",
+    status: "Actif",
+  },
+  {
+    name: "Outils IA",
+    description: "Intégrations et automatisations avec l'IA",
+    status: "En cours",
+  },
 ];
 
 // Portfolio - Ajoutez vos projets réalisés ici
 const portfolio = [
-  { 
-    name: 'FoodForce', 
-    description: 'La plateforme qui connecte les talents avec les meilleurs établissements du Maroc. Simple, rapide et efficace.', 
-    url: 'https://www.foodforce.ma/',
-    image: 'https://i.postimg.cc/W3CN6PGq/Capture-d-e-cran-2025-12-12-a-15-04-14.png',
-    tags: ['TypeScript', 'Node.js', 'Supabase']
+  {
+    name: "FoodForce",
+    description:
+      "La plateforme qui connecte les talents avec les meilleurs établissements du Maroc. Simple, rapide et efficace.",
+    url: "https://www.foodforce.ma/",
+    image:
+      "https://i.postimg.cc/W3CN6PGq/Capture-d-e-cran-2025-12-12-a-15-04-14.png",
+    tags: ["TypeScript", "Node.js", "Supabase"],
   },
-  { 
-    name: 'CV Diali', 
-    description: 'Une plateforme intuitive pour créer des CV qui se démarquent. Designs modernes, formats optimisés pour le Canada, et une expérience utilisateur exceptionnelle.', 
-    url: 'https://cvdiali.com',
-    image: 'https://i.postimg.cc/HkZf794b/Capture-d-e-cran-2025-12-12-a-15-05-39.png',
-    tags: ['react', 'DaisyUI', 'Supabase']
+  {
+    name: "CV Diali",
+    description:
+      "Une plateforme intuitive pour créer des CV qui se démarquent. Designs modernes, formats optimisés pour le Canada, et une expérience utilisateur exceptionnelle.",
+    url: "https://cvdiali.com",
+    image:
+      "https://i.postimg.cc/HkZf794b/Capture-d-e-cran-2025-12-12-a-15-05-39.png",
+    tags: ["react", "DaisyUI", "Supabase"],
   },
-  { 
-    name: 'ALPHAS Pompes', 
-    description: 'ALPHAS SERVICES est votre partenaire de confiance pour la maintenance, la réparation et l\'installation d\'équipements de pompage. Notre expertise technique et notre engagement qualité garantissent des solutions fiables et durables.', 
-    url: 'https://alphas-nine.vercel.app',
-    image: 'https://i.postimg.cc/Ss5jK9jn/Capture-d-e-cran-2025-12-12-a-15-09-41.png',
-    tags: ['Vue.js', 'Python', 'PostgreSQL']
+  {
+    name: "ALPHAS Pompes",
+    description:
+      "ALPHAS SERVICES est votre partenaire de confiance pour la maintenance, la réparation et l'installation d'équipements de pompage. Notre expertise technique et notre engagement qualité garantissent des solutions fiables et durables.",
+    url: "https://alphas-nine.vercel.app",
+    image:
+      "https://i.postimg.cc/Ss5jK9jn/Capture-d-e-cran-2025-12-12-a-15-09-41.png",
+    tags: ["Vue.js", "Python", "PostgreSQL"],
   },
-  { 
-    name: 'CarRent (CARMA)', 
-    description: 'qLa solution tout-en-un qui simplifie la gestion de vos véhicules, optimise vos coûts et améliore votre productivité.', 
-    url: 'https://car-manager-ten.vercel.app/',
-    image: 'https://i.postimg.cc/Pr4szwkt/Capture-d-e-cran-2025-12-12-a-15-47-56.png',
-    tags: ['TypeScript', 'fIREBASE', 'tailwindcss']
+  {
+    name: "CarRent (CARMA)",
+    description:
+      "qLa solution tout-en-un qui simplifie la gestion de vos véhicules, optimise vos coûts et améliore votre productivité.",
+    url: "https://car-manager-ten.vercel.app/",
+    image:
+      "https://i.postimg.cc/Pr4szwkt/Capture-d-e-cran-2025-12-12-a-15-47-56.png",
+    tags: ["TypeScript", "fIREBASE", "tailwindcss"],
   },
-  { 
-    name: 'Gouraya Froid', 
-    description: 'La solution tout-en-un qui simplifie la gestion de vos véhicules, optimise vos coûts et améliore votre productivité.', 
-    url: 'https://gouraya-froid.vercel.app/',
-    image: 'https://i.postimg.cc/yYZGN3L1/Capture-d-e-cran-2025-12-12-a-16-26-51.png',
-    tags: ['TypeScript', 'Supabase', 'tailwindcss']
+  {
+    name: "Gouraya Froid",
+    description:
+      "La solution tout-en-un qui simplifie la gestion de vos véhicules, optimise vos coûts et améliore votre productivité.",
+    url: "https://gouraya-froid.vercel.app/",
+    image:
+      "https://i.postimg.cc/yYZGN3L1/Capture-d-e-cran-2025-12-12-a-16-26-51.png",
+    tags: ["TypeScript", "Supabase", "tailwindcss"],
   },
-  { 
-    name: 'Lunatech DZ', 
-    description: 'qLa solution tout-en-un qui simplifie la gestion de vos véhicules, optimise vos coûts et améliore votre productivité.', 
-    url: 'https://www.lunatechdz.space/',
-    image: 'https://i.postimg.cc/mZtXdp1n/Capture-d-e-cran-2025-12-12-a-16-45-13.png',
-    tags: ['JavaScript', 'PlpgSQL', 'tailwindcss']
-  },// Ajoutez d'autres projets ici...
+  {
+    name: "Lunatech DZ",
+    description:
+      "qLa solution tout-en-un qui simplifie la gestion de vos véhicules, optimise vos coûts et améliore votre productivité.",
+    url: "https://project-luna-ten.vercel.app/",
+    image:
+      "https://i.postimg.cc/mZtXdp1n/Capture-d-e-cran-2025-12-12-a-16-45-13.png",
+    tags: ["JavaScript", "PlpgSQL", "tailwindcss"],
+  }, // Ajoutez d'autres projets ici...
 ];
 
 const socialLinks = [
-  { name: 'GitHub', href: 'https://github.com/votre-username', icon: 'M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z' },
-  { name: 'LinkedIn', href: 'https://linkedin.com/in/votre-username', icon: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z' },
-  { name: 'Twitter/X', href: 'https://twitter.com/votre-username', icon: 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z' },
+  {
+    name: "GitHub",
+    href: "https://github.com/votre-username",
+    icon: "M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z",
+  },
+  {
+    name: "LinkedIn",
+    href: "https://linkedin.com/in/votre-username",
+    icon: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z",
+  },
+  {
+    name: "Twitter/X",
+    href: "https://twitter.com/votre-username",
+    icon: "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z",
+  },
 ];
 ---
 
-<BaseLayout 
+<BaseLayout
   title="À propos | Malmeu - Développeur Full-Stack Algérie"
   description="Développeur full-stack et entrepreneur tech basé en Algérie 🇩🇿 Spécialisé en React, Node.js, IA et création de SaaS. Découvrez mon parcours et mes projets."
 >
@@ -75,47 +120,61 @@ const socialLinks = [
     <!-- Header -->
     <header class="text-center mb-16">
       <div class="w-40 h-40 mx-auto mb-6">
-        <lottie-player 
+        <lottie-player
           src="/Sleeping_cat.json"
           background="transparent"
           speed="1"
           style="width: 320px; height: 320px;"
           loop
-          autoplay
-        ></lottie-player>
+          autoplay></lottie-player>
       </div>
       <h1 class="text-4xl md:text-5xl font-bold text-(--color-text) mb-4">
         À propos de moi
       </h1>
       <p class="text-xl text-(--color-text-muted) max-w-2xl mx-auto">
-        Développeur full-stack et entrepreneur basé en Algérie, passionné par le développement web, l'IA et les SaaS.
+        Développeur full-stack et entrepreneur basé en Algérie, passionné par le
+        développement web, l'IA et les SaaS.
       </p>
     </header>
 
     <!-- Bio -->
     <section class="mb-16">
-      <h2 class="text-2xl font-bold text-(--color-accent) mb-6">Mon parcours</h2>
+      <h2 class="text-2xl font-bold text-(--color-accent) mb-6">
+        Mon parcours
+      </h2>
       <div class="prose prose-lg text-(--color-text-muted) space-y-4">
         <p>
-          Salut ! Je suis développeur Full-Stack et entrepreneur Tech basé en Algérie (Béjaïa). Mon quotidien ? Transformer des lignes de code en solutions business rentables.
+          Salut ! Je suis développeur Full-Stack et entrepreneur Tech basé en
+          Algérie (Béjaïa). Mon quotidien ? Transformer des lignes de code en
+          solutions business rentables.
         </p>
         <p>
-          Mon aventure a commencé par une frustration : voir tant d'entreprises locales bloquées par des outils inadaptés. J'ai donc décidé de ne pas seulement coder, mais de construire des produits qui résolvent de vrais problèmes.
+          Mon aventure a commencé par une frustration : voir tant d'entreprises
+          locales bloquées par des outils inadaptés. J'ai donc décidé de ne pas
+          seulement coder, mais de construire des produits qui résolvent de
+          vrais problèmes.
         </p>
-       <h2 class="text-2xl font-bold text-(--color-accent) mb-6">🛠 Mon expertise technique</h2> 
+        <h2 class="text-2xl font-bold text-(--color-accent) mb-6">
+          🛠 Mon expertise technique
+        </h2>
         <p>
-         Je ne suis pas fan de la théorie. Je suis un "Maker".
-Mon arme secrète est l'utilisation avancée de l'Intelligence Artificielle dans le cycle de développement.
-       </p>
+          Je ne suis pas fan de la théorie. Je suis un "Maker". Mon arme secrète
+          est l'utilisation avancée de l'Intelligence Artificielle dans le cycle
+          de développement.
+        </p>
         <ul class="list-disc pl-6 space-y-2">
           <li>
-            <strong>Développement Rapide :</strong> J'utilise des outils comme Windsurf et Cursor pour diviser par 3 le temps de création d'un MVP.
+            <strong>Développement Rapide :</strong> J'utilise des outils comme Windsurf
+            et Cursor pour diviser par 3 le temps de création d'un MVP.
           </li>
           <li>
-            <strong>Architecture Robuste :</strong> Expert en stack moderne (React, Astro, Supabase, TypeScript) pour des applications rapides et scalables.
+            <strong>Architecture Robuste :</strong> Expert en stack moderne (React,
+            Astro, Supabase, TypeScript) pour des applications rapides et scalables.
           </li>
           <li>
-            <strong>Automatisation & Data :</strong> Création de scripts de scraping (Chrome Extensions) et workflows d'automatisation pour la génération de leads.
+            <strong>Automatisation & Data :</strong> Création de scripts de scraping
+            (Chrome Extensions) et workflows d'automatisation pour la génération de
+            leads.
           </li>
         </ul>
       </div>
@@ -125,87 +184,116 @@ Mon arme secrète est l'utilisation avancée de l'Intelligence Artificielle dans
     <section class="mb-16">
       <h2 class="text-2xl font-bold text-(--color-accent) mb-6">Compétences</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {skills.map((skill) => (
-          <div class="p-6 bg-(--color-bg-secondary) rounded-xl">
-            <h3 class="font-semibold text-(--color-text) mb-4">{skill.category}</h3>
-            <div class="flex flex-wrap gap-2">
-              {skill.items.map((item) => (
-                <span class="px-3 py-1 bg-(--color-bg) text-(--color-text-muted) rounded-full text-sm">
-                  {item}
-                </span>
-              ))}
+        {
+          skills.map((skill) => (
+            <div class="p-6 bg-(--color-bg-secondary) rounded-xl">
+              <h3 class="font-semibold text-(--color-text) mb-4">
+                {skill.category}
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                {skill.items.map((item) => (
+                  <span class="px-3 py-1 bg-(--color-bg) text-(--color-text-muted) rounded-full text-sm">
+                    {item}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        }
       </div>
     </section>
 
     <!-- Projects -->
     <section class="mb-16">
-      <h2 class="text-2xl font-bold text-(--color-accent) mb-6">Projets en cours</h2>
+      <h2 class="text-2xl font-bold text-(--color-accent) mb-6">
+        Projets en cours
+      </h2>
       <div class="space-y-4">
-        {projects.map((project) => (
-          <div class="p-6 bg-(--color-bg-secondary) rounded-xl flex items-center justify-between">
-            <div>
-              <h3 class="font-semibold text-(--color-text)">{project.name}</h3>
-              <p class="text-(--color-text-muted) text-sm">{project.description}</p>
+        {
+          projects.map((project) => (
+            <div class="p-6 bg-(--color-bg-secondary) rounded-xl flex items-center justify-between">
+              <div>
+                <h3 class="font-semibold text-(--color-text)">
+                  {project.name}
+                </h3>
+                <p class="text-(--color-text-muted) text-sm">
+                  {project.description}
+                </p>
+              </div>
+              <span
+                class={`px-3 py-1 rounded-full text-xs font-medium ${
+                  project.status === "Actif"
+                    ? "bg-green-500/20 text-green-400"
+                    : "bg-(--color-accent)/20 text-(--color-accent)"
+                }`}
+              >
+                {project.status}
+              </span>
             </div>
-            <span class={`px-3 py-1 rounded-full text-xs font-medium ${
-              project.status === 'Actif' 
-                ? 'bg-green-500/20 text-green-400' 
-                : 'bg-(--color-accent)/20 text-(--color-accent)'
-            }`}>
-              {project.status}
-            </span>
-          </div>
-        ))}
+          ))
+        }
       </div>
     </section>
 
     <!-- Portfolio -->
     <section class="mb-16">
-      <h2 class="text-2xl font-bold text-(--color-accent) mb-6">🚀 Mon Portfolio</h2>
+      <h2 class="text-2xl font-bold text-(--color-accent) mb-6">
+        🚀 Mon Portfolio
+      </h2>
       <p class="text-(--color-text-muted) mb-8">
-        Découvrez quelques-uns des projets que j'ai réalisés pour mes clients et pour moi-même.
+        Découvrez quelques-uns des projets que j'ai réalisés pour mes clients et
+        pour moi-même.
       </p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {portfolio.map((project) => (
-          <a 
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group block bg-(--color-bg-secondary) rounded-xl overflow-hidden hover:ring-2 hover:ring-(--color-accent) transition-all duration-300"
-          >
-            <div class="aspect-video overflow-hidden">
-              <img 
-                src={project.image} 
-                alt={project.name}
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-            <div class="p-5">
-              <h3 class="font-semibold text-(--color-text) mb-2 group-hover:text-(--color-accent) transition-colors">
-                {project.name}
-              </h3>
-              <p class="text-(--color-text-muted) text-sm mb-3">
-                {project.description}
-              </p>
-              <div class="flex flex-wrap gap-2">
-                {project.tags.map((tag) => (
-                  <span class="px-2 py-1 bg-(--color-bg) text-(--color-accent) rounded text-xs">
-                    {tag}
-                  </span>
-                ))}
+        {
+          portfolio.map((project) => (
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group block bg-(--color-bg-secondary) rounded-xl overflow-hidden hover:ring-2 hover:ring-(--color-accent) transition-all duration-300"
+            >
+              <div class="aspect-video overflow-hidden">
+                <img
+                  src={project.image}
+                  alt={project.name}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
-              <div class="mt-4 flex items-center text-(--color-accent) text-sm font-medium">
-                <span>Voir le projet</span>
-                <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
+              <div class="p-5">
+                <h3 class="font-semibold text-(--color-text) mb-2 group-hover:text-(--color-accent) transition-colors">
+                  {project.name}
+                </h3>
+                <p class="text-(--color-text-muted) text-sm mb-3">
+                  {project.description}
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <span class="px-2 py-1 bg-(--color-bg) text-(--color-accent) rounded text-xs">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div class="mt-4 flex items-center text-(--color-accent) text-sm font-medium">
+                  <span>Voir le projet</span>
+                  <svg
+                    class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </div>
               </div>
-            </div>
-          </a>
-        ))}
+            </a>
+          ))
+        }
       </div>
     </section>
 
@@ -213,29 +301,40 @@ Mon arme secrète est l'utilisation avancée de l'Intelligence Artificielle dans
     <section class="text-center">
       <h2 class="text-2xl font-bold text-(--color-accent) mb-6">Me suivre</h2>
       <div class="flex justify-center gap-4">
-        {socialLinks.map((social) => (
-          <a 
-            href={social.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="p-4 bg-(--color-bg-secondary) rounded-xl hover:bg-(--color-accent)/20 transition-colors group"
-            aria-label={social.name}
-          >
-            <svg class="w-6 h-6 text-(--color-text-muted) group-hover:text-(--color-accent) transition-colors" fill="currentColor" viewBox="0 0 24 24">
-              <path d={social.icon} />
-            </svg>
-          </a>
-        ))}
+        {
+          socialLinks.map((social) => (
+            <a
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="p-4 bg-(--color-bg-secondary) rounded-xl hover:bg-(--color-accent)/20 transition-colors group"
+              aria-label={social.name}
+            >
+              <svg
+                class="w-6 h-6 text-(--color-text-muted) group-hover:text-(--color-accent) transition-colors"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d={social.icon} />
+              </svg>
+            </a>
+          ))
+        }
       </div>
     </section>
 
     <!-- CTA -->
-    <section class="mt-16 text-center p-8 bg-linear-to-r from-(--color-accent)/10 to-(--color-accent-orange)/10 rounded-xl">
-      <h2 class="text-2xl font-bold text-(--color-text) mb-4">Travaillons ensemble</h2>
+    <section
+      class="mt-16 text-center p-8 bg-linear-to-r from-(--color-accent)/10 to-(--color-accent-orange)/10 rounded-xl"
+    >
+      <h2 class="text-2xl font-bold text-(--color-text) mb-4">
+        Travaillons ensemble
+      </h2>
       <p class="text-(--color-text-muted) mb-6">
-        Vous avez un projet en tête ou souhaitez simplement discuter ? N'hésitez pas à me contacter !
+        Vous avez un projet en tête ou souhaitez simplement discuter ? N'hésitez
+        pas à me contacter !
       </p>
-      <a 
+      <a
         href="/contact"
         class="inline-block px-6 py-3 bg-(--color-accent) text-(--color-bg) rounded-lg font-medium hover:opacity-90 transition-opacity"
       >
