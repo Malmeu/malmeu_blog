@@ -57,9 +57,23 @@ Quand vous êtes indépendant, vous devez couvrir vos jours sans mission (interc
 
 ### La formule de base pour un freelance tech :
 
-$$TJM = \frac{\text{Revenu Net Mensuel Cible} + \text{Charges (IFU + Outils + Matériel)}}{18 \text{ jours travaillés}}$$
-
-*Pourquoi 18 jours et pas 22 ?* Parce qu'en freelance, vous passez au moins 3 à 4 jours par mois à prospecter, faire des devis, répondre aux emails et gérer votre veille technique.
+<div style="margin: 1.75rem 0; padding: 1.5rem; border-radius: 1rem; background: var(--color-bg-secondary, rgba(255,255,255,0.03)); border: 1px solid var(--color-border, rgba(255,255,255,0.1)); text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+  <div style="display: inline-flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.75rem; font-size: 1.15rem; font-weight: 700; color: var(--color-text, #fff);">
+    <span style="color: var(--color-accent, #38bdf8); font-family: monospace; font-size: 1.35rem;">TJM</span>
+    <span style="color: var(--color-text-muted, #94a3b8); font-size: 1.35rem;">=</span>
+    <div style="display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle;">
+      <span style="border-bottom: 2px solid var(--color-accent, #38bdf8); padding: 0 0.75rem 0.35rem; font-size: 1rem;">
+        Revenu Net Cible + Charges (IFU + Outils + Matériel)
+      </span>
+      <span style="padding-top: 0.35rem; font-size: 0.95rem; color: var(--color-accent, #38bdf8);">
+        18 jours travaillés / mois
+      </span>
+    </div>
+  </div>
+  <div style="margin-top: 0.85rem; font-size: 0.825rem; color: var(--color-text-muted, #94a3b8); font-style: italic;">
+    💡 <em>Charges = 5% IFU + Cotisation annuelle CASNOS + Abonnements logiciels (IA, serveurs) + Amortissement PC</em>
+  </div>
+</div>
 
 > [!TIP]
 > **Testez vos chiffres en direct :**  
