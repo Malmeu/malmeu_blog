@@ -35,3 +35,22 @@ export interface ArticleView {
   updated_at: string
 }
 
+export interface CommunityProject {
+  id: string
+  name: string
+  slug: string
+  tagline: string
+  description?: string
+  url: string
+  logo_url?: string
+  category: string
+  creator_name?: string
+  creator_twitter?: string
+  creator_email?: string
+  status: 'pending' | 'approved' | 'rejected'
+  upvotes?: number
+  created_at?: string
+  updated_at?: string
+}
+
+

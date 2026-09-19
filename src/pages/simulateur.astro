@@ -1,0 +1,604 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Newsletter from '../components/Newsletter.astro';
+---
+
+<BaseLayout 
+  title="Simulateur Freelance & SaaS Algérie | Calculez vos revenus réels en DZD"
+  description="Outil gratuit pour développeurs et créateurs en Algérie : calculez votre TJM net en Dinars (cours officiel vs parallèle, frais Wise/Payoneer, impôt auto-entrepreneur 5%) et la rentabilité de votre SaaS."
+>
+  <div class="max-w-5xl mx-auto px-4 py-12">
+    <!-- Breadcrumbs -->
+    <nav class="mb-8 text-sm" aria-label="Breadcrumb">
+      <ol class="flex items-center gap-2 text-[var(--color-text-muted)]">
+        <li><a href="/" class="hover:text-[var(--color-accent)] transition-colors">Accueil</a></li>
+        <li>/</li>
+        <li><span class="text-[var(--color-text-muted)]">Outils</span></li>
+        <li>/</li>
+        <li class="text-[var(--color-accent)] font-medium">Simulateur Algérie</li>
+      </ol>
+    </nav>
+
+    <!-- Header -->
+    <header class="text-center max-w-3xl mx-auto mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-amber-500/15 to-orange-500/15 text-amber-400 border border-amber-500/30 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
+        <span>🧮</span> Outil Gratuit pour Devs & Créateurs DZ
+      </div>
+      <h1 class="text-3xl md:text-5xl font-bold text-[var(--color-text)] mb-4">
+        Simulateur de Revenus <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-orange)]">Freelance & SaaS</span>
+      </h1>
+      <p class="text-lg text-[var(--color-text-muted)]">
+        Estimez précisément vos revenus nets en Dinars Algériens (DZD) selon vos canaux de retrait (Wise, Payoneer, Crypto), la fiscalité locale et la rentabilité de vos projets tech.
+      </p>
+    </header>
+
+    <!-- Navigation Onglets -->
+    <div class="flex justify-center mb-8">
+      <div class="inline-flex p-1.5 bg-[var(--color-bg-secondary)] border border-[var(--color-bg-tertiary)] rounded-2xl">
+        <button 
+          id="tab-freelance" 
+          class="px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 bg-[var(--color-accent)] text-[var(--color-bg)] shadow-md"
+        >
+          💻 Simulateur Freelance (TJM & DZD)
+        </button>
+        <button 
+          id="tab-saas" 
+          class="px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+        >
+          🚀 Simulateur Rentabilité SaaS
+        </button>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- SECTION 1 : SIMULATEUR FREELANCE -->
+    <!-- ============================================== -->
+    <div id="section-freelance" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Formulaire de saisie (7 cols) -->
+      <div class="lg:col-span-7 bg-[var(--color-bg-secondary)] border border-[var(--color-bg-tertiary)] rounded-2xl p-6 md:p-8 space-y-6">
+        <h2 class="text-xl font-bold text-[var(--color-text)] flex items-center gap-2">
+          <span>⚙️</span> Vos paramètres de mission
+        </h2>
+
+        <!-- TJM & Devise -->
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium text-[var(--color-text)]">
+              Taux Journalier Moyen (TJM)
+            </label>
+            <span id="tjm-display" class="text-base font-bold text-[var(--color-accent)]">250 € / jour</span>
+          </div>
+          <div class="flex gap-3">
+            <input 
+              type="range" 
+              id="tjm-slider" 
+              min="50" 
+              max="1000" 
+              step="10" 
+              value="250" 
+              class="w-full accent-[var(--color-accent)] cursor-pointer"
+            />
+            <select id="currency-select" class="px-3 py-1.5 bg-[var(--color-bg)] border border-[var(--color-bg-tertiary)] rounded-lg text-sm text-[var(--color-text)] font-semibold focus:outline-none">
+              <option value="EUR">€ EUR</option>
+              <option value="USD">$ USD</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Jours travaillés -->
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium text-[var(--color-text)]">
+              Jours travaillés par mois
+            </label>
+            <span id="days-display" class="text-base font-bold text-[var(--color-text)]">18 jours</span>
+          </div>
+          <input 
+            type="range" 
+            id="days-slider" 
+            min="1" 
+            max="30" 
+            step="1" 
+            value="18" 
+            class="w-full accent-[var(--color-accent)] cursor-pointer"
+          />
+        </div>
+
+        <!-- Canal de retrait / Réception -->
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text)] mb-2">
+            Méthode de réception des fonds
+          </label>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <label class="payment-option flex items-center gap-2 p-3 bg-[var(--color-bg)] border border-[var(--color-accent)] rounded-xl cursor-pointer">
+              <input type="radio" name="payment-method" value="wise" checked class="accent-[var(--color-accent)]" />
+              <div>
+                <span class="font-semibold block text-[var(--color-text)]">Wise / Paysera</span>
+                <span class="text-[var(--color-text-muted)]">~1.5% de frais</span>
+              </div>
+            </label>
+            <label class="payment-option flex items-center gap-2 p-3 bg-[var(--color-bg)] border border-[var(--color-bg-tertiary)] rounded-xl cursor-pointer">
+              <input type="radio" name="payment-method" value="payoneer" class="accent-[var(--color-accent)]" />
+              <div>
+                <span class="font-semibold block text-[var(--color-text)]">Payoneer</span>
+                <span class="text-[var(--color-text-muted)]">~2.5% de frais</span>
+              </div>
+            </label>
+            <label class="payment-option flex items-center gap-2 p-3 bg-[var(--color-bg)] border border-[var(--color-bg-tertiary)] rounded-xl cursor-pointer">
+              <input type="radio" name="payment-method" value="crypto" class="accent-[var(--color-accent)]" />
+              <div>
+                <span class="font-semibold block text-[var(--color-text)]">Crypto (USDT P2P)</span>
+                <span class="text-[var(--color-text-muted)]">~0.8% de frais</span>
+              </div>
+            </label>
+            <label class="payment-option flex items-center gap-2 p-3 bg-[var(--color-bg)] border border-[var(--color-bg-tertiary)] rounded-xl cursor-pointer">
+              <input type="radio" name="payment-method" value="bank" class="accent-[var(--color-accent)]" />
+              <div>
+                <span class="font-semibold block text-[var(--color-text)]">Virement Bancaire DZ</span>
+                <span class="text-[var(--color-text-muted)]">~3.5% + SWIFT</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Statut fiscal local -->
+        <div>
+          <label class="block text-sm font-medium text-[var(--color-text)] mb-2">
+            Régime fiscal en Algérie
+          </label>
+          <select id="tax-regime" class="w-full px-4 py-2.5 bg-[var(--color-bg)] border border-[var(--color-bg-tertiary)] rounded-xl text-sm text-[var(--color-text)] focus:outline-none">
+            <option value="auto">Statut Auto-entrepreneur (5% IFU forfaitaire + CASNOS)</option>
+            <option value="none">Particulier (Revenus informels déclarés au change)</option>
+            <option value="sarl">Société SARL / EURL (~26% charges & impôts)</option>
+          </select>
+        </div>
+
+        <!-- Taux de change DZD -->
+        <div class="pt-4 border-t border-[var(--color-bg-tertiary)]">
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium text-[var(--color-text)] flex items-center gap-1.5">
+              <span>💱</span> Taux de conversion Dinars (DZD)
+            </label>
+            <div class="flex items-center gap-2">
+              <button id="btn-rate-parallel" class="px-2.5 py-1 text-xs rounded bg-[var(--color-accent)] text-[var(--color-bg)] font-semibold">
+                Marché Parallèle (Square)
+              </button>
+              <button id="btn-rate-official" class="px-2.5 py-1 text-xs rounded bg-[var(--color-bg)] text-[var(--color-text-muted)] hover:text-white">
+                Officiel
+              </button>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <input 
+              type="number" 
+              id="exchange-rate-input" 
+              value="242" 
+              class="w-32 px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-bg-tertiary)] rounded-xl text-base font-bold text-[var(--color-text)] focus:outline-none"
+            />
+            <span class="text-xs text-[var(--color-text-muted)]">
+              1 € = <strong id="rate-currency-label" class="text-[var(--color-text)]">242 DZD</strong> (taux modifiable à volonté)
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Résultats et Métriques Clés (5 cols) -->
+      <div class="lg:col-span-5 space-y-6">
+        <!-- Carte Résultat Net Principal -->
+        <div class="bg-gradient-to-br from-[var(--color-bg-secondary)] to-[var(--color-bg-tertiary)] border-2 border-[var(--color-accent)]/40 rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden">
+          <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-[var(--color-accent)]/10 rounded-full blur-2xl pointer-events-none"></div>
+
+          <span class="text-xs font-bold uppercase tracking-wider text-[var(--color-accent)] block mb-1">
+            💰 Revenu Net Estimé / Mois
+          </span>
+          <div class="flex items-baseline gap-2 mb-2">
+            <h3 id="net-dzd-display" class="text-3xl md:text-4xl font-extrabold text-white">
+              1 028 500 DZD
+            </h3>
+          </div>
+          <p id="net-currency-display" class="text-sm font-semibold text-[var(--color-text-muted)] mb-6">
+            ≈ 4 250 € nets dans votre poche
+          </p>
+
+          <!-- Détails détaillés -->
+          <div class="space-y-3 pt-4 border-t border-[var(--color-bg-tertiary)] text-sm">
+            <div class="flex justify-between">
+              <span class="text-[var(--color-text-muted)]">Chiffre d'affaires brut :</span>
+              <span id="gross-display" class="font-semibold text-white">4 500 €</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[var(--color-text-muted)]">Frais de transfert estimés :</span>
+              <span id="fees-display" class="font-semibold text-rose-400">- 67,50 €</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[var(--color-text-muted)]">Charges & Impôts (IFU/CASNOS) :</span>
+              <span id="taxes-display" class="font-semibold text-amber-400">- 225 €</span>
+            </div>
+            <div class="flex justify-between pt-2 border-t border-[var(--color-bg-tertiary)] font-bold text-base">
+              <span class="text-[var(--color-text)]">Équivalent Annuel Net :</span>
+              <span id="annual-dzd-display" class="text-emerald-400">12 342 000 DZD</span>
+            </div>
+          </div>
+
+          <!-- Jauge visuelle -->
+          <div class="mt-6">
+            <span class="text-xs text-[var(--color-text-muted)] block mb-1.5 font-medium">Répartition du revenu :</span>
+            <div class="w-full h-3 bg-[var(--color-bg)] rounded-full overflow-hidden flex">
+              <div id="bar-net" style="width: 93%;" class="bg-emerald-500 h-full" title="Net dans la poche"></div>
+              <div id="bar-taxes" style="width: 5%;" class="bg-amber-500 h-full" title="Impôts & Charges"></div>
+              <div id="bar-fees" style="width: 2%;" class="bg-rose-500 h-full" title="Frais de transfert"></div>
+            </div>
+            <div class="flex justify-between text-[10px] text-[var(--color-text-muted)] mt-1.5">
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Net</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Impôts</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Frais</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bouton de Partage & Copie -->
+        <div class="bg-[var(--color-bg-secondary)] border border-[var(--color-bg-tertiary)] rounded-2xl p-5 text-center space-y-3">
+          <p class="text-xs text-[var(--color-text-muted)]">
+            Partagez cette simulation ou sauvegardez vos calculs
+          </p>
+          <div class="flex gap-2 justify-center">
+            <button id="copy-summary-btn" class="px-4 py-2 bg-[var(--color-bg)] hover:bg-[var(--color-accent)]/20 text-[var(--color-text)] rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5">
+              <span>📋</span> Copier le résumé
+            </button>
+            <a 
+              id="share-whatsapp-btn" 
+              href="#" 
+              target="_blank" 
+              class="px-4 py-2 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5"
+            >
+              <span>💬</span> WhatsApp
+            </a>
+            <a 
+              id="share-linkedin-btn" 
+              href="#" 
+              target="_blank" 
+              class="px-4 py-2 bg-sky-500/15 hover:bg-sky-500/25 text-sky-400 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5"
+            >
+              <span>💼</span> LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- SECTION 2 : SIMULATEUR SAAS -->
+    <!-- ============================================== -->
+    <div id="section-saas" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div class="lg:col-span-7 bg-[var(--color-bg-secondary)] border border-[var(--color-bg-tertiary)] rounded-2xl p-6 md:p-8 space-y-6">
+        <h2 class="text-xl font-bold text-[var(--color-text)] flex items-center gap-2">
+          <span>🚀</span> Métriques de votre SaaS
+        </h2>
+
+        <!-- Prix d'abonnement -->
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium text-[var(--color-text)]">
+              Prix moyen de l'abonnement par mois
+            </label>
+            <span id="saas-price-display" class="text-base font-bold text-[var(--color-accent)]">2 500 DZD / mois</span>
+          </div>
+          <div class="flex gap-3">
+            <input 
+              type="range" 
+              id="saas-price-slider" 
+              min="500" 
+              max="50000" 
+              step="500" 
+              value="2500" 
+              class="w-full accent-[var(--color-accent)] cursor-pointer"
+            />
+            <select id="saas-currency-select" class="px-3 py-1.5 bg-[var(--color-bg)] border border-[var(--color-bg-tertiary)] rounded-lg text-sm text-[var(--color-text)] font-semibold focus:outline-none">
+              <option value="DZD">DZD</option>
+              <option value="EUR">€ EUR</option>
+              <option value="USD">$ USD</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Nombre d'abonnés payants -->
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium text-[var(--color-text)]">
+              Nombre de clients abonnés (Payants)
+            </label>
+            <span id="saas-users-display" class="text-base font-bold text-[var(--color-text)]">150 clients</span>
+          </div>
+          <input 
+            type="range" 
+            id="saas-users-slider" 
+            min="5" 
+            max="2000" 
+            step="5" 
+            value="150" 
+            class="w-full accent-[var(--color-accent)] cursor-pointer"
+          />
+        </div>
+
+        <!-- Coûts mensuels serveurs / IA -->
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium text-[var(--color-text)]">
+              Coûts mensuels fixes (Serveurs, APIs, Supabase, Vercel)
+            </label>
+            <span id="saas-costs-display" class="text-base font-bold text-rose-400">30 000 DZD</span>
+          </div>
+          <input 
+            type="range" 
+            id="saas-costs-slider" 
+            min="0" 
+            max="200000" 
+            step="5000" 
+            value="30000" 
+            class="w-full accent-rose-500 cursor-pointer"
+          />
+        </div>
+
+        <!-- Churn rate -->
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium text-[var(--color-text)]">
+              Taux de désabonnement mensuel (Churn)
+            </label>
+            <span id="saas-churn-display" class="text-base font-bold text-amber-400">5 %</span>
+          </div>
+          <input 
+            type="range" 
+            id="saas-churn-slider" 
+            min="1" 
+            max="25" 
+            step="0.5" 
+            value="5" 
+            class="w-full accent-amber-500 cursor-pointer"
+          />
+        </div>
+      </div>
+
+      <!-- Résultats SaaS -->
+      <div class="lg:col-span-5 space-y-6">
+        <div class="bg-gradient-to-br from-[var(--color-bg-secondary)] to-[var(--color-bg-tertiary)] border-2 border-emerald-500/40 rounded-2xl p-6 md:p-8 shadow-xl">
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 block mb-1">
+            📈 MRR (Revenu Récurrent Mensuel)
+          </span>
+          <h3 id="saas-mrr-display" class="text-3xl md:text-4xl font-extrabold text-white mb-2">
+            375 000 DZD
+          </h3>
+          <p id="saas-arr-display" class="text-sm font-semibold text-[var(--color-text-muted)] mb-6">
+            Soit 4 500 000 DZD / an (ARR)
+          </p>
+
+          <div class="space-y-3 pt-4 border-t border-[var(--color-bg-tertiary)] text-sm">
+            <div class="flex justify-between">
+              <span class="text-[var(--color-text-muted)]">Bénéfice Net Mensuel :</span>
+              <span id="saas-profit-display" class="font-bold text-emerald-400">345 000 DZD</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[var(--color-text-muted)]">Marge bénéficiaire :</span>
+              <span id="saas-margin-display" class="font-semibold text-white">92 %</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[var(--color-text-muted)]">Seuil de rentabilité (Break-even) :</span>
+              <span id="saas-breakeven-display" class="font-bold text-cyan-400">12 abonnés</span>
+            </div>
+            <div class="flex justify-between pt-2 border-t border-[var(--color-bg-tertiary)]">
+              <span class="text-[var(--color-text-muted)]">Pertes estimées par Churn :</span>
+              <span id="saas-churn-loss-display" class="font-semibold text-amber-400">18 750 DZD/mois</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6 bg-[var(--color-bg-secondary)] border border-[var(--color-bg-tertiary)] rounded-2xl">
+          <h4 class="font-bold text-sm text-[var(--color-text)] mb-2">💡 Conseil de Malmeu :</h4>
+          <p class="text-xs text-[var(--color-text-muted)] leading-relaxed">
+            En Algérie, vendre un SaaS B2B en Dinars via virement bancaire ou paiement annuel par chèque/devis réduit le Churn à moins de 3%. Combinez toujours une offre mensuelle et un pack annuel avec 2 mois offerts !
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter Banner -->
+    <div class="mt-16">
+      <Newsletter />
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  (function() {
+    // Gestion des onglets
+    const tabFreelance = document.getElementById('tab-freelance');
+    const tabSaas = document.getElementById('tab-saas');
+    const sectionFreelance = document.getElementById('section-freelance');
+    const sectionSaas = document.getElementById('section-saas');
+
+    function switchTab(isFreelance) {
+      if (isFreelance) {
+        tabFreelance.className = 'px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 bg-[var(--color-accent)] text-[var(--color-bg)] shadow-md';
+        tabSaas.className = 'px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 text-[var(--color-text-muted)] hover:text-[var(--color-text)]';
+        sectionFreelance.classList.remove('hidden');
+        sectionSaas.classList.add('hidden');
+      } else {
+        tabSaas.className = 'px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 bg-[var(--color-accent)] text-[var(--color-bg)] shadow-md';
+        tabFreelance.className = 'px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 text-[var(--color-text-muted)] hover:text-[var(--color-text)]';
+        sectionSaas.classList.remove('hidden');
+        sectionFreelance.classList.add('hidden');
+      }
+    }
+
+    tabFreelance.addEventListener('click', () => switchTab(true));
+    tabSaas.addEventListener('click', () => switchTab(false));
+
+    // --- Logique Simulateur Freelance ---
+    const tjmSlider = document.getElementById('tjm-slider');
+    const tjmDisplay = document.getElementById('tjm-display');
+    const daysSlider = document.getElementById('days-slider');
+    const daysDisplay = document.getElementById('days-display');
+    const currencySelect = document.getElementById('currency-select');
+    const rateInput = document.getElementById('exchange-rate-input');
+    const taxRegime = document.getElementById('tax-regime');
+    const btnRateParallel = document.getElementById('btn-rate-parallel');
+    const btnRateOfficial = document.getElementById('btn-rate-official');
+    const rateCurrencyLabel = document.getElementById('rate-currency-label');
+
+    const netDzdDisplay = document.getElementById('net-dzd-display');
+    const netCurrencyDisplay = document.getElementById('net-currency-display');
+    const grossDisplay = document.getElementById('gross-display');
+    const feesDisplay = document.getElementById('fees-display');
+    const taxesDisplay = document.getElementById('taxes-display');
+    const annualDzdDisplay = document.getElementById('annual-dzd-display');
+    const barNet = document.getElementById('bar-net');
+    const barTaxes = document.getElementById('bar-taxes');
+    const barFees = document.getElementById('bar-fees');
+
+    function calculateFreelance() {
+      const tjm = parseFloat(tjmSlider.value) || 0;
+      const days = parseInt(daysSlider.value) || 0;
+      const currency = currencySelect.value;
+      const currencySymbol = currency === 'EUR' ? '€' : '$';
+      const rate = parseFloat(rateInput.value) || 240;
+      const regime = taxRegime.value;
+
+      tjmDisplay.textContent = `${tjm} ${currencySymbol} / jour`;
+      daysDisplay.textContent = `${days} jours`;
+      rateCurrencyLabel.textContent = `${rate} DZD`;
+
+      // 1. Brut
+      const gross = tjm * days;
+
+      // 2. Frais canal
+      const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value || 'wise';
+      let feeRate = 0.015;
+      if (paymentMethod === 'payoneer') feeRate = 0.025;
+      if (paymentMethod === 'crypto') feeRate = 0.008;
+      if (paymentMethod === 'bank') feeRate = 0.035;
+      const fees = gross * feeRate;
+
+      // 3. Fiscalité locale
+      let taxRate = 0.05; // Auto-entrepreneur 5% IFU
+      if (regime === 'none') taxRate = 0;
+      if (regime === 'sarl') taxRate = 0.26;
+      const taxes = (gross - fees) * taxRate;
+
+      // 4. Net
+      const netCurrency = Math.max(0, gross - fees - taxes);
+      const netDzd = netCurrency * rate;
+      const annualDzd = netDzd * 12;
+
+      // Affichage
+      grossDisplay.textContent = `${new Intl.NumberFormat('fr-FR').format(Math.round(gross))} ${currencySymbol}`;
+      feesDisplay.textContent = `- ${new Intl.NumberFormat('fr-FR').format(Math.round(fees))} ${currencySymbol}`;
+      taxesDisplay.textContent = `- ${new Intl.NumberFormat('fr-FR').format(Math.round(taxes))} ${currencySymbol}`;
+      netCurrencyDisplay.textContent = `≈ ${new Intl.NumberFormat('fr-FR').format(Math.round(netCurrency))} ${currencySymbol} nets dans votre poche`;
+      netDzdDisplay.textContent = `${new Intl.NumberFormat('fr-FR').format(Math.round(netDzd))} DZD`;
+      annualDzdDisplay.textContent = `${new Intl.NumberFormat('fr-FR').format(Math.round(annualDzd))} DZD`;
+
+      // Jauge
+      if (gross > 0) {
+        const pNet = Math.round((netCurrency / gross) * 100);
+        const pFees = Math.round((fees / gross) * 100);
+        const pTaxes = 100 - pNet - pFees;
+        barNet.style.width = pNet + '%';
+        barFees.style.width = pFees + '%';
+        barTaxes.style.width = pTaxes + '%';
+      }
+    }
+
+    tjmSlider.addEventListener('input', calculateFreelance);
+    daysSlider.addEventListener('input', calculateFreelance);
+    currencySelect.addEventListener('change', calculateFreelance);
+    rateInput.addEventListener('input', calculateFreelance);
+    taxRegime.addEventListener('change', calculateFreelance);
+    document.querySelectorAll('input[name="payment-method"]').forEach(r => r.addEventListener('change', calculateFreelance));
+
+    btnRateParallel.addEventListener('click', () => {
+      const isEur = currencySelect.value === 'EUR';
+      rateInput.value = isEur ? '242' : '225';
+      btnRateParallel.className = 'px-2.5 py-1 text-xs rounded bg-[var(--color-accent)] text-[var(--color-bg)] font-semibold';
+      btnRateOfficial.className = 'px-2.5 py-1 text-xs rounded bg-[var(--color-bg)] text-[var(--color-text-muted)] hover:text-white';
+      calculateFreelance();
+    });
+
+    btnRateOfficial.addEventListener('click', () => {
+      const isEur = currencySelect.value === 'EUR';
+      rateInput.value = isEur ? '146' : '135';
+      btnRateOfficial.className = 'px-2.5 py-1 text-xs rounded bg-[var(--color-accent)] text-[var(--color-bg)] font-semibold';
+      btnRateParallel.className = 'px-2.5 py-1 text-xs rounded bg-[var(--color-bg)] text-[var(--color-text-muted)] hover:text-white';
+      calculateFreelance();
+    });
+
+    // --- Logique Simulateur SaaS ---
+    const saasPriceSlider = document.getElementById('saas-price-slider');
+    const saasPriceDisplay = document.getElementById('saas-price-display');
+    const saasCurrencySelect = document.getElementById('saas-currency-select');
+    const saasUsersSlider = document.getElementById('saas-users-slider');
+    const saasUsersDisplay = document.getElementById('saas-users-display');
+    const saasCostsSlider = document.getElementById('saas-costs-slider');
+    const saasCostsDisplay = document.getElementById('saas-costs-display');
+    const saasChurnSlider = document.getElementById('saas-churn-slider');
+    const saasChurnDisplay = document.getElementById('saas-churn-display');
+
+    const saasMrrDisplay = document.getElementById('saas-mrr-display');
+    const saasArrDisplay = document.getElementById('saas-arr-display');
+    const saasProfitDisplay = document.getElementById('saas-profit-display');
+    const saasMarginDisplay = document.getElementById('saas-margin-display');
+    const saasBreakevenDisplay = document.getElementById('saas-breakeven-display');
+    const saasChurnLossDisplay = document.getElementById('saas-churn-loss-display');
+
+    function calculateSaas() {
+      const price = parseFloat(saasPriceSlider.value) || 0;
+      const users = parseInt(saasUsersSlider.value) || 0;
+      const costs = parseFloat(saasCostsSlider.value) || 0;
+      const churn = parseFloat(saasChurnSlider.value) || 0;
+      const cur = saasCurrencySelect.value;
+
+      saasPriceDisplay.textContent = `${new Intl.NumberFormat('fr-FR').format(price)} ${cur} / mois`;
+      saasUsersDisplay.textContent = `${users} clients`;
+      saasCostsDisplay.textContent = `${new Intl.NumberFormat('fr-FR').format(costs)} ${cur}`;
+      saasChurnDisplay.textContent = `${churn} %`;
+
+      const mrr = price * users;
+      const arr = mrr * 12;
+      const profit = Math.max(0, mrr - costs);
+      const margin = mrr > 0 ? Math.round((profit / mrr) * 100) : 0;
+      const breakeven = price > 0 ? Math.ceil(costs / price) : 0;
+      const churnLoss = (mrr * (churn / 100));
+
+      saasMrrDisplay.textContent = `${new Intl.NumberFormat('fr-FR').format(Math.round(mrr))} ${cur}`;
+      saasArrDisplay.textContent = `Soit ${new Intl.NumberFormat('fr-FR').format(Math.round(arr))} ${cur} / an (ARR)`;
+      saasProfitDisplay.textContent = `${new Intl.NumberFormat('fr-FR').format(Math.round(profit))} ${cur}`;
+      saasMarginDisplay.textContent = `${margin} %`;
+      saasBreakevenDisplay.textContent = `${breakeven} abonné${breakeven > 1 ? 's' : ''}`;
+      saasChurnLossDisplay.textContent = `${new Intl.NumberFormat('fr-FR').format(Math.round(churnLoss))} ${cur}/mois`;
+    }
+
+    saasPriceSlider.addEventListener('input', calculateSaas);
+    saasCurrencySelect.addEventListener('change', calculateSaas);
+    saasUsersSlider.addEventListener('input', calculateSaas);
+    saasCostsSlider.addEventListener('input', calculateSaas);
+    saasChurnSlider.addEventListener('input', calculateSaas);
+
+    // Initialisation
+    calculateFreelance();
+    calculateSaas();
+
+    // Copie de résumé
+    document.getElementById('copy-summary-btn').addEventListener('click', function() {
+      const summary = `📊 Simulation Freelance Algérie (via malmeu.info/simulateur) :\n` +
+        `• TJM : ${tjmDisplay.textContent}\n` +
+        `• Revenu Brut : ${grossDisplay.textContent}\n` +
+        `• Net Estimé : ${netDzdDisplay.textContent} / mois (${netCurrencyDisplay.textContent})\n` +
+        `• Annuel : ${annualDzdDisplay.textContent}\n` +
+        `Calculez le vôtre sur : https://www.malmeu.info/simulateur`;
+      
+      navigator.clipboard.writeText(summary).then(() => {
+        this.textContent = '✅ Copié !';
+        setTimeout(() => this.innerHTML = '<span>📋</span> Copier le résumé', 2000);
+      });
+    });
+  })();
+</script>

@@ -7,6 +7,7 @@ import RelatedPosts from '../components/RelatedPosts.astro';
 import Newsletter from '../components/Newsletter.astro';
 import PostReactions from '../components/PostReactions.astro';
 import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Analytics from '@vercel/analytics/astro'
 
 const currentUrl = Astro.url.href;
@@ -26,6 +27,16 @@ const content = post.body || '';
 const wordsPerMinute = 200;
 const wordCount = content.split(/\s+/).length;
 const readingTime = Math.ceil(wordCount / wordsPerMinute);
+
+// Récupérer un index léger des articles pour les prévisualisations de liens au survol
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const blogPreviews = allPosts.map(p => ({
+  slug: p.slug,
+  title: p.data.title,
+  category: p.data.category,
+  image: p.data.image,
+  description: p.data.description,
+}));
 ---
 
 <BaseLayout 
@@ -41,6 +52,21 @@ const readingTime = Math.ceil(wordCount / wordsPerMinute);
 >
   <!-- Barre de progression de lecture -->
   <div id="reading-progress-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-orange)] z-50 transition-all duration-75" style="width: 0%;"></div>
+
+  <!-- Barre d'outils Mode Zen (Flottante) -->
+  <div id="zen-toolbar" class="fixed top-4 right-4 z-50 hidden items-center gap-2 p-2 bg-[var(--color-bg-secondary)]/90 backdrop-blur-md border border-[var(--color-accent)]/30 rounded-2xl shadow-2xl">
+    <button id="zen-font-down" class="px-2.5 py-1 text-xs font-bold bg-[var(--color-bg)] text-[var(--color-text)] rounded-lg hover:bg-[var(--color-accent)]/20 cursor-pointer" title="Diminuer la police">A-</button>
+    <button id="zen-font-up" class="px-2.5 py-1 text-xs font-bold bg-[var(--color-bg)] text-[var(--color-text)] rounded-lg hover:bg-[var(--color-accent)]/20 cursor-pointer" title="Agrandir la police">A+</button>
+    <button id="zen-exit-btn" class="px-3 py-1 text-xs font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30 rounded-lg hover:bg-rose-500/30 cursor-pointer" title="Quitter (Échap)">✕ Quitter Zen</button>
+  </div>
+
+  <!-- Popover Link Preview (Prévisualisation des liens internes) -->
+  <div id="link-preview-card" class="fixed hidden z-50 w-72 p-3 bg-[var(--color-bg-secondary)] border border-[var(--color-accent)]/40 rounded-xl shadow-2xl backdrop-blur-md pointer-events-none transition-opacity duration-150 text-xs">
+    <img id="preview-img" src="" alt="" class="w-full h-28 object-cover rounded-lg mb-2" />
+    <span id="preview-cat" class="px-2 py-0.5 bg-[var(--color-accent)]/15 text-[var(--color-accent)] font-semibold rounded text-[10px]"></span>
+    <h4 id="preview-title" class="font-bold text-sm text-[var(--color-text)] mt-1 line-clamp-2"></h4>
+    <p id="preview-desc" class="text-[var(--color-text-muted)] mt-1 line-clamp-2"></p>
+  </div>
 
   <!-- Bouton Retour en haut -->
   <button 
@@ -100,6 +126,13 @@ const readingTime = Math.ceil(wordCount / wordsPerMinute);
           <span>👁️</span>
           <span id="article-views-count">-</span> vues
         </span>
+        <button 
+          id="zen-mode-toggle"
+          class="inline-flex items-center gap-1.5 px-3 py-1 bg-[var(--color-bg-secondary)] hover:bg-[var(--color-accent)]/20 border border-[var(--color-accent)]/25 text-[var(--color-text)] hover:text-[var(--color-accent)] rounded-full text-xs font-semibold cursor-pointer transition-all duration-200"
+          title="Activer la lecture sans distraction (Touche Échap pour quitter)"
+        >
+          <span>🧘</span> Mode Zen
+        </button>
       </div>
       
       <h1 class="text-4xl md:text-5xl font-bold mb-4 text-[var(--color-text)]">
@@ -196,22 +229,26 @@ const readingTime = Math.ceil(wordCount / wordsPerMinute);
     </div>
 
     <!-- Reactions -->
-    <div class="mt-12 pt-8 border-t border-[var(--color-bg-secondary)]">
+    <div id="reactions-section" class="mt-12 pt-8 border-t border-[var(--color-bg-secondary)]">
       <PostReactions slug={post.slug} />
     </div>
 
     <!-- Related Posts -->
-    <RelatedPosts 
-      currentSlug={post.slug} 
-      currentTags={tags || []} 
-      currentCategory={category} 
-    />
+    <div id="related-posts-section">
+      <RelatedPosts 
+        currentSlug={post.slug} 
+        currentTags={tags || []} 
+        currentCategory={category} 
+      />
+    </div>
 
     <!-- Newsletter -->
-    <Newsletter />
+    <div id="newsletter-section">
+      <Newsletter />
+    </div>
 
     <!-- Navigation -->
-    <nav class="mt-16 pt-8 border-t border-[var(--color-bg-secondary)]">
+    <nav id="article-nav" class="mt-16 pt-8 border-t border-[var(--color-bg-secondary)]">
       <div class="flex justify-between items-center">
         {prevPost ? (
           <a 
@@ -333,6 +370,127 @@ const readingTime = Math.ceil(wordCount / wordsPerMinute);
 
         pre.appendChild(copyBtn);
       });
+
+      // --- LOGIQUE MODE ZEN ---
+      const zenToggle = document.getElementById('zen-mode-toggle');
+      const zenToolbar = document.getElementById('zen-toolbar');
+      const zenExit = document.getElementById('zen-exit-btn');
+      const zenFontUp = document.getElementById('zen-font-up');
+      const zenFontDown = document.getElementById('zen-font-down');
+      const proseEl = document.querySelector('.prose');
+
+      let currentFontSize = 18;
+
+      function toggleZenMode(enable) {
+        if (enable) {
+          document.body.classList.add('zen-mode-active');
+          if (zenToolbar) zenToolbar.classList.remove('hidden');
+          if (zenToolbar) zenToolbar.classList.add('flex');
+        } else {
+          document.body.classList.remove('zen-mode-active');
+          if (zenToolbar) zenToolbar.classList.add('hidden');
+          if (zenToolbar) zenToolbar.classList.remove('flex');
+        }
+      }
+
+      if (zenToggle) zenToggle.addEventListener('click', () => toggleZenMode(true));
+      if (zenExit) zenExit.addEventListener('click', () => toggleZenMode(false));
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && document.body.classList.contains('zen-mode-active')) {
+          toggleZenMode(false);
+        }
+      });
+
+      if (zenFontUp && proseEl) {
+        zenFontUp.addEventListener('click', () => {
+          if (currentFontSize < 26) {
+            currentFontSize += 2;
+            proseEl.style.fontSize = currentFontSize + 'px';
+          }
+        });
+      }
+
+      if (zenFontDown && proseEl) {
+        zenFontDown.addEventListener('click', () => {
+          if (currentFontSize > 14) {
+            currentFontSize -= 2;
+            proseEl.style.fontSize = currentFontSize + 'px';
+          }
+        });
+      }
+
+      // --- LOGIQUE LINK PREVIEWS ---
+      const previewCard = document.getElementById('link-preview-card');
+      const previewImg = document.getElementById('preview-img');
+      const previewCat = document.getElementById('preview-cat');
+      const previewTitle = document.getElementById('preview-title');
+      const previewDesc = document.getElementById('preview-desc');
+      const previewsData = window.__BLOG_PREVIEWS__ || {};
+
+      const contentLinks = document.querySelectorAll('.prose a');
+      contentLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href || !href.includes('/blog/')) return;
+
+        const match = href.match(/\/blog\/([^#/?]+)/);
+        if (!match) return;
+        const targetSlug = match[1];
+        const previewInfo = previewsData[targetSlug];
+        if (!previewInfo) return;
+
+        link.addEventListener('mouseenter', (e) => {
+          if (window.innerWidth < 768) return; // Sur desktop uniquement
+          previewImg.src = previewInfo.image || '/og-default.svg';
+          previewCat.textContent = previewInfo.category || 'Article';
+          previewTitle.textContent = previewInfo.title;
+          previewDesc.textContent = previewInfo.description || '';
+
+          const rect = link.getBoundingClientRect();
+          const top = rect.top - 220 > 10 ? rect.top - 220 : rect.bottom + 10;
+          const left = Math.min(rect.left, window.innerWidth - 300);
+
+          previewCard.style.top = top + 'px';
+          previewCard.style.left = left + 'px';
+          previewCard.classList.remove('hidden');
+        });
+
+        link.addEventListener('mouseleave', () => {
+          previewCard.classList.add('hidden');
+        });
+      });
     })();
   </script>
+
+  <script is:inline define:vars={{ blogPreviews }}>
+    window.__BLOG_PREVIEWS__ = {};
+    if (Array.isArray(blogPreviews)) {
+      blogPreviews.forEach(p => {
+        window.__BLOG_PREVIEWS__[p.slug] = p;
+      });
+    }
+  </script>
+
+  <style is:global>
+    body.zen-mode-active header,
+    body.zen-mode-active footer,
+    body.zen-mode-active aside,
+    body.zen-mode-active #reactions-section,
+    body.zen-mode-active #related-posts-section,
+    body.zen-mode-active #newsletter-section,
+    body.zen-mode-active #article-nav,
+    body.zen-mode-active #comments-section,
+    body.zen-mode-active #scroll-to-top {
+      display: none !important;
+    }
+    body.zen-mode-active {
+      background-color: #07090e !important;
+    }
+    body.zen-mode-active article {
+      max-width: 740px !important;
+      margin: 0 auto !important;
+      padding-top: 5rem !important;
+      line-height: 1.9 !important;
+    }
+  </style>
 </BaseLayout>

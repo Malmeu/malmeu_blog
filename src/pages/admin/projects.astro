@@ -1,0 +1,237 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="Administration des Projets Made in DZ"
+  description="Modérez les soumissions de projets et SaaS de la communauté"
+  noIndex={true}
+>
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <!-- Header -->
+    <header class="mb-8">
+      <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
+        <div class="flex items-center gap-4">
+          <a href="/admin/articles" class="text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors">
+            ← Articles
+          </a>
+          <h1 class="text-3xl font-bold text-[var(--color-text)]">
+            🇩🇿 Projets Made in DZ
+          </h1>
+        </div>
+        <div class="flex items-center gap-3">
+          <a 
+            href="/admin/comments"
+            class="px-4 py-2 bg-[var(--color-bg-secondary)] text-[var(--color-text)] hover:text-[var(--color-accent)] rounded-lg font-medium transition-colors"
+          >
+            💬 Commentaires
+          </a>
+          <a 
+            href="/made-in-dz"
+            target="_blank"
+            class="px-4 py-2 bg-[var(--color-accent)] text-[var(--color-bg)] rounded-lg font-medium hover:opacity-90 transition-opacity"
+          >
+            👁️ Voir l'annuaire
+          </a>
+          <button 
+            id="logout-btn"
+            class="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+          >
+            Déconnexion
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div class="bg-[var(--color-bg-secondary)] rounded-xl p-4 border border-yellow-500/30">
+          <p class="text-[var(--color-text-muted)] text-sm font-medium">⏳ En attente de validation</p>
+          <p id="stat-pending" class="text-2xl font-bold text-yellow-400">-</p>
+        </div>
+        <div class="bg-[var(--color-bg-secondary)] rounded-xl p-4 border border-emerald-500/30">
+          <p class="text-[var(--color-text-muted)] text-sm font-medium">✅ Approuvés & En ligne</p>
+          <p id="stat-approved" class="text-2xl font-bold text-emerald-400">-</p>
+        </div>
+        <div class="bg-[var(--color-bg-secondary)] rounded-xl p-4 border border-rose-500/30">
+          <p class="text-[var(--color-text-muted)] text-sm font-medium">❌ Rejetés</p>
+          <p id="stat-rejected" class="text-2xl font-bold text-rose-400">-</p>
+        </div>
+      </div>
+
+      <!-- Filtre statut -->
+      <div class="flex gap-2">
+        <button class="status-tab px-4 py-2 rounded-xl text-xs font-semibold bg-[var(--color-accent)] text-[var(--color-bg)]" data-status="pending">
+          En attente
+        </button>
+        <button class="status-tab px-4 py-2 rounded-xl text-xs font-semibold bg-[var(--color-bg-secondary)] text-[var(--color-text-muted)] hover:text-white" data-status="approved">
+          Approuvés
+        </button>
+        <button class="status-tab px-4 py-2 rounded-xl text-xs font-semibold bg-[var(--color-bg-secondary)] text-[var(--color-text-muted)] hover:text-white" data-status="rejected">
+          Rejetés
+        </button>
+        <button class="status-tab px-4 py-2 rounded-xl text-xs font-semibold bg-[var(--color-bg-secondary)] text-[var(--color-text-muted)] hover:text-white" data-status="all">
+          Tous
+        </button>
+      </div>
+    </header>
+
+    <!-- Liste des projets -->
+    <div class="bg-[var(--color-bg-secondary)] rounded-2xl border border-[var(--color-bg-tertiary)] overflow-hidden">
+      <div id="projects-list" class="divide-y divide-[var(--color-bg-tertiary)]">
+        <div class="p-12 text-center text-[var(--color-text-muted)]">
+          Chargement des soumissions...
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  (function() {
+    // Vérification de session admin
+    const session = localStorage.getItem('admin_session');
+    const expiry = localStorage.getItem('admin_session_expiry');
+    if (!(session === 'authenticated' && expiry && Date.now() < parseInt(expiry))) {
+      window.location.href = '/admin/login';
+      return;
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', function() {
+      localStorage.removeItem('admin_session');
+      localStorage.removeItem('admin_session_expiry');
+      window.location.href = '/admin/login';
+    });
+
+    let currentFilter = 'pending';
+    let projectsData = [];
+
+    const listEl = document.getElementById('projects-list');
+    const tabs = document.querySelectorAll('.status-tab');
+
+    function loadProjects() {
+      fetch('/api/community-projects?all=true')
+        .then(res => res.json())
+        .then(projects => {
+          projectsData = projects || [];
+
+          const pending = projectsData.filter(p => p.status === 'pending');
+          const approved = projectsData.filter(p => p.status === 'approved');
+          const rejected = projectsData.filter(p => p.status === 'rejected');
+
+          document.getElementById('stat-pending').textContent = pending.length;
+          document.getElementById('stat-approved').textContent = approved.length;
+          document.getElementById('stat-rejected').textContent = rejected.length;
+
+          renderList();
+        })
+        .catch(err => {
+          listEl.innerHTML = '<div class="p-12 text-center text-rose-400">Erreur lors de la récupération des projets.</div>';
+        });
+    }
+
+    function renderList() {
+      const filtered = projectsData.filter(p => {
+        if (currentFilter === 'all') return true;
+        return p.status === currentFilter;
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div class="p-12 text-center text-[var(--color-text-muted)]">Aucun projet dans cette catégorie.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(p => {
+        const statusBadge = p.status === 'approved' 
+          ? '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400">Approuvé</span>'
+          : p.status === 'rejected'
+          ? '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-400">Rejeté</span>'
+          : '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-yellow-500/20 text-yellow-400 animate-pulse">En attente</span>';
+
+        return `
+          <div class="p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-white/[0.02] transition-colors">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                <span class="px-2 py-0.5 bg-[var(--color-accent)]/15 text-[var(--color-accent)] rounded text-xs font-semibold">${p.category}</span>
+                ${statusBadge}
+                <span class="text-xs text-[var(--color-text-muted)]">Par <strong>${p.creator_name || 'Inconnu'}</strong></span>
+                ${p.creator_email ? `<span class="text-xs text-[var(--color-text-muted)]">(${p.creator_email})</span>` : ''}
+              </div>
+              <h3 class="text-lg font-bold text-[var(--color-text)] mb-1">
+                ${p.name}
+              </h3>
+              <p class="text-sm text-[var(--color-text-muted)] mb-2">
+                ${p.tagline}
+              </p>
+              <a href="${p.url}" target="_blank" class="text-xs text-cyan-400 hover:underline inline-flex items-center gap-1">
+                🔗 ${p.url}
+              </a>
+            </div>
+
+            <div class="flex items-center gap-2 shrink-0">
+              ${p.status !== 'approved' ? `
+                <button onclick="updateProjectStatus('${p.id}', 'approved')" class="px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 rounded-lg text-xs font-semibold cursor-pointer transition-colors">
+                  ✅ Approuver
+                </button>
+              ` : ''}
+              ${p.status !== 'rejected' ? `
+                <button onclick="updateProjectStatus('${p.id}', 'rejected')" class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded-lg text-xs font-semibold cursor-pointer transition-colors">
+                  ⏸️ Rejeter
+                </button>
+              ` : ''}
+              <button onclick="deleteProject('${p.id}', '${p.name}')" class="px-3 py-1.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 rounded-lg text-xs font-semibold cursor-pointer transition-colors">
+                🗑️ Supprimer
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        tabs.forEach(t => t.className = 'status-tab px-4 py-2 rounded-xl text-xs font-semibold bg-[var(--color-bg-secondary)] text-[var(--color-text-muted)] hover:text-white');
+        this.className = 'status-tab px-4 py-2 rounded-xl text-xs font-semibold bg-[var(--color-accent)] text-[var(--color-bg)]';
+        currentFilter = this.getAttribute('data-status');
+        renderList();
+      });
+    });
+
+    window.updateProjectStatus = function(id, status) {
+      fetch('/api/community-projects', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          loadProjects();
+        } else {
+          alert('Erreur: ' + (data.error || 'Impossible de mettre à jour'));
+        }
+      })
+      .catch(() => alert('Erreur de connexion'));
+    };
+
+    window.deleteProject = function(id, name) {
+      if (!confirm(`Supprimer définitivement le projet "${name}" ?`)) return;
+
+      fetch('/api/community-projects', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          loadProjects();
+        } else {
+          alert('Erreur: ' + (data.error || 'Impossible de supprimer'));
+        }
+      })
+      .catch(() => alert('Erreur de connexion'));
+    };
+
+    loadProjects();
+  })();
+</script>

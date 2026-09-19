@@ -44,13 +44,16 @@ const categories = [
   <section class="relative py-20 px-4 overflow-hidden">
     <div class="absolute inset-0 bg-linear-to-br from-(--color-accent)/10 to-(--color-accent-orange)/10"></div>
     <div class="max-w-4xl mx-auto text-center relative z-10">
-      <!-- Mascotte -->
-      <div class="w-40 h-40 mx-auto mb-6 animate-fade-in">
+      <!-- Mascotte avec bulle interactive -->
+      <div class="relative w-44 h-44 mx-auto mb-6 animate-fade-in group cursor-pointer" id="mascot-container" title="Cliquez-moi pour une astuce tech !">
+        <div id="cat-tip-bubble" class="absolute -top-12 left-1/2 -translate-x-1/2 whitespace-nowrap bg-[var(--color-bg-secondary)] text-[var(--color-text)] border border-[var(--color-accent)]/40 px-3.5 py-1.5 rounded-2xl shadow-xl text-xs font-semibold opacity-0 transition-all duration-300 pointer-events-none z-20 flex items-center gap-1.5">
+          <span>🐾</span> <span id="cat-tip-text">Ronronne... Cliquez-moi !</span>
+        </div>
         <lottie-player 
           src="/Sleeping_cat.json"
           background="transparent"
           speed="1"
-          style="width: 320px; height: 320px;"
+          style="width: 320px; height: 320px; margin-left: -70px; margin-top: -60px;"
           loop
           autoplay
         ></lottie-player>
@@ -67,15 +70,21 @@ const categories = [
       <div class="flex flex-wrap justify-center gap-4 animate-fade-in" style="animation-delay: 0.2s;">
         <a 
           href="/blog" 
-          class="px-6 py-3 bg-(--color-accent) text-(--color-bg) rounded-lg font-medium hover:opacity-90 transition-opacity"
+          class="px-6 py-3 bg-[var(--color-accent)] text-[var(--color-bg)] rounded-lg font-medium hover:opacity-90 transition-opacity"
         >
           Lire le blog
         </a>
         <a 
-          href="/about" 
-          class="px-6 py-3 border border-(--color-accent) text-(--color-accent) rounded-lg font-medium hover:bg-(--color-accent)/10 transition-colors"
+          href="/simulateur" 
+          class="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg font-medium hover:opacity-90 shadow-lg shadow-amber-500/20 transition-all"
         >
-          À propos de moi
+          🧮 Simulateur Freelance & SaaS
+        </a>
+        <a 
+          href="/made-in-dz" 
+          class="px-6 py-3 border border-[var(--color-accent)] text-[var(--color-accent)] rounded-lg font-medium hover:bg-[var(--color-accent)]/10 transition-colors"
+        >
+          🇩🇿 Made in DZ
         </a>
       </div>
     </div>
@@ -198,5 +207,35 @@ const categories = [
 
   <!-- Lottie Player différé uniquement pour la mascotte de l'accueil -->
   <script is:inline defer src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+  <script is:inline>
+    (function() {
+      const tips = [
+        "💡 En Algérie, vendez vos SaaS B2B au forfait annuel pour sécuriser votre trésorerie !",
+        "⚡ Le statut Auto-entrepreneur en Algérie ne coûte que 5% d'impôt (IFU) !",
+        "🤖 Pour Nano Banana Pro & Claude : soyez ultra descriptif sur vos contextes métiers.",
+        "💳 Utilisez Wise ou des cartes virtuelles dédiées pour séparer dépenses SaaS et persos.",
+        "🚀 Le marché SaaS B2B en Algérie est encore vierge : digitalisez les process locaux !"
+      ];
+
+      const mascot = document.getElementById('mascot-container');
+      const bubble = document.getElementById('cat-tip-bubble');
+      const tipText = document.getElementById('cat-tip-text');
+
+      if (mascot && bubble && tipText) {
+        mascot.addEventListener('click', function() {
+          const randomTip = tips[Math.floor(Math.random() * tips.length)];
+          tipText.textContent = randomTip;
+          bubble.classList.remove('opacity-0', '-top-12');
+          bubble.classList.add('opacity-100', '-top-16');
+
+          setTimeout(function() {
+            bubble.classList.remove('opacity-100', '-top-16');
+            bubble.classList.add('opacity-0', '-top-12');
+          }, 4500);
+        });
+      }
+    })();
+  </script>
 </BaseLayout>
 
