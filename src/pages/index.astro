@@ -42,7 +42,44 @@ const categories = [
 >
   <!-- Hero Section -->
   <section class="relative py-20 px-4 overflow-hidden">
-    <div class="absolute inset-0 bg-linear-to-br from-(--color-accent)/10 to-(--color-accent-orange)/10"></div>
+    <!-- Arrière-plan Technologique & Cyber Grid -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden select-none" aria-hidden="true">
+      <!-- 1. Grille cybernétique avec masque radial -->
+      <div 
+        class="absolute inset-0 opacity-[0.18] dark:opacity-[0.25]"
+        style="background-image: linear-gradient(to right, var(--color-accent) 1px, transparent 1px), linear-gradient(to bottom, var(--color-accent) 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, black 40%, transparent 85%); -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, black 40%, transparent 85%);"
+      ></div>
+
+      <!-- 2. Motifs de micro-circuits / Points lumineux -->
+      <div 
+        class="absolute inset-0 opacity-[0.25] dark:opacity-[0.35]"
+        style="background-image: radial-gradient(circle at 1px 1px, var(--color-accent-orange) 1px, transparent 0); background-size: 32px 32px; mask-image: radial-gradient(circle at 50% 50%, black 25%, transparent 75%); -webkit-mask-image: radial-gradient(circle at 50% 50%, black 25%, transparent 75%);"
+      ></div>
+
+      <!-- 3. Halos lumineux d'ambiance (Glowing Orbs) -->
+      <div class="absolute -top-24 -left-24 w-96 h-96 bg-[var(--color-accent)]/20 rounded-full blur-[100px] animate-pulse"></div>
+      <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-[var(--color-accent-orange)]/15 rounded-full blur-[120px]"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-[var(--color-accent)]/10 rounded-full blur-[110px]"></div>
+
+      <!-- 4. Badges et symboles tech flottants discrets -->
+      <div class="hidden md:flex absolute top-12 left-8 items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--color-bg-secondary)]/70 border border-[var(--color-accent)]/30 backdrop-blur-md text-[11px] font-mono text-[var(--color-accent)] shadow-lg animate-fade-in opacity-80">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span>stack: astro + supabase</span>
+      </div>
+
+      <div class="hidden md:flex absolute top-20 right-10 items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--color-bg-secondary)]/70 border border-[var(--color-accent-orange)]/30 backdrop-blur-md text-[11px] font-mono text-[var(--color-accent-orange)] shadow-lg animate-fade-in opacity-80">
+        <span>🤖 gemini & claude llms</span>
+      </div>
+
+      <div class="hidden lg:flex absolute bottom-12 left-12 items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--color-bg-secondary)]/60 border border-emerald-500/25 backdrop-blur-md text-[11px] font-mono text-emerald-400 opacity-75">
+        <span>🇩🇿 dz tech ecosystem</span>
+      </div>
+
+      <div class="hidden lg:flex absolute bottom-14 right-16 items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--color-bg-secondary)]/60 border border-cyan-500/25 backdrop-blur-md text-[11px] font-mono text-cyan-300 opacity-75">
+        <span>MRR: scaling...</span>
+      </div>
+    </div>
+
     <div class="max-w-4xl mx-auto text-center relative z-10">
       <!-- Mascotte avec bulle interactive -->
       <div class="relative w-44 h-44 mx-auto mb-6 animate-fade-in group cursor-pointer" id="mascot-container" title="Cliquez-moi pour une astuce tech !">
