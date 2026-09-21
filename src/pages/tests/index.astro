@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
+
+const allTests = await getCollection('tests', ({ data }) => !data.draft);
+const tests = allTests.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+// Catégories uniques avec comptage
+const categoryCount = tests.reduce((acc, item) => {
+  const cat = item.data.category;
+  acc[cat] = (acc[cat] || 0) + 1;
+  return acc;
+}, {} as Record<string, number>);
+
+const categories = Object.keys(categoryCount);
+---
+
+<BaseLayout 
+  title="Tests & Bancs d'essai Tech | Avis Développeur Indépendant | Malmeu"
+  description="Tests complets de matériel informatique, laptops, smartphones et périphériques tech en Algérie. Notes sur 10, points forts, faiblesses réelles et avis d'un dev."
+>
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <!-- Hero Header -->
+    <header class="mb-12 relative overflow-hidden rounded-3xl p-8 md:p-12 bg-gradient-to-br from-[var(--color-bg-secondary)] via-[var(--color-bg-secondary)]/90 to-[var(--color-bg)] border border-[var(--color-border)] shadow-xl">
+      <div class="absolute -top-24 -right-24 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-[var(--color-accent)]/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold mb-4">
+          <span class="animate-pulse">●</span> Lab & Bancs d'essai Tech
+        </div>
+
+        <h1 class="text-4xl md:text-5xl font-extrabold text-[var(--color-text)] tracking-tight mb-4">
+          Tests de produits tech <span class="bg-gradient-to-r from-emerald-400 via-teal-400 to-[var(--color-accent)] bg-clip-text text-transparent">sans concession</span>
+        </h1>
+
+        <p class="text-lg text-[var(--color-text-muted)] leading-relaxed mb-6">
+          Laptops, périphériques, composants et gadgets passés au crible avec les yeux d'un développeur exigeant. Aucun publi-reportage : uniquement des tests en conditions réelles en Algérie avec prix en DZD, points forts et faiblesses.
+        </p>
+
+        <!-- KPI Badges -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-4 border-t border-[var(--color-border)] text-xs">
+          <div class="flex items-center gap-2">
+            <span class="text-emerald-400 text-base">📊</span>
+            <div>
+              <div class="font-bold text-[var(--color-text)]">Notes sur 10</div>
+              <div class="text-[var(--color-text-muted)]">Critères pondérés</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-cyan-400 text-base">🇩🇿</span>
+            <div>
+              <div class="font-bold text-[var(--color-text)]">Réalité locale</div>
+              <div class="text-[var(--color-text-muted)]">Prix & dispo DZ</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-amber-400 text-base">🎯</span>
+            <div>
+              <div class="font-bold text-[var(--color-text)]">Usage Dev & Pro</div>
+              <div class="text-[var(--color-text-muted)]">Focus productivité</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Filtres par catégorie -->
+    {categories.length > 0 && (
+      <div class="mb-10 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        <button 
+          class="test-filter-btn px-4 py-2 bg-emerald-500 text-black rounded-full text-xs font-bold transition-all cursor-pointer shadow-md"
+          data-filter="all"
+        >
+          Tous les tests ({tests.length})
+        </button>
+        {categories.map((cat) => (
+          <button 
+            class="test-filter-btn px-4 py-2 bg-[var(--color-bg-secondary)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-secondary)]/80 border border-[var(--color-border)] rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap"
+            data-filter={cat}
+          >
+            {cat} ({categoryCount[cat]})
+          </button>
+        ))}
+      </div>
+    )}
+
+    <!-- Grille des tests -->
+    {tests.length > 0 ? (
+      <div id="tests-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {tests.map((item) => {
+          const { title, description, publishDate, productName, brand, category, image, price, rating, award, pros = [] } = item.data;
+          
+          return (
+            <article 
+              class="test-card group relative flex flex-col rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] hover:border-emerald-500/40 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
+              data-category={category}
+            >
+              <!-- Image & Badge Note -->
+              <div class="relative aspect-16/10 overflow-hidden bg-black/40">
+                <img 
+                  src={image} 
+                  alt={productName}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                
+                <!-- Badge Marque -->
+                <div class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-bold bg-black/70 backdrop-blur-md text-white border border-white/10">
+                  {brand}
+                </div>
+
+                <!-- Badge Note Circulaire / Pill -->
+                <div class="absolute top-3 right-3 flex items-center gap-1 px-3 py-1.5 rounded-full backdrop-blur-md font-black text-sm shadow-lg border border-black/20 bg-emerald-500 text-black">
+                  <span>★</span>
+                  <span>{rating.toFixed(1)}</span>
+                </div>
+
+                <!-- Badge Prix -->
+                {price && (
+                  <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded-lg text-xs font-bold bg-black/80 backdrop-blur-md text-emerald-400 border border-white/10">
+                    💰 {price}
+                  </div>
+                )}
+              </div>
+
+              <!-- Contenu -->
+              <div class="p-5 flex-1 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center gap-2 text-xs mb-2">
+                    <span class="text-[var(--color-accent)] font-semibold">{category}</span>
+                    <span class="text-[var(--color-text-muted)]">•</span>
+                    <span class="text-[var(--color-text-muted)]">
+                      {publishDate.toLocaleDateString('fr-DZ', { month: 'short', year: 'numeric' })}
+                    </span>
+                  </div>
+
+                  {award && (
+                    <div class="inline-block text-[11px] font-bold text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-md mb-2">
+                      🏆 {award}
+                    </div>
+                  )}
+
+                  <h2 class="text-lg font-bold text-[var(--color-text)] group-hover:text-emerald-400 transition-colors line-clamp-2 mb-2">
+                    <a href={`/tests/${item.slug}`} class="focus:outline-none">
+                      <span class="absolute inset-0 z-10" aria-hidden="true"></span>
+                      {title}
+                    </a>
+                  </h2>
+
+                  <p class="text-xs sm:text-sm text-[var(--color-text-muted)] line-clamp-2 mb-4 leading-relaxed">
+                    {description}
+                  </p>
+                </div>
+
+                <!-- Points forts aperçu -->
+                {pros.length > 0 && (
+                  <div class="pt-3 border-t border-[var(--color-border)] text-xs">
+                    <div class="text-[11px] font-semibold text-emerald-400 mb-1">Point fort clé :</div>
+                    <div class="text-[var(--color-text-muted)] line-clamp-1 italic">
+                      ✓ {pros[0]}
+                    </div>
+                  </div>
+                )}
+
+                <!-- Lien En bas -->
+                <div class="mt-4 pt-3 border-t border-[var(--color-border)] flex items-center justify-between text-xs font-bold text-emerald-400 group-hover:translate-x-1 transition-transform">
+                  <span>Lire le banc d'essai complet</span>
+                  <span>→</span>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    ) : (
+      <div class="text-center py-16 bg-[var(--color-bg-secondary)] rounded-2xl border border-[var(--color-border)]">
+        <p class="text-lg text-[var(--color-text-muted)]">
+          Les premiers bancs d'essai sont en cours de préparation au lab !
+        </p>
+      </div>
+    )}
+
+    <!-- Encart Suggestion de produit -->
+    <section class="mt-16 p-8 rounded-3xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] text-center relative overflow-hidden">
+      <h3 class="text-xl font-bold text-[var(--color-text)] mb-2">
+        Un matériel tech ou un laptop que vous voulez voir testé ?
+      </h3>
+      <p class="text-sm text-[var(--color-text-muted)] max-w-xl mx-auto mb-6">
+        Vous hésitez avant d'acheter un modèle spécifique en Algérie ? Suggérez-moi le produit et je ferai mon possible pour le passer au banc d'essai.
+      </p>
+      <a 
+        href="/contact" 
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-bg)] text-[var(--color-text)] hover:text-emerald-400 border border-[var(--color-border)] hover:border-emerald-500/40 text-sm font-semibold transition-all"
+      >
+        💡 Suggérer un produit à tester
+      </a>
+    </section>
+  </div>
+
+  <!-- Script interactif de filtrage des catégories -->
+  <script is:inline>
+    const filterButtons = document.querySelectorAll('.test-filter-btn');
+    const cards = document.querySelectorAll('.test-card');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter');
+
+        // Mettre à jour l'apparence des boutons
+        filterButtons.forEach(b => {
+          b.classList.remove('bg-emerald-500', 'text-black');
+          b.classList.add('bg-[var(--color-bg-secondary)]', 'text-[var(--color-text-muted)]');
+        });
+        btn.classList.add('bg-emerald-500', 'text-black');
+        btn.classList.remove('bg-[var(--color-bg-secondary)]', 'text-[var(--color-text-muted)]');
+
+        // Filtrer les cartes
+        cards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          if (filter === 'all' || category === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</BaseLayout>

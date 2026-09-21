@@ -20,6 +20,12 @@ const recentPosts = allPosts
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
   .slice(0, 6);
 
+// Get recent tech tests
+const allTests = await getCollection('tests', ({ data }) => !data.draft);
+const recentTests = allTests
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 3);
+
 // Helper function to calculate reading time
 const calculateReadingTime = (content: string) => {
   const wordsPerMinute = 200;
@@ -200,6 +206,78 @@ const categories = [
       )}
     </div>
   </section>
+
+  <!-- Section Tests & Bancs d'essai Tech -->
+  {recentTests.length > 0 && (
+    <section class="py-16 px-4 bg-gradient-to-b from-transparent via-[var(--color-bg-secondary)]/50 to-transparent">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold mb-2">
+              <span>⚡</span> Le Lab Hardware & Gadgets
+            </div>
+            <h2 class="text-2xl md:text-3xl font-bold text-[var(--color-text)]">
+              Bancs d'essai & Tests Tech
+            </h2>
+          </div>
+          <a 
+            href="/tests" 
+            class="text-emerald-400 hover:text-emerald-300 font-semibold text-sm flex items-center gap-1 group"
+          >
+            <span>Tous les tests</span>
+            <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {recentTests.map((item) => (
+            <article class="group relative flex flex-col rounded-2xl bg-[var(--color-bg)] border border-[var(--color-border)] hover:border-emerald-500/40 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
+              <div class="relative aspect-16/10 overflow-hidden bg-black/40">
+                <img 
+                  src={item.data.image} 
+                  alt={item.data.productName} 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-bold bg-black/70 backdrop-blur-md text-white border border-white/10">
+                  {item.data.brand}
+                </div>
+                <div class="absolute top-3 right-3 flex items-center gap-1 px-3 py-1.5 rounded-full backdrop-blur-md font-black text-sm shadow-lg border border-black/20 bg-emerald-500 text-black">
+                  <span>★</span>
+                  <span>{item.data.rating.toFixed(1)}</span>
+                </div>
+                {item.data.price && (
+                  <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded-lg text-xs font-bold bg-black/80 backdrop-blur-md text-emerald-400 border border-white/10">
+                    💰 {item.data.price}
+                  </div>
+                )}
+              </div>
+              <div class="p-5 flex-1 flex flex-col justify-between">
+                <div>
+                  <div class="text-xs font-semibold text-[var(--color-accent)] mb-1">
+                    {item.data.category}
+                  </div>
+                  <h3 class="text-base font-bold text-[var(--color-text)] group-hover:text-emerald-400 transition-colors line-clamp-2 mb-2">
+                    <a href={`/tests/${item.slug}`} class="focus:outline-none">
+                      <span class="absolute inset-0 z-10" aria-hidden="true"></span>
+                      {item.data.title}
+                    </a>
+                  </h3>
+                  <p class="text-xs text-[var(--color-text-muted)] line-clamp-2 leading-relaxed">
+                    {item.data.description}
+                  </p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-[var(--color-border)] flex items-center justify-between text-xs font-bold text-emerald-400">
+                  <span>Lire l'avis complet</span>
+                  <span>→</span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- Categories -->
   <section class="py-16 px-4 bg-(--color-bg-secondary)">
