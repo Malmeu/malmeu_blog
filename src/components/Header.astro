@@ -22,7 +22,11 @@ const currentPath = Astro.url.pathname;
         <img 
           src="/malmcat2.webp" 
           alt="Malmeu Logo" 
+          width="40"
+          height="40"
           class="h-10 w-auto logo-adaptive"
+          fetchpriority="high"
+          decoding="sync"
         />
         <span class="text-xl font-bold text-(--color-text) group-hover:text-(--color-accent) transition-colors">
           

@@ -209,7 +209,12 @@ const blogPreviews = allPosts.map(p => ({
       <img 
         src={image} 
         alt={title}
+        width="1200"
+        height="630"
         class="w-full h-64 md:h-96 object-cover rounded-xl mb-12"
+        fetchpriority="high"
+        loading="eager"
+        decoding="async"
       />
     )}
 
