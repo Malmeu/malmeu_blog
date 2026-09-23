@@ -4,7 +4,7 @@ description: "Décryptage complet de DZaïr Digital Services (DZDS.dz), la plate
 publishDate: 2026-09-21
 category: "Algérie Tech"
 tags: ["algerie", "numerisation", "dzds", "hcn", "services-publics", "e-gouvernement", "tech"]
-image: "/dzds-plateforme-algerie.jpg"
+image: "https://i.postimg.cc/sXs9jx4B/dzds-plateforme-algerie.jpg"
 draft: false
 featured: true
 ---
